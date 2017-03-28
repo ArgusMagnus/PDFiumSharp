@@ -39,7 +39,7 @@ string[] Imports = {
 	"public;void;FPDF_PageToDevice(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, double page_x, double page_y, out int device_x, out int device_y)",
 	"public;FPDF_BITMAP;FPDFBitmap_Create(int width, int height, bool hasAlpha)",
 	"public;FPDF_BITMAP;FPDFBitmap_CreateEx(int width, int height, BitmapFormats format, IntPtr first_scan, int stride)",
-	"private;void;FPDFBitmap_FillRect(FPDF_BITMAP bitmap, int left, int top, int width, int height, uint color)",
+	"public;void;FPDFBitmap_FillRect(FPDF_BITMAP bitmap, int left, int top, int width, int height, FPDF_COLOR color)",
 	"public;IntPtr;FPDFBitmap_GetBuffer(FPDF_BITMAP bitmap)",
 	"public;int;FPDFBitmap_GetWidth(FPDF_BITMAP bitmap)",
 	"public;int;FPDFBitmap_GetHeight(FPDF_BITMAP bitmap)",
