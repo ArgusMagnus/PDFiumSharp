@@ -22,21 +22,37 @@ namespace PDFiumSharp
 
 		public double Width => PDFium.FPDF_GetPageWidth(Pointer);
 		public double Height => PDFium.FPDF_GetPageHeight(Pointer);
+
+		public (double Width, double Height) Size
+		{
+			get
+			{
+				if (PDFium.FPDF_GetPageSizeByIndex(Document.Pointer, Index, out var width, out var height))
+					return (width, height);
+				throw new PDFiumException();
+			}
+		}
+
 		public PageRotations Rotation
 		{
 			get => PDFium.FPDFPage_GetRotation(Pointer);
 			set => PDFium.FPDFPage_SetRotation(Pointer, value);
 		}
 
-		PdfPage(FPDF_PAGE page)
+		public int Index { get; internal set; } = -1;
+		public PdfDocument Document { get; }
+
+		PdfPage(PdfDocument doc, FPDF_PAGE page, int index)
 		{
 			if (page.IsNull)
 				throw new PDFiumException();
+			Document = doc;
 			_ptr = page;
+			Index = index;
 		}
 
-		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(PDFium.FPDF_LoadPage(doc.Pointer, index));
-		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(PDFium.FPDFPage_New(doc.Pointer, index, width, height));
+		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(doc, PDFium.FPDF_LoadPage(doc.Pointer, index), index);
+		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, PDFium.FPDFPage_New(doc.Pointer, index, width, height), index);
 
 		public void Dispose()
 		{

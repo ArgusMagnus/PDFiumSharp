@@ -1,12 +1,156 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Documentation>
+	<!-- https://pdfium.googlesource.com/pdfium/+/master/public/fpdfview.h -->
 	<FPDF_InitLibrary>
-		
+		<summary>Initialize the PDFium library</summary>
+		<remarks>
+			Convenience function to call <see cref="FPDF_InitLibraryWithConfig"/> for
+			backwards comatibility purposes.
+		</remarks>
 	</FPDF_InitLibrary>
 
 	<FPDF_InitLibraryWithConfig>
-		
+		<summary>Initialize the PDFium library</summary>
+		<remarks>
+			You have to call this function before you can call any PDF
+			processing functions.
+		</remarks>
 	</FPDF_InitLibraryWithConfig>
+
+	<FPDF_DestroyLibrary>
+		<summary>Release all resources allocated by the PDFium library.</summary>
+		<remarks>
+			You can call this function to release all memory blocks allocated by
+			the library.
+			After this function is called, you should not call any PDF
+			processing functions.
+		</remarks>
+	</FPDF_DestroyLibrary>
+
+	<FPDF_LoadDocument>
+		<summary>Open and load a PDF document.</summary>
+		<param name="file_path">Path to the PDF file (including extension).</param>
+		<param name="password">
+			A string used as the password for the PDF file.
+			If no password is needed, <see cref="string.Empty"/> or <c>null</c> can be used.
+		</param>
+		<returns>A handle to the loaded document, or NULL on failure.</returns>
+		<remarks>
+			Loaded document can be closed by <see cref="FPDF_CloseDocument"/>.
+			If this function fails, you can use <see cref="FPDF_GetLastError"/> to retrieve
+			the reason why it failed.
+		</remarks>
+	</FPDF_LoadDocument>
+
+	<FPDF_LoadMemDocument>
+		<summary>Open and load a PDF document from memory.</summary>
+		<param name="data_buf">Pointer to a buffer containing the PDF document.</param>
+		<param name="size">Number of bytes in the PDF document.</param>
+		<param name="password">
+			A string used as the password for the PDF file.
+			If no password is needed, <see cref="string.Empty"/> or <c>null</c> can be used.
+		</param>
+		<returns>A handle to the loaded document, or NULL on failure.</returns>
+		<remarks>
+			<para>
+				The memory buffer must remain valid when the document is open.
+				The loaded document can be closed by <see cref="FPDF_CloseDocument"/>.
+				If this function fails, you can use <see cref="FPDF_GetLastError"/> to retrieve
+				the reason why it failed.       
+			</para>
+			<para>
+				If PDFium is built with the XFA module, the application should call
+				<see cref="FPDF_LoadXFA"/> function after the PDF document loaded to support XFA
+				fields defined in the fpdfformfill.h file.
+			</para>
+		</remarks>
+	</FPDF_LoadMemDocument>
+
+	<FPDF_LoadCustomDocument>
+		<summary>Load PDF document from a custom access descriptor.</summary>
+		<param name="fileRead">A structure for accessing the file.</param>
+		<param name="password">Optional password for decrypting the PDF file.</param>
+		<returns>A handle to the loaded document, or NULL on failure.</returns>
+		<remarks>
+			<para>
+				The application must keep the file resources valid until the PDF
+				document is closed.
+				The loaded document can be closed with FPDF_CloseDocument.
+			</para>
+			<para>
+				If PDFium is built with the XFA module, the application should call
+				<see cref="FPDF_LoadXFA"/> function after the PDF document loaded to support XFA
+				fields defined in the fpdfformfill.h file.
+			</para>
+		</remarks>
+	</FPDF_LoadCustomDocument>
+
+	<FPDF_GetFileVersion>
+		<summary>Get the file version of the given PDF document.</summary>
+		<param name="doc">Handle to a document.</param>
+		<param name="fileVersion">The PDF file version. File version: 14 for 1.4, 15 for 1.5, ...</param>
+		<returns>True if succeeds, false otherwise.</returns>
+		<remarks>
+			If the document was created by <see cref="FPDF_CreateNewDocument"/>,
+			then this function will always fail.
+		</remarks>
+	</FPDF_GetFileVersion>
+
+	<FPDF_GetLastError>
+		<summary>Get last error code when a function fails.</summary>
+		<remarks>
+			If the previous SDK call succeeded, the return value of this
+			function is not defined.
+		</remarks>
+	</FPDF_GetLastError>
+
+	<FPDF_GetDocPermissions></FPDF_GetDocPermissions>
+
+	<FPDF_GetSecurityHandlerRevision></FPDF_GetSecurityHandlerRevision>
+
+	<FPDF_GetPageCount>
+		<summary>Get total number of pages in the document.</summary>
+		<param name="document">Handle to document.</param>
+		<returns>Total number of pages in the document.</returns>
+	</FPDF_GetPageCount>
+
+	<FPDF_LoadPage>
+		<summary>Load a page inside the document.</summary>
+		<param name="document">Handle to document.</param>
+		<param name="page_index">Zero-based index of the page.</param>
+		<returns>A handle to the loaded page, or NULL if page load fails.</returns>
+		<remarks>The loaded page can be closed using FPDF_ClosePage.</remarks>
+	</FPDF_LoadPage>
+
+	<FPDF_GetPageWidth>
+		<summary>Get page width.</summary>
+		<param name="page">Handle to the page.</param>
+		<returns>
+			Page width (excluding non-displayable area) measured in points.
+			One point is 1/72 inch (around 0.3528 mm).
+		</returns>
+	</FPDF_GetPageWidth>
+
+	<FPDF_GetPageHeight>
+		<summary>Get page height.</summary>
+		<param name="page">Handle to the page.</param>
+		<returns>
+			Page height (excluding non-displayable area) measured in points.
+			One point is 1/72 inch (around 0.3528 mm)
+		</returns>
+	</FPDF_GetPageHeight>
+
+	<FPDF_GetPageSizeByIndex>
+		<summary>Get the size of the page at the given index.</summary>
+		<param name="document">Handle to document.</param>
+		<param name="index">Zero-based index of the page.</param>
+		<param name="width">Pointer to a double to receive the page width (in points).</param>
+		<param name="height">Pointer to a double to receive the page height (in points).</param>
+	</FPDF_GetPageSizeByIndex>
+	
+	
+	
+	
 	
 	<FPDFBitmap_Create>
 		<summary>Create a device independent bitmap (FXDIB).</summary>
@@ -103,33 +247,13 @@
 		<returns>Returns a handle to a new document, or NULL on failure.</returns>
 	</FPDF_CreateNewDocument>
 
-	<FPDF_LoadDocument>
-		
-	</FPDF_LoadDocument>
+	
 
 	<FPDF_CloseDocument>
 		
 	</FPDF_CloseDocument>
 
-	<FPDF_LoadMemDocument>
-		
-	</FPDF_LoadMemDocument>
-
-	<FPDF_LoadCustomDocument>
-		
-	</FPDF_LoadCustomDocument>
-
-	<FPDF_GetFileVersion>
-		
-	</FPDF_GetFileVersion>
-
-	<FPDF_GetLastError>
-		
-	</FPDF_GetLastError>
-
-	<FPDF_GetPageCount>
-		
-	</FPDF_GetPageCount>
+	
 
 	<FPDFPage_New>
 		
@@ -139,25 +263,13 @@
 		
 	</FPDFPage_Delete>
 
-	<FPDF_LoadPage>
-		
-	</FPDF_LoadPage>
+	
 
 	<FPDF_ClosePage>
 		
 	</FPDF_ClosePage>
 
-	<FPDF_GetPageWidth>
-		
-	</FPDF_GetPageWidth>
-
-	<FPDF_GetPageHeight>
-		
-	</FPDF_GetPageHeight>
-
-	<FPDF_GetPageSizeByIndex>
-		
-	</FPDF_GetPageSizeByIndex>
+	
 
 	<FPDF_RenderPageBitmap>
 		

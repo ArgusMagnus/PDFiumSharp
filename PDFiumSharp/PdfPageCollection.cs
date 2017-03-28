@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace PDFiumSharp
 {
@@ -60,7 +61,14 @@ namespace PDFiumSharp
 		{
 			if (index < _pages.Count)
 				_pages.Insert(index, null);
-			return PDFium.FPDF_ImportPages(_doc.Pointer, sourceDocument.Pointer, index, srcPageIndices);
+			var result = PDFium.FPDF_ImportPages(_doc.Pointer, sourceDocument.Pointer, index, srcPageIndices);
+			_pages.InsertRange(index, Enumerable.Repeat<PdfPage>(null, srcPageIndices.Length));
+			for (int i = index; i < _pages.Count; i++)
+			{
+				if (_pages[i] != null)
+					_pages[i].Index = i;
+			}
+			return result;
 		}
 
 		public bool Add(PdfDocument sourceDocument, params int[] srcPageIndices)
@@ -71,8 +79,19 @@ namespace PDFiumSharp
 		public PdfPage Insert(int index, double width, double height)
 		{
 			if (index < _pages.Count)
+			{
 				_pages.Insert(index, null);
-			return PdfPage.New(_doc, index, width, height);
+				for (int i = index; i < _pages.Count; i++)
+				{
+					if (_pages[i] != null)
+						_pages[i].Index = i;
+				}
+			}
+			var page = PdfPage.New(_doc, index, width, height);
+			while (_pages.Count <= index)
+				_pages.Add(null);
+			_pages[index] = page;
+			return page;
 		}
 
 		public PdfPage Add(double width, double height)
@@ -83,7 +102,15 @@ namespace PDFiumSharp
 		public void Remove(int index)
 		{
 			if (index < _pages.Count)
+			{
 				_pages[index]?.Dispose();
+				_pages.RemoveAt(index);
+				for (int i = index; i < _pages.Count; i++)
+				{
+					if (_pages[i] != null)
+						_pages[i].Index = i;
+				}
+			}
 			PDFium.FPDFPage_Delete(_doc.Pointer, index);
 		}
 	}
