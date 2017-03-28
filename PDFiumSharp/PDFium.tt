@@ -48,7 +48,7 @@ string[] Imports = {
 	"public;bool;FPDF_VIEWERREF_GetPrintScaling(FPDF_DOCUMENT document)",
 	"public;int;FPDF_VIEWERREF_GetNumCopies(FPDF_DOCUMENT document)",
 	"public;FPDF_PAGERANGE;FPDF_VIEWERREF_GetPrintPageRange(FPDF_DOCUMENT document)",
-	"public;FPDF_DUPLEXTYPE;FPDF_VIEWERREF_GetDuplex(FPDF_DOCUMENT document)",
+	"public;DuplexTypes;FPDF_VIEWERREF_GetDuplex(FPDF_DOCUMENT document)",
 	"private;uint;FPDF_VIEWERREF_GetName(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string key, ref byte buffer, uint length)",
 	"public;int;FPDF_CountNamedDests(FPDF_DOCUMENT document)",
 	"public;FPDF_DEST;FPDF_GetNamedDestByName(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string name)",
