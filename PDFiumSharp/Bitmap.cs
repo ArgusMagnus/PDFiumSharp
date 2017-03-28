@@ -52,5 +52,7 @@ namespace PDFiumSharp
 		{
 			PDFium.FPDFBitmap_FillRect(Pointer, left, top, width, height, color);
 		}
+
+		public void Fill(FPDF_COLOR color) => FillRectangle(0, 0, Width, Height, color);
     }
 }

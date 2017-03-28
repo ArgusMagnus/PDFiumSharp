@@ -56,18 +56,22 @@ namespace PDFiumSharp
 				yield return this[i];
 		}
 
-		public bool Insert(PdfDocument sourceDocument, int index, params int[] srcPageIndices)
+		public bool Insert(int index, PdfDocument sourceDocument, params int[] srcPageIndices)
 		{
+			if (index < _pages.Count)
+				_pages.Insert(index, null);
 			return PDFium.FPDF_ImportPages(_doc.Pointer, sourceDocument.Pointer, index, srcPageIndices);
 		}
 
 		public bool Add(PdfDocument sourceDocument, params int[] srcPageIndices)
 		{
-			return Insert(sourceDocument, Count, srcPageIndices);
+			return Insert(Count, sourceDocument, srcPageIndices);
 		}
 
 		public PdfPage Insert(int index, double width, double height)
 		{
+			if (index < _pages.Count)
+				_pages.Insert(index, null);
 			return PdfPage.New(_doc, index, width, height);
 		}
 
