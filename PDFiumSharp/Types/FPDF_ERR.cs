@@ -51,4 +51,24 @@ namespace PDFiumSharp.Types
 		/// </summary>
 		XFALAYOUT = 8
 	}
+
+	public static class FPDF_ERR_Extension
+	{
+		public static string GetDescription(this FPDF_ERR error)
+		{
+			switch(error)
+			{
+				case FPDF_ERR.SUCCESS: return "No error.";
+				case FPDF_ERR.UNKNOWN: return "Unkown error.";
+				case FPDF_ERR.FILE: return "File not found or could not be opened.";
+				case FPDF_ERR.FORMAT:return "File not in PDF format or corrupted.";
+				case FPDF_ERR.PASSWORD:return "Password required or incorrect password.";
+				case FPDF_ERR.SECURITY:return "Unsupported security scheme.";
+				case FPDF_ERR.PAGE:return "Page not found or content error.";
+				case FPDF_ERR.XFALOAD:return "Load XFA error.";
+				case FPDF_ERR.XFALAYOUT:return "Layout XFA error.";
+				default: return $"{error} (No description available).";
+			}
+		}
+	}
 }

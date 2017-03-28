@@ -10,12 +10,12 @@ namespace PDFiumSharp
 {
     public static class RenderingExtensions
     {
-		public static void Render(this PdfPage page, BitmapImage bitmap, int x, int y, int width, int height, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, BitmapImage bitmap, int x, int y, int width, int height, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
 
-			byte[] pixelBuffer = page.Render(x, y, width, height, BitmapFormats.FPDFBitmap_BGRA, rotate, flags);
+			byte[] pixelBuffer = page.Render(x, y, width, height, BitmapFormats.FPDFBitmap_BGRA, rotation, flags);
 			width += x;
 			height += y;
 			int i = 0;
@@ -32,16 +32,16 @@ namespace PDFiumSharp
 			}
 		}
 
-		public static void Render(this PdfPage page, BitmapImage bitmap, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, BitmapImage bitmap, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(bitmap, 0, 0, (int)bitmap.Width, (int)bitmap.Height, rotate, flags);
+			page.Render(bitmap, 0, 0, (int)bitmap.Width, (int)bitmap.Height, rotation, flags);
 		}
 
 		public static void Render(this PdfPage page, out BitmapImage bitmap, RenderingFlags flags = RenderingFlags.None)
 		{
 			ImageBuilder imageBuilder = new ImageBuilder(Math.Round(page.Width), Math.Round(page.Height));
 			bitmap = imageBuilder.ToBitmap(ImageFormat.ARGB32);
-			page.Render(bitmap, RotateOptions.DontRotate, flags);
+			page.Render(bitmap, PageRotations.Normal, flags);
 		}
 	}
 }

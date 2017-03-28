@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Documentation>
+	<FPDF_InitLibrary>
+		
+	</FPDF_InitLibrary>
+
+	<FPDF_InitLibraryWithConfig>
+		
+	</FPDF_InitLibraryWithConfig>
+	
 	<FPDFBitmap_Create>
 		<summary>Create a device independent bitmap (FXDIB).</summary>
 		<param name="width">The number of pixels in width for the bitmap. Must be greater than 0. </param>
@@ -89,4 +97,89 @@
 			the bitmap was created.
 		</remarks>
 	</FPDFBitmap_Destroy>
+
+	<FPDF_CreateNewDocument>
+		<summary>Create a new PDF document.</summary>
+		<returns>Returns a handle to a new document, or NULL on failure.</returns>
+	</FPDF_CreateNewDocument>
+
+	<FPDF_LoadDocument>
+		
+	</FPDF_LoadDocument>
+
+	<FPDF_CloseDocument>
+		
+	</FPDF_CloseDocument>
+
+	<FPDF_LoadMemDocument>
+		
+	</FPDF_LoadMemDocument>
+
+	<FPDF_LoadCustomDocument>
+		
+	</FPDF_LoadCustomDocument>
+
+	<FPDF_GetFileVersion>
+		
+	</FPDF_GetFileVersion>
+
+	<FPDF_GetLastError>
+		
+	</FPDF_GetLastError>
+
+	<FPDF_GetPageCount>
+		
+	</FPDF_GetPageCount>
+
+	<FPDFPage_New>
+		
+	</FPDFPage_New>
+
+	<FPDFPage_Delete>
+		
+	</FPDFPage_Delete>
+
+	<FPDF_LoadPage>
+		
+	</FPDF_LoadPage>
+
+	<FPDF_ClosePage>
+		
+	</FPDF_ClosePage>
+
+	<FPDF_GetPageWidth>
+		
+	</FPDF_GetPageWidth>
+
+	<FPDF_GetPageHeight>
+		
+	</FPDF_GetPageHeight>
+
+	<FPDF_GetPageSizeByIndex>
+		
+	</FPDF_GetPageSizeByIndex>
+
+	<FPDF_RenderPageBitmap>
+		
+	</FPDF_RenderPageBitmap>
+
+	<FPDF_ImportPages>
+		
+	</FPDF_ImportPages>
+
+	<FPDF_SaveAsCopy>
+		
+	</FPDF_SaveAsCopy>
+
+	<FPDF_SaveWithVersion>
+		
+	</FPDF_SaveWithVersion>
+
+	<FPDFPage_GetRotation>
+		
+	</FPDFPage_GetRotation>
+
+	<FPDFPage_SetRotation>
+		
+	</FPDFPage_SetRotation>
 </Documentation>

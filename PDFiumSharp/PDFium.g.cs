@@ -65,6 +65,468 @@ namespace PDFiumSharp
 
 		#endregion
 
+		#region FPDF_DestroyLibrary
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_DestroyLibrary")]
+			internal static extern void FPDF_DestroyLibrary_x86();
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_DestroyLibrary")]
+			internal static extern void FPDF_DestroyLibrary_x64();
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_DestroyLibrary/*'/>
+		private static void FPDF_DestroyLibrary()
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_DestroyLibrary_x64();
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_DestroyLibrary_x86();
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_LoadDocument
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadDocument")]
+			internal static extern FPDF_DOCUMENT FPDF_LoadDocument_x86([MarshalAs(UnmanagedType.LPStr)] string file_path, [MarshalAs(UnmanagedType.LPStr)] string password = null);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadDocument")]
+			internal static extern FPDF_DOCUMENT FPDF_LoadDocument_x64([MarshalAs(UnmanagedType.LPStr)] string file_path, [MarshalAs(UnmanagedType.LPStr)] string password = null);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadDocument/*'/>
+		public static FPDF_DOCUMENT FPDF_LoadDocument([MarshalAs(UnmanagedType.LPStr)] string file_path, [MarshalAs(UnmanagedType.LPStr)] string password = null)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_LoadDocument_x64(file_path, password);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_LoadDocument_x86(file_path, password);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_LoadMemDocument
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadMemDocument")]
+		
+			internal static extern FPDF_DOCUMENT FPDF_LoadMemDocument_x86(ref byte data_buf, int size, [MarshalAs(UnmanagedType.LPStr)] string password);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadMemDocument")]
+		
+			internal static extern FPDF_DOCUMENT FPDF_LoadMemDocument_x64(ref byte data_buf, int size, [MarshalAs(UnmanagedType.LPStr)] string password);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadMemDocument/*'/>
+		private static FPDF_DOCUMENT FPDF_LoadMemDocument(ref byte data_buf, int size, [MarshalAs(UnmanagedType.LPStr)] string password)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_LoadMemDocument_x64(ref data_buf, size, password);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_LoadMemDocument_x86(ref data_buf, size, password);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_LoadCustomDocument
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadCustomDocument")]
+		
+			internal static extern FPDF_DOCUMENT FPDF_LoadCustomDocument_x86(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadCustomDocument")]
+		
+			internal static extern FPDF_DOCUMENT FPDF_LoadCustomDocument_x64(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadCustomDocument/*'/>
+		private static FPDF_DOCUMENT FPDF_LoadCustomDocument(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_LoadCustomDocument_x64(fileRead, password);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_LoadCustomDocument_x86(fileRead, password);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetFileVersion
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetFileVersion")]
+			internal static extern bool FPDF_GetFileVersion_x86(FPDF_DOCUMENT doc, out int fileVersion);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetFileVersion")]
+			internal static extern bool FPDF_GetFileVersion_x64(FPDF_DOCUMENT doc, out int fileVersion);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetFileVersion/*'/>
+		public static bool FPDF_GetFileVersion(FPDF_DOCUMENT doc, out int fileVersion)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetFileVersion_x64(doc, out fileVersion);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetFileVersion_x86(doc, out fileVersion);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetLastError
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetLastError")]
+			internal static extern FPDF_ERR FPDF_GetLastError_x86();
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetLastError")]
+			internal static extern FPDF_ERR FPDF_GetLastError_x64();
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetLastError/*'/>
+		public static FPDF_ERR FPDF_GetLastError()
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetLastError_x64();
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetLastError_x86();
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetDocPermissions
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetDocPermissions")]
+			internal static extern uint FPDF_GetDocPermissions_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetDocPermissions")]
+			internal static extern uint FPDF_GetDocPermissions_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetDocPermissions/*'/>
+		public static uint FPDF_GetDocPermissions(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetDocPermissions_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetDocPermissions_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetSecurityHandlerRevision
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetSecurityHandlerRevision")]
+			internal static extern int FPDF_GetSecurityHandlerRevision_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetSecurityHandlerRevision")]
+			internal static extern int FPDF_GetSecurityHandlerRevision_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetSecurityHandlerRevision/*'/>
+		public static int FPDF_GetSecurityHandlerRevision(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetSecurityHandlerRevision_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetSecurityHandlerRevision_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetPageCount
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageCount")]
+			internal static extern int FPDF_GetPageCount_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageCount")]
+			internal static extern int FPDF_GetPageCount_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageCount/*'/>
+		public static int FPDF_GetPageCount(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetPageCount_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetPageCount_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_LoadPage
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadPage")]
+			internal static extern FPDF_PAGE FPDF_LoadPage_x86(FPDF_DOCUMENT document, int page_index);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadPage")]
+			internal static extern FPDF_PAGE FPDF_LoadPage_x64(FPDF_DOCUMENT document, int page_index);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadPage/*'/>
+		public static FPDF_PAGE FPDF_LoadPage(FPDF_DOCUMENT document, int page_index)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_LoadPage_x64(document, page_index);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_LoadPage_x86(document, page_index);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetPageWidth
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageWidth")]
+			internal static extern double FPDF_GetPageWidth_x86(FPDF_PAGE page);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageWidth")]
+			internal static extern double FPDF_GetPageWidth_x64(FPDF_PAGE page);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageWidth/*'/>
+		public static double FPDF_GetPageWidth(FPDF_PAGE page)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetPageWidth_x64(page);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetPageWidth_x86(page);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetPageHeight
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageHeight")]
+			internal static extern double FPDF_GetPageHeight_x86(FPDF_PAGE page);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageHeight")]
+			internal static extern double FPDF_GetPageHeight_x64(FPDF_PAGE page);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageHeight/*'/>
+		public static double FPDF_GetPageHeight(FPDF_PAGE page)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetPageHeight_x64(page);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetPageHeight_x86(page);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetPageSizeByIndex
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageSizeByIndex")]
+			internal static extern bool FPDF_GetPageSizeByIndex_x86(FPDF_DOCUMENT document, int page_index, out double width, out double height);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageSizeByIndex")]
+			internal static extern bool FPDF_GetPageSizeByIndex_x64(FPDF_DOCUMENT document, int page_index, out double width, out double height);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageSizeByIndex/*'/>
+		public static bool FPDF_GetPageSizeByIndex(FPDF_DOCUMENT document, int page_index, out double width, out double height)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetPageSizeByIndex_x64(document, page_index, out width, out height);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetPageSizeByIndex_x86(document, page_index, out width, out height);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_RenderPageBitmap
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_RenderPageBitmap")]
+		
+			internal static extern void FPDF_RenderPageBitmap_x86(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_RenderPageBitmap")]
+		
+			internal static extern void FPDF_RenderPageBitmap_x64(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_RenderPageBitmap/*'/>
+		public static void FPDF_RenderPageBitmap(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_RenderPageBitmap_x64(bitmap, page, start_x, start_y, size_x, size_y, rotation, flags);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_RenderPageBitmap_x86(bitmap, page, start_x, start_y, size_x, size_y, rotation, flags);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_RenderPageBitmapWithMatrix
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_RenderPageBitmapWithMatrix")]
+			internal static extern void FPDF_RenderPageBitmapWithMatrix_x86(FPDF_BITMAP bitmap, FPDF_PAGE page, FS_MATRIX matrix, FS_RECTF clipping, RenderingFlags flags = RenderingFlags.None);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_RenderPageBitmapWithMatrix")]
+			internal static extern void FPDF_RenderPageBitmapWithMatrix_x64(FPDF_BITMAP bitmap, FPDF_PAGE page, FS_MATRIX matrix, FS_RECTF clipping, RenderingFlags flags = RenderingFlags.None);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_RenderPageBitmapWithMatrix/*'/>
+		public static void FPDF_RenderPageBitmapWithMatrix(FPDF_BITMAP bitmap, FPDF_PAGE page, FS_MATRIX matrix, FS_RECTF clipping, RenderingFlags flags = RenderingFlags.None)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_RenderPageBitmapWithMatrix_x64(bitmap, page, matrix, clipping, flags);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_RenderPageBitmapWithMatrix_x86(bitmap, page, matrix, clipping, flags);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_ClosePage
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_ClosePage")]
+			internal static extern void FPDF_ClosePage_x86(FPDF_PAGE page);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_ClosePage")]
+			internal static extern void FPDF_ClosePage_x64(FPDF_PAGE page);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_ClosePage/*'/>
+		public static void FPDF_ClosePage(FPDF_PAGE page)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_ClosePage_x64(page);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_ClosePage_x86(page);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_CloseDocument
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CloseDocument")]
+			internal static extern void FPDF_CloseDocument_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CloseDocument")]
+			internal static extern void FPDF_CloseDocument_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_CloseDocument/*'/>
+		public static void FPDF_CloseDocument(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_CloseDocument_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_CloseDocument_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_DeviceToPage
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_DeviceToPage")]
+			internal static extern void FPDF_DeviceToPage_x86(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, int device_x, int device_y, out double page_x, out double page_y);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_DeviceToPage")]
+			internal static extern void FPDF_DeviceToPage_x64(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, int device_x, int device_y, out double page_x, out double page_y);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_DeviceToPage/*'/>
+		public static void FPDF_DeviceToPage(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, int device_x, int device_y, out double page_x, out double page_y)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_DeviceToPage_x64(page, start_x, start_y, size_x, size_y, rotate, device_x, device_y, out page_x, out page_y);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_DeviceToPage_x86(page, start_x, start_y, size_x, size_y, rotate, device_x, device_y, out page_x, out page_y);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_PageToDevice
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_PageToDevice")]
+			internal static extern void FPDF_PageToDevice_x86(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, double page_x, double page_y, out int device_x, out int device_y);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_PageToDevice")]
+			internal static extern void FPDF_PageToDevice_x64(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, double page_x, double page_y, out int device_x, out int device_y);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_PageToDevice/*'/>
+		public static void FPDF_PageToDevice(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageRotations rotate, double page_x, double page_y, out int device_x, out int device_y)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDF_PageToDevice_x64(page, start_x, start_y, size_x, size_y, rotate, page_x, page_y, out device_x, out device_y);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDF_PageToDevice_x86(page, start_x, start_y, size_x, size_y, rotate, page_x, page_y, out device_x, out device_y);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
 		#region FPDFBitmap_Create
 
 		static partial class PlatformInvoke
@@ -107,6 +569,30 @@ namespace PDFiumSharp
 				return PlatformInvoke.FPDFBitmap_CreateEx_x64(width, height, format, first_scan, stride);
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
 				return PlatformInvoke.FPDFBitmap_CreateEx_x86(width, height, format, first_scan, stride);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDFBitmap_FillRect
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDFBitmap_FillRect")]
+			internal static extern void FPDFBitmap_FillRect_x86(FPDF_BITMAP bitmap, int left, int top, int width, int height, uint color);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDFBitmap_FillRect")]
+			internal static extern void FPDFBitmap_FillRect_x64(FPDF_BITMAP bitmap, int left, int top, int width, int height, uint color);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDFBitmap_FillRect/*'/>
+		private static void FPDFBitmap_FillRect(FPDF_BITMAP bitmap, int left, int top, int width, int height, uint color)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				PlatformInvoke.FPDFBitmap_FillRect_x64(bitmap, left, top, width, height, color);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				PlatformInvoke.FPDFBitmap_FillRect_x86(bitmap, left, top, width, height, color);
 			else
 				throw new PlatformNotSupportedException();
 		}
@@ -233,6 +719,198 @@ namespace PDFiumSharp
 
 		#endregion
 
+		#region FPDF_VIEWERREF_GetPrintScaling
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetPrintScaling")]
+			internal static extern bool FPDF_VIEWERREF_GetPrintScaling_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetPrintScaling")]
+			internal static extern bool FPDF_VIEWERREF_GetPrintScaling_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_VIEWERREF_GetPrintScaling/*'/>
+		public static bool FPDF_VIEWERREF_GetPrintScaling(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_VIEWERREF_GetPrintScaling_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_VIEWERREF_GetPrintScaling_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_VIEWERREF_GetNumCopies
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetNumCopies")]
+			internal static extern int FPDF_VIEWERREF_GetNumCopies_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetNumCopies")]
+			internal static extern int FPDF_VIEWERREF_GetNumCopies_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_VIEWERREF_GetNumCopies/*'/>
+		public static int FPDF_VIEWERREF_GetNumCopies(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_VIEWERREF_GetNumCopies_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_VIEWERREF_GetNumCopies_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_VIEWERREF_GetPrintPageRange
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetPrintPageRange")]
+			internal static extern FPDF_PAGERANGE FPDF_VIEWERREF_GetPrintPageRange_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetPrintPageRange")]
+			internal static extern FPDF_PAGERANGE FPDF_VIEWERREF_GetPrintPageRange_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_VIEWERREF_GetPrintPageRange/*'/>
+		public static FPDF_PAGERANGE FPDF_VIEWERREF_GetPrintPageRange(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_VIEWERREF_GetPrintPageRange_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_VIEWERREF_GetPrintPageRange_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_VIEWERREF_GetDuplex
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetDuplex")]
+			internal static extern FPDF_DUPLEXTYPE FPDF_VIEWERREF_GetDuplex_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetDuplex")]
+			internal static extern FPDF_DUPLEXTYPE FPDF_VIEWERREF_GetDuplex_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_VIEWERREF_GetDuplex/*'/>
+		public static FPDF_DUPLEXTYPE FPDF_VIEWERREF_GetDuplex(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_VIEWERREF_GetDuplex_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_VIEWERREF_GetDuplex_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_VIEWERREF_GetName
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetName")]
+			internal static extern uint FPDF_VIEWERREF_GetName_x86(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string key, ref byte buffer, uint length);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_VIEWERREF_GetName")]
+			internal static extern uint FPDF_VIEWERREF_GetName_x64(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string key, ref byte buffer, uint length);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_VIEWERREF_GetName/*'/>
+		private static uint FPDF_VIEWERREF_GetName(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string key, ref byte buffer, uint length)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_VIEWERREF_GetName_x64(document, key, ref buffer, length);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_VIEWERREF_GetName_x86(document, key, ref buffer, length);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_CountNamedDests
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CountNamedDests")]
+			internal static extern int FPDF_CountNamedDests_x86(FPDF_DOCUMENT document);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CountNamedDests")]
+			internal static extern int FPDF_CountNamedDests_x64(FPDF_DOCUMENT document);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_CountNamedDests/*'/>
+		public static int FPDF_CountNamedDests(FPDF_DOCUMENT document)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_CountNamedDests_x64(document);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_CountNamedDests_x86(document);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetNamedDestByName
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetNamedDestByName")]
+			internal static extern FPDF_DEST FPDF_GetNamedDestByName_x86(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string name);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetNamedDestByName")]
+			internal static extern FPDF_DEST FPDF_GetNamedDestByName_x64(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string name);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetNamedDestByName/*'/>
+		public static FPDF_DEST FPDF_GetNamedDestByName(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string name)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetNamedDestByName_x64(document, name);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetNamedDestByName_x86(document, name);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_GetNamedDest
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetNamedDest")]
+			internal static extern FPDF_DEST FPDF_GetNamedDest_x86(FPDF_DOCUMENT document, int index, ref char buffer, ref int buflen);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetNamedDest")]
+			internal static extern FPDF_DEST FPDF_GetNamedDest_x64(FPDF_DOCUMENT document, int index, ref char buffer, ref int buflen);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_GetNamedDest/*'/>
+		private static FPDF_DEST FPDF_GetNamedDest(FPDF_DOCUMENT document, int index, ref char buffer, ref int buflen)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_GetNamedDest_x64(document, index, ref buffer, ref buflen);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_GetNamedDest_x86(document, index, ref buffer, ref buflen);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
 		#region FPDF_CreateNewDocument
 
 		static partial class PlatformInvoke
@@ -251,178 +929,6 @@ namespace PDFiumSharp
 				return PlatformInvoke.FPDF_CreateNewDocument_x64();
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
 				return PlatformInvoke.FPDF_CreateNewDocument_x86();
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_LoadDocument
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadDocument")]
-			internal static extern FPDF_DOCUMENT FPDF_LoadDocument_x86([MarshalAs(UnmanagedType.LPStr)] string file_path, [MarshalAs(UnmanagedType.LPStr)] string password = null);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadDocument")]
-			internal static extern FPDF_DOCUMENT FPDF_LoadDocument_x64([MarshalAs(UnmanagedType.LPStr)] string file_path, [MarshalAs(UnmanagedType.LPStr)] string password = null);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadDocument/*'/>
-		public static FPDF_DOCUMENT FPDF_LoadDocument([MarshalAs(UnmanagedType.LPStr)] string file_path, [MarshalAs(UnmanagedType.LPStr)] string password = null)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_LoadDocument_x64(file_path, password);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_LoadDocument_x86(file_path, password);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_CloseDocument
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CloseDocument")]
-			internal static extern void FPDF_CloseDocument_x86(FPDF_DOCUMENT document);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CloseDocument")]
-			internal static extern void FPDF_CloseDocument_x64(FPDF_DOCUMENT document);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_CloseDocument/*'/>
-		public static void FPDF_CloseDocument(FPDF_DOCUMENT document)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				PlatformInvoke.FPDF_CloseDocument_x64(document);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				PlatformInvoke.FPDF_CloseDocument_x86(document);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_LoadMemDocument
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadMemDocument")]
-		
-			internal static extern FPDF_DOCUMENT FPDF_LoadMemDocument_x86(ref byte data_buf, int size, [MarshalAs(UnmanagedType.LPStr)] string password);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadMemDocument")]
-		
-			internal static extern FPDF_DOCUMENT FPDF_LoadMemDocument_x64(ref byte data_buf, int size, [MarshalAs(UnmanagedType.LPStr)] string password);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadMemDocument/*'/>
-		private static FPDF_DOCUMENT FPDF_LoadMemDocument(ref byte data_buf, int size, [MarshalAs(UnmanagedType.LPStr)] string password)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_LoadMemDocument_x64(ref data_buf, size, password);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_LoadMemDocument_x86(ref data_buf, size, password);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_LoadCustomDocument
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadCustomDocument")]
-		
-			internal static extern FPDF_DOCUMENT FPDF_LoadCustomDocument_x86(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadCustomDocument")]
-		
-			internal static extern FPDF_DOCUMENT FPDF_LoadCustomDocument_x64(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadCustomDocument/*'/>
-		private static FPDF_DOCUMENT FPDF_LoadCustomDocument(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_LoadCustomDocument_x64(fileRead, password);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_LoadCustomDocument_x86(fileRead, password);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_GetFileVersion
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetFileVersion")]
-			internal static extern bool FPDF_GetFileVersion_x86(FPDF_DOCUMENT doc, out int fileVersion);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetFileVersion")]
-			internal static extern bool FPDF_GetFileVersion_x64(FPDF_DOCUMENT doc, out int fileVersion);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_GetFileVersion/*'/>
-		public static bool FPDF_GetFileVersion(FPDF_DOCUMENT doc, out int fileVersion)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_GetFileVersion_x64(doc, out fileVersion);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_GetFileVersion_x86(doc, out fileVersion);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_GetLastError
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetLastError")]
-			internal static extern FPDF_ERR FPDF_GetLastError_x86();
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetLastError")]
-			internal static extern FPDF_ERR FPDF_GetLastError_x64();
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_GetLastError/*'/>
-		public static FPDF_ERR FPDF_GetLastError()
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_GetLastError_x64();
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_GetLastError_x86();
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_GetPageCount
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageCount")]
-			internal static extern int FPDF_GetPageCount_x86(FPDF_DOCUMENT document);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageCount")]
-			internal static extern int FPDF_GetPageCount_x64(FPDF_DOCUMENT document);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageCount/*'/>
-		public static int FPDF_GetPageCount(FPDF_DOCUMENT document)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_GetPageCount_x64(document);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_GetPageCount_x86(document);
 			else
 				throw new PlatformNotSupportedException();
 		}
@@ -477,146 +983,48 @@ namespace PDFiumSharp
 
 		#endregion
 
-		#region FPDF_LoadPage
+		#region FPDFPage_GetRotation
 
 		static partial class PlatformInvoke
 		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadPage")]
-			internal static extern FPDF_PAGE FPDF_LoadPage_x86(FPDF_DOCUMENT document, int page_index);
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDFPage_GetRotation")]
+			internal static extern PageRotations FPDFPage_GetRotation_x86(FPDF_PAGE page);
 
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_LoadPage")]
-			internal static extern FPDF_PAGE FPDF_LoadPage_x64(FPDF_DOCUMENT document, int page_index);
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDFPage_GetRotation")]
+			internal static extern PageRotations FPDFPage_GetRotation_x64(FPDF_PAGE page);
 		}
 
-		/// <include file='PDFium.xml' path='Documentation/FPDF_LoadPage/*'/>
-		public static FPDF_PAGE FPDF_LoadPage(FPDF_DOCUMENT document, int page_index)
+		/// <include file='PDFium.xml' path='Documentation/FPDFPage_GetRotation/*'/>
+		public static PageRotations FPDFPage_GetRotation(FPDF_PAGE page)
 		{
 			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_LoadPage_x64(document, page_index);
+				return PlatformInvoke.FPDFPage_GetRotation_x64(page);
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_LoadPage_x86(document, page_index);
+				return PlatformInvoke.FPDFPage_GetRotation_x86(page);
 			else
 				throw new PlatformNotSupportedException();
 		}
 
 		#endregion
 
-		#region FPDF_ClosePage
+		#region FPDFPage_SetRotation
 
 		static partial class PlatformInvoke
 		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_ClosePage")]
-			internal static extern void FPDF_ClosePage_x86(FPDF_PAGE page);
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDFPage_SetRotation")]
+			internal static extern void FPDFPage_SetRotation_x86(FPDF_PAGE page, PageRotations rotation);
 
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_ClosePage")]
-			internal static extern void FPDF_ClosePage_x64(FPDF_PAGE page);
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDFPage_SetRotation")]
+			internal static extern void FPDFPage_SetRotation_x64(FPDF_PAGE page, PageRotations rotation);
 		}
 
-		/// <include file='PDFium.xml' path='Documentation/FPDF_ClosePage/*'/>
-		public static void FPDF_ClosePage(FPDF_PAGE page)
+		/// <include file='PDFium.xml' path='Documentation/FPDFPage_SetRotation/*'/>
+		public static void FPDFPage_SetRotation(FPDF_PAGE page, PageRotations rotation)
 		{
 			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				PlatformInvoke.FPDF_ClosePage_x64(page);
+				PlatformInvoke.FPDFPage_SetRotation_x64(page, rotation);
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				PlatformInvoke.FPDF_ClosePage_x86(page);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_GetPageWidth
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageWidth")]
-			internal static extern double FPDF_GetPageWidth_x86(FPDF_PAGE page);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageWidth")]
-			internal static extern double FPDF_GetPageWidth_x64(FPDF_PAGE page);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageWidth/*'/>
-		public static double FPDF_GetPageWidth(FPDF_PAGE page)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_GetPageWidth_x64(page);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_GetPageWidth_x86(page);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_GetPageHeight
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageHeight")]
-			internal static extern double FPDF_GetPageHeight_x86(FPDF_PAGE page);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageHeight")]
-			internal static extern double FPDF_GetPageHeight_x64(FPDF_PAGE page);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageHeight/*'/>
-		public static double FPDF_GetPageHeight(FPDF_PAGE page)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_GetPageHeight_x64(page);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_GetPageHeight_x86(page);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_GetPageSizeByIndex
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageSizeByIndex")]
-			internal static extern bool FPDF_GetPageSizeByIndex_x86(FPDF_DOCUMENT document, int page_index, out double width, out double height);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_GetPageSizeByIndex")]
-			internal static extern bool FPDF_GetPageSizeByIndex_x64(FPDF_DOCUMENT document, int page_index, out double width, out double height);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_GetPageSizeByIndex/*'/>
-		public static bool FPDF_GetPageSizeByIndex(FPDF_DOCUMENT document, int page_index, out double width, out double height)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.FPDF_GetPageSizeByIndex_x64(document, page_index, out width, out height);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.FPDF_GetPageSizeByIndex_x86(document, page_index, out width, out height);
-			else
-				throw new PlatformNotSupportedException();
-		}
-
-		#endregion
-
-		#region FPDF_RenderPageBitmap
-
-		static partial class PlatformInvoke
-		{
-			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_RenderPageBitmap")]
-		
-			internal static extern void FPDF_RenderPageBitmap_x86(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None);
-
-			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_RenderPageBitmap")]
-		
-			internal static extern void FPDF_RenderPageBitmap_x64(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None);
-		}
-
-		/// <include file='PDFium.xml' path='Documentation/FPDF_RenderPageBitmap/*'/>
-		public static void FPDF_RenderPageBitmap(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
-		{
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				PlatformInvoke.FPDF_RenderPageBitmap_x64(bitmap, page, start_x, start_y, size_x, size_y, rotate, flags);
-			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				PlatformInvoke.FPDF_RenderPageBitmap_x86(bitmap, page, start_x, start_y, size_x, size_y, rotate, flags);
+				PlatformInvoke.FPDFPage_SetRotation_x86(page, rotation);
 			else
 				throw new PlatformNotSupportedException();
 		}
@@ -641,6 +1049,30 @@ namespace PDFiumSharp
 				return PlatformInvoke.FPDF_ImportPages_x64(dest_doc, src_doc, pagerange, index);
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
 				return PlatformInvoke.FPDF_ImportPages_x86(dest_doc, src_doc, pagerange, index);
+			else
+				throw new PlatformNotSupportedException();
+		}
+
+		#endregion
+
+		#region FPDF_CopyViewerPreferences
+
+		static partial class PlatformInvoke
+		{
+			[DllImport("pdfium_x86", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CopyViewerPreferences")]
+			internal static extern bool FPDF_CopyViewerPreferences_x86(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc);
+
+			[DllImport("pdfium_x64", CallingConvention = CallingConvention.StdCall, EntryPoint = "FPDF_CopyViewerPreferences")]
+			internal static extern bool FPDF_CopyViewerPreferences_x64(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc);
+		}
+
+		/// <include file='PDFium.xml' path='Documentation/FPDF_CopyViewerPreferences/*'/>
+		public static bool FPDF_CopyViewerPreferences(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc)
+		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				return PlatformInvoke.FPDF_CopyViewerPreferences_x64(dest_doc, src_doc);
+			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+				return PlatformInvoke.FPDF_CopyViewerPreferences_x86(dest_doc, src_doc);
 			else
 				throw new PlatformNotSupportedException();
 		}

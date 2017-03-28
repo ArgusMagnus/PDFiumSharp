@@ -10,7 +10,7 @@ namespace PDFiumSharp
     {
 		FPDF_PAGE _ptr;
 
-		internal FPDF_PAGE Pointer
+		public FPDF_PAGE Pointer
 		{
 			get
 			{
@@ -22,9 +22,16 @@ namespace PDFiumSharp
 
 		public double Width => PDFium.FPDF_GetPageWidth(Pointer);
 		public double Height => PDFium.FPDF_GetPageHeight(Pointer);
+		public PageRotations Rotation
+		{
+			get => PDFium.FPDFPage_GetRotation(Pointer);
+			set => PDFium.FPDFPage_SetRotation(Pointer, value);
+		}
 
 		PdfPage(FPDF_PAGE page)
 		{
+			if (page.IsNull)
+				throw new PDFiumException();
 			_ptr = page;
 		}
 
@@ -40,20 +47,20 @@ namespace PDFiumSharp
 			}
 		}
 
-		public void Render(Bitmap bitmap, int x, int y, int width, int height, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public void Render(Bitmap bitmap, int x, int y, int width, int height, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
 
-			PDFium.FPDF_RenderPageBitmap(bitmap.Pointer, this.Pointer, x, y, width, height, rotate, flags);
+			PDFium.FPDF_RenderPageBitmap(bitmap.Pointer, this.Pointer, x, y, width, height, rotation, flags);
 		}
 
-		public void Render(Bitmap bitmap, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public void Render(Bitmap bitmap, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			Render(bitmap, 0, 0, bitmap.Width, bitmap.Height, rotate, flags);
+			Render(bitmap, 0, 0, bitmap.Width, bitmap.Height, rotation, flags);
 		}
 
-		public void Render(byte[] pixelBuffer, int x, int y, int width, int height, BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, int stride = 0, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public void Render(byte[] pixelBuffer, int x, int y, int width, int height, BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, int stride = 0, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (pixelBuffer == null)
 				throw new ArgumentNullException(nameof(pixelBuffer));
@@ -69,26 +76,26 @@ namespace PDFiumSharp
 			using (var pin = PinnedGCHandle.Pin(pixelBuffer))
 			using (var bitmap = new Bitmap(width, height, format, pin.Pointer, stride))
 			{
-				PDFium.FPDF_RenderPageBitmap(bitmap.Pointer, this.Pointer, x, y, width, height, rotate, flags);
+				PDFium.FPDF_RenderPageBitmap(bitmap.Pointer, this.Pointer, x, y, width, height, rotation, flags);
 			}
 		}
 
-		public byte[] Render(int x, int y, int width, int height, BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public byte[] Render(int x, int y, int width, int height, BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			int bytesPerPixel = GetBytesPerPixel(format);
 			byte[] pixelBuffer = new byte[width * height * bytesPerPixel];
-			Render(pixelBuffer, x, y, width, height, format, 0, rotate, flags);
+			Render(pixelBuffer, x, y, width, height, format, 0, rotation, flags);
 			return pixelBuffer;
 		}
 
-		public void Render(byte[] pixelBuffer, BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, int stride = 0, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public void Render(byte[] pixelBuffer, BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, int stride = 0, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			Render(pixelBuffer, 0, 0, (int)Math.Round(Width), (int)Math.Round(Height), format, stride, rotate, flags);
+			Render(pixelBuffer, 0, 0, (int)Math.Round(Width), (int)Math.Round(Height), format, stride, rotation, flags);
 		}
 
-		public byte[] Render(BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, int stride = 0, RotateOptions rotate = RotateOptions.DontRotate, RenderingFlags flags = RenderingFlags.None)
+		public byte[] Render(BitmapFormats format = BitmapFormats.FPDFBitmap_BGRA, int stride = 0, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			return Render(0, 0, (int)Math.Round(Width), (int)Math.Round(Height), format, rotate, flags);
+			return Render(0, 0, (int)Math.Round(Width), (int)Math.Round(Height), format, rotation, flags);
 		}
 
 		static int GetBytesPerPixel(BitmapFormats format)

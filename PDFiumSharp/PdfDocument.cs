@@ -11,7 +11,7 @@ namespace PDFiumSharp
     {
 		FPDF_DOCUMENT _ptr = FPDF_DOCUMENT.Null;
 
-		internal FPDF_DOCUMENT Pointer
+		public FPDF_DOCUMENT Pointer
 		{
 			get
 			{
@@ -22,9 +22,12 @@ namespace PDFiumSharp
 		}
 
 		public PdfPageCollection Pages { get; }
+		public int FileVersion { get { PDFium.FPDF_GetFileVersion(Pointer, out int fileVersion); return fileVersion; } }
 
 		PdfDocument(FPDF_DOCUMENT doc)
 		{
+			if (doc.IsNull)
+				throw new PDFiumException();
 			_ptr = doc;
 			Pages = new PdfPageCollection(this);
 		}

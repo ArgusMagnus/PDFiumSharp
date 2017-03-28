@@ -10,7 +10,7 @@ namespace PDFiumSharp
 		FPDF_BITMAP _ptr;
 		readonly BitmapFormats _format;
 
-		internal FPDF_BITMAP Pointer
+		public FPDF_BITMAP Pointer
 		{
 			get
 			{
@@ -27,6 +27,8 @@ namespace PDFiumSharp
 
 		Bitmap(FPDF_BITMAP bitmap, BitmapFormats format)
 		{
+			if (bitmap.IsNull)
+				throw new PDFiumException();
 			_ptr = bitmap;
 			_format = format;
 		}
