@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Documentation>
+	<FPDFBitmap_Create>
+		<summary>Create a device independent bitmap (FXDIB).</summary>
+		<param name="width">The number of pixels in width for the bitmap. Must be greater than 0. </param>
+		<param name="height">The number of pixels in height for the bitmap. Must be greater than 0.</param>
+		<param name="hasAlpha">A value indicating whether the alpha channel is used.</param>
+		<returns>The bitmap handle, or <see cref="IntPtr.Zero"/> if parameter error or out of memory.</returns>
+		<remarks>
+			The bitmap always uses 4 bytes per pixel. The first byte is always
+			double word aligned.
+			
+			The byte order is BGRx (the last byte unused if no alpha channel) or BGRA.
+			
+			The pixels in a horizontal line are stored side by side, with the
+			left most pixel stored first (with lower memory address).
+			Each line uses width * 4 bytes.
+			
+			Lines are stored one after another, with the top most line stored
+			first. There is no gap between adjacent lines.
+			
+			This function allocates enough memory for holding all pixels in the
+			bitmap, but it doesn't initialize the buffer. Applications can use
+			<see cref="FPDFBitmap_FillRect"/> to fill the bitmap using any color.
+		</remarks>
+	</FPDFBitmap_Create>
+
+	<FPDFBitmap_CreateEx>
+		<summary>Create a device independent bitmap (FXDIB).</summary>
+		<param name="width">The number of pixels in width for the bitmap. Must be greater than 0. </param>
+		<param name="height">The number of pixels in height for the bitmap. Must be greater than 0.</param>
+		<param name="first_scan">
+			A pointer to the first byte of the first line if
+			using an external buffer. If this parameter is <see cref="IntPtr.Zero"/>
+			then the a new buffer will be created.
+		</param>
+		<param name="stride">Number of bytes for each scan line, for external buffer only.</param>
+		<returns>The bitmap handle, or <see cref="IntPtr.Zero"/> if parameter error or out of memory.</returns>
+		<remarks>
+			Similar to <see cref="FPDFBitmap_Create"/> function, but allows for more formats
+			and an external buffer is supported. The bitmap created by this
+			function can be used in any place that a handle is required.
+			
+			If an external buffer is used, then the application should destroy
+			the buffer by itself. <see cref="FPDFBitmap_Destroy"/> function will not destroy
+			the buffer.
+		</remarks>
+	</FPDFBitmap_CreateEx>
+
+	<FPDFBitmap_GetBuffer>
+		<summary>Get data buffer of a bitmap.</summary>
+		<param name="bitmap">Handle to the bitmap as returned by <see cref="FPDFBitmap_Create"/>.</param>
+		<returns>The pointer to the first byte of the bitmap buffer.</returns>
+		<remarks>
+			The stride may be more than width * number of bytes per pixel
+			
+			Applications can use this function to get the bitmap buffer pointer,
+			then manipulate any color and/or alpha values for any pixels in the bitmap.
+			
+			The data is in BGRA format. Where the A maybe unused if alpha was
+			not specified.
+		</remarks>
+	</FPDFBitmap_GetBuffer>
+
+	<FPDFBitmap_GetWidth>
+		<summary>Get width of a bitmap.</summary>
+		<param name="bitmap">Handle to the bitmap as returned by <see cref="FPDFBitmap_Create"/>.</param>
+		<returns>The width of the bitmap in pixels.</returns>
+	</FPDFBitmap_GetWidth>
+
+	<FPDFBitmap_GetHeight>
+		<summary>Get height of a bitmap.</summary>
+		<param name="bitmap">Handle to the bitmap as returned by <see cref="FPDFBitmap_Create"/>.</param>
+		<returns>The height of the bitmap in pixels.</returns>
+	</FPDFBitmap_GetHeight>
+
+	<FPDFBitmap_GetStride>
+		<summary>Get number of bytes for each line in the bitmap buffer.</summary>
+		<param name="bitmap">Handle to the bitmap as returned by <see cref="FPDFBitmap_Create"/>.</param>
+		<returns>The number of bytes for each line in the bitmap buffer.</returns>
+		<remarks>The stride may be more than width * number of bytes per pixel.</remarks>
+	</FPDFBitmap_GetStride>
+
+	<FPDFBitmap_Destroy>
+		<summary>Destroy a bitmap and release all related buffers.</summary>
+		<param name="bitmap">Handle to the bitmap as returned by <see cref="FPDFBitmap_Create"/>.</param>
+		<remarks>
+			This function will not destroy any external buffers provided when
+			the bitmap was created.
+		</remarks>
+	</FPDFBitmap_Destroy>
+</Documentation>

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp", "PDFiumSharp\PDFiumSharp.csproj", "{782D0C5A-2A13-480C-AF88-6DADC726566E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Test", "PDFiumSharp.Test\PDFiumSharp.Test.csproj", "{7F64703A-19A8-4D52-8228-E6788A5D2E3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.GdiPlus", "PDFiumSharp.GdiPlus\PDFiumSharp.GdiPlus.csproj", "{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Xwt", "PDFiumSharp.Xwt\PDFiumSharp.Xwt.csproj", "{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{782D0C5A-2A13-480C-AF88-6DADC726566E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{782D0C5A-2A13-480C-AF88-6DADC726566E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{782D0C5A-2A13-480C-AF88-6DADC726566E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{782D0C5A-2A13-480C-AF88-6DADC726566E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F64703A-19A8-4D52-8228-E6788A5D2E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F64703A-19A8-4D52-8228-E6788A5D2E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F64703A-19A8-4D52-8228-E6788A5D2E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F64703A-19A8-4D52-8228-E6788A5D2E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
