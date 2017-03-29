@@ -18,7 +18,10 @@ namespace PDFiumSharp
     {
 		FPDF_DOCUMENT _ptr = FPDF_DOCUMENT.Null;
 
-		public FPDF_DOCUMENT Pointer
+		/// <summary>
+		/// Handle which can be used with the native <see cref="PDFium"/> functions.
+		/// </summary>
+		public FPDF_DOCUMENT Handle
 		{
 			get
 			{
@@ -28,8 +31,20 @@ namespace PDFiumSharp
 			}
 		}
 
+		/// <summary>
+		/// Gets the pages in the current <see cref="PdfDocument"/>.
+		/// </summary>
 		public PdfPageCollection Pages { get; }
-		public int FileVersion { get { PDFium.FPDF_GetFileVersion(Pointer, out int fileVersion); return fileVersion; } }
+
+		/// <summary>
+		/// Gets a value indicating whether the <see cref="PdfDocument"/> was already closed.
+		/// </summary>
+		public bool IsDisposed => _ptr.IsNull;
+
+		/// <summary>
+		/// Gets the PDF file version. File version: 14 for 1.4, 15 for 1.5, ...
+		/// </summary>
+		public int FileVersion { get { PDFium.FPDF_GetFileVersion(Handle, out int fileVersion); return fileVersion; } }
 
 		PdfDocument(FPDF_DOCUMENT doc)
 		{
@@ -39,18 +54,42 @@ namespace PDFiumSharp
 			Pages = new PdfPageCollection(this);
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="PdfDocument"/>.
+		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// </summary>
 		public PdfDocument()
 			: this(PDFium.FPDF_CreateNewDocument()) { }
 
+		/// <summary>
+		/// Loads a <see cref="PdfDocument"/> from the file system.
+		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// </summary>
+		/// <param name="fileName">Filepath of the PDF file to load.</param>
 		public PdfDocument(string fileName, string password = null)
 			: this(PDFium.FPDF_LoadDocument(fileName, password)) { }
 
+		/// <summary>
+		/// Loads a <see cref="PdfDocument"/> from memory.
+		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// </summary>
+		/// <param name="data">Byte array containing the bytes of the PDF document to load.</param>
 		public PdfDocument(byte[] data, string password = null)
 			: this(PDFium.FPDF_LoadDocument(data, password)) { }
 
+		/// <summary>
+		/// Loads a <see cref="PdfDocument"/> from '<paramref name="length"/>' bytes read from a <paramref name="stream"/>.
+		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// </summary>
 		public PdfDocument(Stream stream, int length, string password = null)
 			: this(PDFium.FPDF_LoadDocument(stream, length, password)) { }
 
+		/// <summary>
+		/// Loads a <see cref="PdfDocument"/> from a <paramref name="stream"/>.
+		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <param name="password"></param>
 		public PdfDocument(Stream stream, string password = null)
 			: this(PDFium.FPDF_LoadDocument(stream, password)) { }
 
@@ -66,11 +105,25 @@ namespace PDFiumSharp
 
 		void IDisposable.Dispose() => Close();
 
+		/// <summary>
+		/// Saves the <see cref="PdfDocument"/> to a <paramref name="stream"/>.
+		/// </summary>
+		/// <param name="version">
+		/// The new PDF file version of the saved file.
+		/// 14 for 1.4, 15 for 1.5, etc. Values smaller than 10 are ignored.
+		/// </param>
 		public bool Save(Stream stream, SaveFlags flags = SaveFlags.None, int version = 0)
 		{
-			return PDFium.FPDF_SaveAsCopy(Pointer, stream, flags, version);
+			return PDFium.FPDF_SaveAsCopy(Handle, stream, flags, version);
 		}
 
+		/// <summary>
+		/// Saves the <see cref="PdfDocument"/> to the file system.
+		/// </summary>
+		/// <param name="version">
+		/// The new PDF file version of the saved file.
+		/// 14 for 1.4, 15 for 1.5, etc. Values smaller than 10 are ignored.
+		/// </param>
 		public bool Save(string filename, SaveFlags flags = SaveFlags.None, int version = 0)
 		{
 			using (var stream = new FileStream(filename, FileMode.Create))

@@ -10,32 +10,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace PDFiumSharp
 {
 	public static class RenderingExtensions
 	{
-		public static void Render(this PdfPage page, System.Drawing.Bitmap bitmap, int x, int y, int width, int height, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, Bitmap bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
 
 			var format = GetBitmapFormat(bitmap);
 			var data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
-			using (var tmp = new Bitmap(bitmap.Width, bitmap.Height, format, data.Scan0, data.Stride))
-				page.Render(tmp, x, y, width, height, rotation, flags);
+			using (var tmp = new PDFiumBitmap(bitmap.Width, bitmap.Height, format, data.Scan0, data.Stride))
+				page.Render(tmp, rectDest, rotation, flags);
 			bitmap.UnlockBits(data);
 		}
 
-		public static void Render(this PdfPage page, System.Drawing.Bitmap bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, Bitmap bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(bitmap, 0, 0, bitmap.Width, bitmap.Height, rotation, flags);
-		}
-
-		public static void Render(this PdfPage page, out System.Drawing.Bitmap bitmap, RenderingFlags flags = RenderingFlags.None)
-		{
-			bitmap = new System.Drawing.Bitmap((int)Math.Round(page.Width), (int)Math.Round(page.Height));
-			page.Render(bitmap, PageOrientations.Normal, flags);
+			page.Render(bitmap, (0, 0, bitmap.Width, bitmap.Height), rotation, flags);
 		}
 
 		static BitmapFormats GetBitmapFormat(System.Drawing.Bitmap bitmap)

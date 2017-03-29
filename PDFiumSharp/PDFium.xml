@@ -311,13 +311,59 @@
 			the bitmap was created.
 		</remarks>
 	</FPDFBitmap_Destroy>
-	
-	
-	
-	
-	
-	
 
+	<FPDF_VIEWERREF_GetPrintScaling>
+		<summary>Whether the PDF document prefers to be scaled or not.</summary>
+		<param name="document">Handle to the loaded document.</param>
+	</FPDF_VIEWERREF_GetPrintScaling>
+
+	<FPDF_VIEWERREF_GetNumCopies>
+		<summary>Returns the number of copies to be printed.</summary>
+		<param name="document">Handle to the loaded document.</param>
+		<returns>The number of copies to be printed.</returns>
+	</FPDF_VIEWERREF_GetNumCopies>
+
+	<FPDF_VIEWERREF_GetPrintPageRange>
+		<summary>Page numbers to initialize print dialog box when file is printed.</summary>
+		<param name="document">Handle to the loaded document.</param>
+		<returns>The print page range to be used for printing.</returns>
+	</FPDF_VIEWERREF_GetPrintPageRange>
+
+	<FPDF_VIEWERREF_GetDuplex>
+		<summary>Returns the paper handling option to be used when printing from the print dialog.</summary>
+		<param name="document">Handle to the loaded document.</param>
+		<returns>The paper handling option to be used when printing.</returns>
+	</FPDF_VIEWERREF_GetDuplex>
+
+	<FPDF_VIEWERREF_GetName>
+		<summary>Gets the contents for a viewer ref, with a given key. The value must be of type "name".</summary>
+		<param name="document">Handle to the loaded document.</param>
+		<param name="key">Name of the key in the viewer pref dictionary.</param>
+		<param name="buffer">A string to write the contents of the key to.</param>
+		<param name="length">Length of the buffer.</param>
+		<returns>
+			The number of bytes in the contents, including the NULL terminator.
+			Thus if the return value is 0, then that indicates an error, such
+			as when |document| is invalid or |buffer| is NULL. If |length| is
+			less than the returned length, or |buffer| is NULL, |buffer| will
+			not be modified.
+		</returns>
+	</FPDF_VIEWERREF_GetName>
+
+	<FPDF_CountNamedDests>
+		<summary>Get the count of named destinations in the PDF document.</summary>
+		<param name="document">Handle to the loaded document.</param>
+		<returns>The count of named destinations.</returns>
+	</FPDF_CountNamedDests>
+
+	<FPDF_GetNamedDestByName>
+		<summary>Get a the destination handle for the given name.</summary>
+		<param name="document">Handle to the loaded document.</param>
+		<param name="name">The name of a destination.</param>
+		<returns>The handle to the destination.</returns>
+	</FPDF_GetNamedDestByName>
+	
+	<!-- https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_edit.h -->
 	<FPDF_CreateNewDocument>
 		<summary>Create a new PDF document.</summary>
 		<returns>Returns a handle to a new document, or NULL on failure.</returns>

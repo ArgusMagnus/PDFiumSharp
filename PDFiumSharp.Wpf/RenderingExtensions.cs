@@ -11,46 +11,40 @@ namespace PDFiumSharp
 {
 	public static class RenderingExtensions
 	{
-		public static void Render(this PdfPage page, WriteableBitmap bitmap, int x, int y, int width, int height, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, WriteableBitmap bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
 
-			if (x >= bitmap.PixelWidth || y >= bitmap.PixelHeight)
+			if (rectDest.left >= bitmap.PixelWidth || rectDest.top >= bitmap.PixelHeight)
 				return;
 
 			var bitmapFormat = GetBitmapFormat(bitmap.Format);
 			bitmap.Lock();
-			using (var tmpBitmap = new Bitmap(bitmap.PixelWidth, bitmap.PixelHeight, bitmapFormat, bitmap.BackBuffer, bitmap.BackBufferStride))
+			using (var tmpBitmap = new PDFiumBitmap(bitmap.PixelWidth, bitmap.PixelHeight, bitmapFormat, bitmap.BackBuffer, bitmap.BackBufferStride))
 			{
-				page.Render(tmpBitmap, x, y, width, height, rotation, flags);
+				page.Render(tmpBitmap, rectDest, rotation, flags);
 			}
 
-			if (x < 0)
+			if (rectDest.left < 0)
 			{
-				width += x;
-				x = 0;
+				rectDest.width += rectDest.left;
+				rectDest.left = 0;
 			}
-			if (y < 0)
+			if (rectDest.top < 0)
 			{
-				height += y;
-				y = 0;
+				rectDest.height += rectDest.top;
+				rectDest.top = 0;
 			}
-			width = Math.Min(width, bitmap.PixelWidth);
-			height = Math.Min(height, bitmap.PixelHeight);
-			bitmap.AddDirtyRect(new Int32Rect(x, y, width, height));
+			rectDest.width = Math.Min(rectDest.width, bitmap.PixelWidth);
+			rectDest.height = Math.Min(rectDest.height, bitmap.PixelHeight);
+			bitmap.AddDirtyRect(new Int32Rect(rectDest.left, rectDest.top, rectDest.width, rectDest.height));
 			bitmap.Unlock();
 		}
 
 		public static void Render(this PdfPage page, WriteableBitmap bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(bitmap, 0, 0, bitmap.PixelWidth, bitmap.PixelHeight, rotation, flags);
-		}
-
-		public static void Render(this PdfPage page, out WriteableBitmap bitmap, RenderingFlags flags = RenderingFlags.None)
-		{
-			bitmap = new WriteableBitmap((int)page.Width, (int)page.Height, 72, 72, PixelFormats.Bgra32, null);
-			page.Render(bitmap, PageOrientations.Normal, flags);
+			page.Render(bitmap, (0, 0, bitmap.PixelWidth, bitmap.PixelHeight), rotation, flags);
 		}
 
 		static BitmapFormats GetBitmapFormat(PixelFormat pixelFormat)
