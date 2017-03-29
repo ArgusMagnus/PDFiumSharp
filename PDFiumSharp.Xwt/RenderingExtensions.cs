@@ -23,18 +23,17 @@ namespace PDFiumSharp
 				throw new ArgumentNullException(nameof(bitmap));
 
 			byte[] pixelBuffer = page.Render(x, y, width, height, BitmapFormats.FPDFBitmap_BGRA, rotation, flags);
-			width += x;
-			height += y;
+
 			int i = 0;
-			for (x = Math.Max(0, x); x < width; x++)
+			for (int by = Math.Max(0, y); by < height + y; by++)
 			{
-				for (y = Math.Max(0, y); y < height; y++)
+				for (int bx = Math.Max(0, x); bx < width + x; bx++)
 				{
 					byte b = pixelBuffer[i++];
 					byte g = pixelBuffer[i++];
 					byte r = pixelBuffer[i++];
 					byte a = pixelBuffer[i++];
-					bitmap.SetPixel(x, y, Color.FromBytes(r, g, b, a));
+					bitmap.SetPixel(bx, by, Color.FromBytes(r, g, b, a));
 				}
 			}
 		}
