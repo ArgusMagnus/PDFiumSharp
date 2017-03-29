@@ -17,7 +17,7 @@ namespace PDFiumSharp
 {
     public static class RenderingExtensions
     {
-		public static void Render(this PdfPage page, BitmapImage bitmap, int x, int y, int width, int height, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, BitmapImage bitmap, int x, int y, int width, int height, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
@@ -39,7 +39,7 @@ namespace PDFiumSharp
 			}
 		}
 
-		public static void Render(this PdfPage page, BitmapImage bitmap, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, BitmapImage bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			page.Render(bitmap, 0, 0, (int)bitmap.Width, (int)bitmap.Height, rotation, flags);
 		}
@@ -48,7 +48,7 @@ namespace PDFiumSharp
 		{
 			ImageBuilder imageBuilder = new ImageBuilder(Math.Round(page.Width), Math.Round(page.Height));
 			bitmap = imageBuilder.ToBitmap(ImageFormat.ARGB32);
-			page.Render(bitmap, PageRotations.Normal, flags);
+			page.Render(bitmap, PageOrientations.Normal, flags);
 		}
 	}
 }

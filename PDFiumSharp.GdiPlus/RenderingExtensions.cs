@@ -15,7 +15,7 @@ namespace PDFiumSharp
 {
 	public static class RenderingExtensions
 	{
-		public static void Render(this PdfPage page, System.Drawing.Bitmap bitmap, int x, int y, int width, int height, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, System.Drawing.Bitmap bitmap, int x, int y, int width, int height, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
@@ -27,7 +27,7 @@ namespace PDFiumSharp
 			bitmap.UnlockBits(data);
 		}
 
-		public static void Render(this PdfPage page, System.Drawing.Bitmap bitmap, PageRotations rotation = PageRotations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, System.Drawing.Bitmap bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			page.Render(bitmap, 0, 0, bitmap.Width, bitmap.Height, rotation, flags);
 		}
@@ -35,7 +35,7 @@ namespace PDFiumSharp
 		public static void Render(this PdfPage page, out System.Drawing.Bitmap bitmap, RenderingFlags flags = RenderingFlags.None)
 		{
 			bitmap = new System.Drawing.Bitmap((int)Math.Round(page.Width), (int)Math.Round(page.Height));
-			page.Render(bitmap, PageRotations.Normal, flags);
+			page.Render(bitmap, PageOrientations.Normal, flags);
 		}
 
 		static BitmapFormats GetBitmapFormat(System.Drawing.Bitmap bitmap)

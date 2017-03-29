@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PDFiumSharp
 {
-    public enum PageRotations : int
+    public enum PageOrientations : int
     {
 		Normal = 0,
 		Rotated90CW = 1,
