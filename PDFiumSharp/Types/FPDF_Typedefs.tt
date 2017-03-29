@@ -50,14 +50,18 @@ namespace PDFiumSharp.Types
 foreach (string name in Names)
 {
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
+	/// <summary>Handle to a <#=name#></summary>
 	[StructLayout(LayoutKind.Sequential)]
     public struct <#=name#>
 	{
 		readonly IntPtr _ptr;
 
+		/// <summary>Gets a value indicating whether the handle is <c>null</c>.</summary>
 		public bool IsNull => _ptr == IntPtr.Zero;
+
 		public override string ToString() => "<#=name#>: 0x" + _ptr.ToString("X16");
 
+		/// <summary>Gets a handle representing <c>null</c>.</summary>
 		public static <#=name#> Null => new <#=name#>();
 	}
 

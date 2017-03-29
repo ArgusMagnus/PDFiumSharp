@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<topic id="22f0402f-2098-4a85-adca-df6d654e554f" revisionNumber="1">
+<topic id="VersionHistory" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>
@@ -15,20 +15,15 @@
 
 				<list class="bullet">
 					<listItem>
-						<para><link xlink:href="069aab85-5363-4ab1-954e-55f3953a5e98" /></para>
+						<para><link xlink:href="Version100" /></para>
 					</listItem>
-
-					<listItem>
-						<para>[TODO: Add links to each specific version page]</para>
-					</listItem>
-
 				</list>
 
 			</content>
 		</section>
 
 		<relatedTopics>
-			<link xlink:href="d8a59a83-b0a3-4aea-a5dc-370e438d7144" />
+			<link xlink:href="Welcome" />
 		</relatedTopics>
 
 	</developerConceptualDocument>

@@ -1,11 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<topic id="d8a59a83-b0a3-4aea-a5dc-370e438d7144" revisionNumber="1">
+<topic id="Home" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<!--<introduction>
-			<para>This is a sample conceptual topic.  You can use this as a starting point for adding more conceptual
-content to your help project.</para>
+		<introduction>
+			<para>
+				The PDFiumSharp library is a C#/.NET wrapper around the
+				<externalLink>
+					<linkText>PDFium</linkText>
+					<linkUri>https://pdfium.googlesource.com/pdfium/</linkUri>
+				</externalLink> library.
+				It enables .NET developers to create, open, manipulate, render and save PDF documents.
+			</para>
 		</introduction>
 
+		<section>
+			<title>Getting Started</title>
+			<content>
+				<para>
+					The easiest way to get going is to reference the NuGet packages. There are four NuGet packages available:
+					<list class="bullet">
+						<listItem>
+							<externalLink>
+								<linkText>PDFiumSharp</linkText>
+								<linkUri>https://www.nuget.org/packages/PDFiumSharp/</linkUri>
+							</externalLink>
+							contains the core package. With this you can create, open, manipulate, render and save PDF documents.
+							<codeEntityReference>T:PDFiumSharp.PdfPage</codeEntityReference>s can be rendered to
+							<codeEntityReference>T:PDFiumSharp.PDFiumBitmap</codeEntityReference>s (which are simply memory buffers).
+						</listItem>
+						<listItem>
+							<externalLink>
+								<linkText>PDFiumSharp.GdiPlus</linkText>
+								<linkUri>https://www.nuget.org/packages/PDFiumSharp.GdiPlus/</linkUri>
+							</externalLink>
+							extends the <codeEntityReference>T:PDFiumSharp.PdfPage</codeEntityReference> class with extension methods
+							to render to <codeEntityReference>T:System.Drawing.Bitmap</codeEntityReference>s.
+						</listItem>
+						<listItem>
+							<externalLink>
+								<linkText>PDFiumSharp.Wpf</linkText>
+								<linkUri>https://www.nuget.org/packages/PDFiumSharp.Wpf/</linkUri>
+							</externalLink>
+							extends the <codeEntityReference>T:PDFiumSharp.PdfPage</codeEntityReference> class with extension methods
+							to render to <codeEntityReference>T:System.Windows.Media.Imaging.WriteableBitmap</codeEntityReference>s.
+						</listItem>
+						<listItem>
+							<externalLink>
+								<linkText>PDFiumSharp.Xwt</linkText>
+								<linkUri>https://www.nuget.org/packages/PDFiumSharp.Xwt/</linkUri>
+							</externalLink>
+							extends the <codeEntityReference>T:PDFiumSharp.PdfPage</codeEntityReference> class with extension methods
+							to render to <codeEntityReference qualifyHint="true">T:Xwt.Drawing.BitmapImage</codeEntityReference>s.
+						</listItem>
+					</list>
+				</para>
+				<para>
+					To create or load a PDF document, use one of the <codeEntityReference>T:PDFiumSharp.PdfDocument</codeEntityReference>'s
+					constructors.
+				</para>
+			</content>
+		</section>
+
+		<!--
 		<section>
 			<title>Getting Started</title>
 			<content>
