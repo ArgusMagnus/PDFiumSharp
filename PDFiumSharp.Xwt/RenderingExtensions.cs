@@ -40,7 +40,7 @@ namespace PDFiumSharp
 
 		public static void Render(this PdfPage page, BitmapImage bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(bitmap, 0, 0, (int)bitmap.Width, (int)bitmap.Height, rotation, flags);
+			page.Render(bitmap, 0, 0, (int)bitmap.PixelWidth, (int)bitmap.PixelHeight, rotation, flags);
 		}
 
 		public static void Render(this PdfPage page, out BitmapImage bitmap, RenderingFlags flags = RenderingFlags.None)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.GdiPlus", "PDFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Xwt", "PDFiumSharp.Xwt\PDFiumSharp.Xwt.csproj", "{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Wpf", "PDFiumSharp.Wpf\PDFiumSharp.Wpf.csproj", "{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
