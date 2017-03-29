@@ -16,12 +16,28 @@ namespace PDFiumSharp
 			if (bitmap == null)
 				throw new ArgumentNullException(nameof(bitmap));
 
+			if (x >= bitmap.PixelWidth || y >= bitmap.PixelHeight)
+				return;
+
 			var bitmapFormat = GetBitmapFormat(bitmap.Format);
 			bitmap.Lock();
 			using (var tmpBitmap = new Bitmap(bitmap.PixelWidth, bitmap.PixelHeight, bitmapFormat, bitmap.BackBuffer, bitmap.BackBufferStride))
 			{
 				page.Render(tmpBitmap, x, y, width, height, rotation, flags);
 			}
+
+			if (x < 0)
+			{
+				width += x;
+				x = 0;
+			}
+			if (y < 0)
+			{
+				height += y;
+				y = 0;
+			}
+			width = Math.Min(width, bitmap.PixelWidth);
+			height = Math.Min(height, bitmap.PixelHeight);
 			bitmap.AddDirtyRect(new Int32Rect(x, y, width, height));
 			bitmap.Unlock();
 		}
