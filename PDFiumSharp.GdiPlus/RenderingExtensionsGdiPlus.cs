@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace PDFiumSharp
 {
-	public static class RenderingExtensions
+	public static class RenderingExtensionsGdiPlus
 	{
 		public static void Render(this PdfPage page, Bitmap bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{

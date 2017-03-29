@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace PDFiumSharp
 {
-	public static class RenderingExtensions
+	public static class RenderingExtensionsWpf
 	{
 		public static void Render(this PdfPage page, WriteableBitmap bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{

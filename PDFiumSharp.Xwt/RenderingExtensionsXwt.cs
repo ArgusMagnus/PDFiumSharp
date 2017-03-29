@@ -15,7 +15,7 @@ using Xwt.Drawing;
 
 namespace PDFiumSharp
 {
-    public static class RenderingExtensions
+    public static class RenderingExtensionsXwt
     {
 		public static void Render(this PdfPage page, BitmapImage bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{

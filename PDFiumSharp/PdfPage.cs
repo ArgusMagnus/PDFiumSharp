@@ -48,10 +48,8 @@ namespace PDFiumSharp
 		public double Height => PDFium.FPDF_GetPageHeight(Handle);
 
 		/// <summary>
-		/// /// <summary>
 		/// Gets the page width and height (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
-		/// </summary>
 		/// </summary>
 		public (double Width, double Height) Size
 		{
