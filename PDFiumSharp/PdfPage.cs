@@ -94,7 +94,7 @@ namespace PDFiumSharp
 		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(doc, PDFium.FPDF_LoadPage(doc.Handle, index), index);
 		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, PDFium.FPDFPage_New(doc.Handle, index, width, height), index);
 
-		public void Dispose()
+		void IDisposable.Dispose()
 		{
 			if (!_ptr.IsNull)
 			{

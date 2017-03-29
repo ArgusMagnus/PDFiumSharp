@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PDFiumSharp.Test")]
+[assembly: AssemblyTitle("Test.Xwt")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PDFiumSharp.Test")]
+[assembly: AssemblyProduct("Test.Xwt")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7f64703a-19a8-4d52-8228-e6788a5d2e3d")]
+[assembly: Guid("75f6a0dd-a179-4e5a-800f-b0dd9182e534")]
 
 // Version information for an assembly consists of the following four values:
 //

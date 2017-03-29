@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7F64703A-19A8-4D52-8228-E6788A5D2E3D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>PDFiumSharp.Test</RootNamespace>
-    <AssemblyName>PDFiumSharp.Test</AssemblyName>
+    <ProjectGuid>{53FF1CA6-1F5F-4BAD-BBDA-D7A069ED358F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Test.GdiPlus</RootNamespace>
+    <AssemblyName>Test.GdiPlus</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -21,8 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,42 +34,78 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="..\TestDoc.pdf">
+      <Link>TestDoc.pdf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="TestDoc.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PDFiumSharp.GdiPlus\PDFiumSharp.GdiPlus.csproj">
+    <ProjectReference Include="..\..\PDFiumSharp.GdiPlus\PDFiumSharp.GdiPlus.csproj">
       <Project>{2d52feff-2445-4446-a4a0-65dcebd639aa}</Project>
       <Name>PDFiumSharp.GdiPlus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PDFiumSharp.Xwt\PDFiumSharp.Xwt.csproj">
-      <Project>{d4b5ea2e-e30a-46fb-9287-75b45e4369c0}</Project>
-      <Name>PDFiumSharp.Xwt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PDFiumSharp\PDFiumSharp.csproj">
+    <ProjectReference Include="..\..\PDFiumSharp\PDFiumSharp.csproj">
       <Project>{782d0c5a-2a13-480c-af88-6dadc726566e}</Project>
       <Name>PDFiumSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xwt">
-      <Version>0.2.5</Version>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.3.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Nuget\pdfium_x64.dll">
+      <Link>pdfium_x64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Nuget\pdfium_x86.dll">
+      <Link>pdfium_x86.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -51,9 +51,9 @@ namespace PDFiumSharp
 			}
 		}
 
-		public void Dispose()
+		void IDisposable.Dispose()
 		{
-			foreach (var page in _pages)
+			foreach (IDisposable page in _pages)
 				page?.Dispose();
 			_pages.Clear();
 		}
@@ -133,7 +133,7 @@ namespace PDFiumSharp
 		{
 			if (index < _pages.Count)
 			{
-				_pages[index]?.Dispose();
+				((IDisposable)_pages[index])?.Dispose();
 				_pages.RemoveAt(index);
 				for (int i = index; i < _pages.Count; i++)
 				{

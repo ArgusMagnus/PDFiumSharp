@@ -11,7 +11,7 @@
     <description>C#/.NET Wrapper for the PDFium library (native binaries are included).</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>C# PDF Renderer Rendering</tags>
+    <tags>C# PDF PDFium Renderer Rendering</tags>
     <dependencies>
       <group targetFramework=".NETStandard1.4">
         <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />

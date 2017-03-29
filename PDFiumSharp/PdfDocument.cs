@@ -56,14 +56,14 @@ namespace PDFiumSharp
 
 		/// <summary>
 		/// Creates a new <see cref="PdfDocument"/>.
-		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
 		public PdfDocument()
 			: this(PDFium.FPDF_CreateNewDocument()) { }
 
 		/// <summary>
 		/// Loads a <see cref="PdfDocument"/> from the file system.
-		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
 		/// <param name="fileName">Filepath of the PDF file to load.</param>
 		public PdfDocument(string fileName, string password = null)
@@ -71,7 +71,7 @@ namespace PDFiumSharp
 
 		/// <summary>
 		/// Loads a <see cref="PdfDocument"/> from memory.
-		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
 		/// <param name="data">Byte array containing the bytes of the PDF document to load.</param>
 		public PdfDocument(byte[] data, string password = null)
@@ -79,25 +79,26 @@ namespace PDFiumSharp
 
 		/// <summary>
 		/// Loads a <see cref="PdfDocument"/> from '<paramref name="length"/>' bytes read from a <paramref name="stream"/>.
-		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
 		public PdfDocument(Stream stream, int length, string password = null)
 			: this(PDFium.FPDF_LoadDocument(stream, length, password)) { }
 
 		/// <summary>
 		/// Loads a <see cref="PdfDocument"/> from a <paramref name="stream"/>.
-		/// Must be <see cref="Close"/>d to free unmanaged resources.
+		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
-		/// <param name="stream"></param>
-		/// <param name="password"></param>
 		public PdfDocument(Stream stream, string password = null)
 			: this(PDFium.FPDF_LoadDocument(stream, password)) { }
 
+		/// <summary>
+		/// Closes the <see cref="PdfDocument"/> and frees unmanaged resources.
+		/// </summary>
 		public void Close()
 		{
 			if (!_ptr.IsNull)
 			{
-				Pages.Dispose();
+				((IDisposable)Pages).Dispose();
 				PDFium.FPDF_CloseDocument(_ptr);
 				_ptr = FPDF_DOCUMENT.Null;
 			}

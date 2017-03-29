@@ -11,7 +11,7 @@
     <description>Mono XWT extensions for PDFiumSharp.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>C# PDF Renderer Rendering</tags>
+    <tags>C# PDF PDFium Renderer Rendering</tags>
     <dependencies>
 	  <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
 	  <dependency id="Xwt" version="0.2.5" />
