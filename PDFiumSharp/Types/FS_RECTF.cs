@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace PDFiumSharp.Types
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public class FS_RECTF
+	public struct FS_RECTF
     {
 		public float Left { get; }
 		public float Top { get; }

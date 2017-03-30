@@ -29,7 +29,7 @@ namespace Test.Wpf
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			using (var doc = new PdfDocument("TestDoc.pdf"))
+			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var page = doc.Pages[0];
 				WriteableBitmap bitmap = new WriteableBitmap((int)page.Width, (int)page.Height, 72, 72, PixelFormats.Bgra32, null);

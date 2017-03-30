@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace PDFiumSharp.Types
 {
 	[StructLayout(LayoutKind.Sequential)]
-    public class FS_MATRIX
+    public struct FS_MATRIX
     {
 		public float A { get; }
 		public float B { get; }

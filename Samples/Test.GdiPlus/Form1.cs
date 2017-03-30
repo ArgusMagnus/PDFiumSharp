@@ -22,7 +22,7 @@ namespace Test.GdiPlus
 		{
 			base.OnLoad(e);
 
-			using (var doc = new PdfDocument("TestDoc.pdf"))
+			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var page = doc.Pages[0];
 				Bitmap bitmap = new Bitmap((int)page.Width, (int)page.Height);

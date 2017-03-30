@@ -18,7 +18,7 @@ namespace Test.Xwt
 			Window window = new Window();
 			window.Closed += (sender, e) => Application.Exit();
 
-			using (var doc = new PdfDocument("TestDoc.pdf"))
+			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var page = doc.Pages[0];
 				BitmapImage bitmap = new ImageBuilder(page.Width, page.Height).ToBitmap();
