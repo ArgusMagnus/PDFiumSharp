@@ -82,22 +82,21 @@ namespace PDFiumSharp
 		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
 		/// <param name="data">Byte array containing the bytes of the PDF document to load.</param>
-		public PdfDocument(byte[] data, string password = null)
-			: this(PDFium.FPDF_LoadDocument(data, password)) { }
+		/// <param name="index">The index of the first byte to be copied from <paramref name="data"/>.</param>
+		/// <param name="count">The number of bytes to copy from <paramref name="data"/> or a negative value to copy all bytes.</param>
+		public PdfDocument(byte[] data, int index = 0, int count = -1, string password = null)
+			: this(PDFium.FPDF_LoadDocument(data, index, count, password)) { }
 
 		/// <summary>
-		/// Loads a <see cref="PdfDocument"/> from '<paramref name="length"/>' bytes read from a <paramref name="stream"/>.
+		/// Loads a <see cref="PdfDocument"/> from '<paramref name="count"/>' bytes read from a <paramref name="stream"/>.
 		/// <see cref="Close"/> must be called in order to free unmanaged resources.
 		/// </summary>
-		public PdfDocument(Stream stream, int length, string password = null)
-			: this(PDFium.FPDF_LoadDocument(stream, length, password)) { }
-
-		/// <summary>
-		/// Loads a <see cref="PdfDocument"/> from a <paramref name="stream"/>.
-		/// <see cref="Close"/> must be called in order to free unmanaged resources.
-		/// </summary>
-		public PdfDocument(Stream stream, string password = null)
-			: this(PDFium.FPDF_LoadDocument(stream, password)) { }
+		/// <param name="count">
+		/// The number of bytes to read from the <paramref name="stream"/>.
+		/// If the value is equal to or smaller than 0, the stream is read to the end.
+		/// </param>
+		public PdfDocument(Stream stream, int count = 0, string password = null)
+			: this(PDFium.FPDF_LoadDocument(stream, count, password)) { }
 
 		/// <summary>
 		/// Closes the <see cref="PdfDocument"/> and frees unmanaged resources.

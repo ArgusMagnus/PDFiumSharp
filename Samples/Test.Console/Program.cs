@@ -11,8 +11,7 @@ namespace TestConsole
 	{
 		static void Main(string[] args)
 		{
-			var data = System.IO.File.ReadAllBytes("TestDoc.pdf");
-			using (var doc = new PdfDocument(data, "password"))
+			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var tmp = PDFium.FPDF_GetMetaText(doc.Handle, MetadataTags.CreationDate);
 				Console.WriteLine(tmp);

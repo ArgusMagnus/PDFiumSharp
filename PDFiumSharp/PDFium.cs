@@ -75,36 +75,26 @@ namespace PDFiumSharp
 		/// <summary>
 		/// Loads a PDF document from memory.
 		/// </summary>
-		public static FPDF_DOCUMENT FPDF_LoadDocument(byte[] data, string password = null)
+		/// <param name="data">The data to load the document from.</param>
+		/// <param name="index">The index of the first byte to be copied from <paramref name="data"/>.</param>
+		/// <param name="count">The number of bytes to copy from <paramref name="data"/> or a negative value to copy all bytes.</param>
+		public static FPDF_DOCUMENT FPDF_LoadDocument(byte[] data, int index = 0, int count = -1, string password = null)
 		{
-			return FPDF_LoadMemDocument(ref data[0], data.Length, password);
+			if (count < 0)
+				count = data.Length - index;
+			return FPDF_LoadMemDocument(ref data[index], count, password);
 		}
 
 		/// <summary>
-		/// Loads a PDF document from a stream.
+		/// Loads a PDF document from '<paramref name="count"/>' bytes read from a stream.
 		/// </summary>
-		public static FPDF_DOCUMENT FPDF_LoadDocument(Stream stream, string password = null) => FPDF_LoadDocument(stream, (int)(stream.Length - stream.Position), password);
-
-		/// <summary>
-		/// Loads a PDF document from '<paramref name="length"/>' bytes read from a stream.
-		/// </summary>
-		public static FPDF_DOCUMENT FPDF_LoadDocument(Stream stream, int length, string password = null)
+		/// <param name="count">
+		/// The number of bytes to read from the <paramref name="stream"/>.
+		/// If the value is equal to or smaller than 0, the stream is read to the end.
+		/// </param>
+		public static FPDF_DOCUMENT FPDF_LoadDocument(Stream stream, int count = 0, string password = null)
 		{
-			if (length < 0)
-				throw new ArgumentOutOfRangeException(nameof(length));
-			var start = stream.Position;
-			byte[] data = null;
-			FPDF_FILEREAD fileRead = new FPDF_FILEREAD(length, (ignore, position, buffer, size) =>
-			{
-				stream.Position = start + position;
-				if (data == null || data.Length < size)
-					data = new byte[size];
-				if (stream.Read(data, 0, size) != size)
-					return false;
-				Marshal.Copy(data, 0, buffer, size);
-				return true;
-			});
-			return FPDF_LoadCustomDocument(fileRead, password);
+			return FPDF_LoadCustomDocument(FPDF_FILEREAD.FromStream(stream, count), password);
 		}
 
 		//public static string FPDF_VIEWERREF_GetName(FPDF_DOCUMENT document, string key)
@@ -230,6 +220,78 @@ namespace PDFiumSharp
 		public static string FPDF_GetPageLabel(FPDF_DOCUMENT document, int page_index)
 		{
 			return GetUtf16String((ref byte buffer, uint length) => FPDF_GetPageLabel(document, page_index, ref buffer, length));
+		}
+
+		#endregion
+
+		#region https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_edit.h
+
+		/// <summary>
+		/// Insert <paramref name="page_obj"/> into <paramref name="page"/>.
+		/// </summary>
+		/// <param name="page">Handle to a page.</param>
+		/// <param name="page_obj">Handle to a page object. The <paramref name="page_obj"/> will be automatically freed.</param>
+		public static void FPDFPage_InsertObject(FPDF_PAGE page, ref FPDF_PAGEOBJECT page_obj)
+		{
+			FPDFPage_InsertObject(page, page_obj);
+			page_obj = FPDF_PAGEOBJECT.Null;
+		}
+
+		/// <summary>
+		/// Load an image from a JPEG image file and then set it into <paramref name="image_object"/>.
+		/// </summary>
+		/// <param name="loadedPages">All loaded pages, may be <c>null</c>.</param>
+		/// <param name="image_object">Handle to an image object.</param>
+		/// <param name="stream">Stream which provides access to an JPEG image.</param>
+		/// <param name="count">The number of bytes to read from <paramref name="stream"/> or 0 to read to the end.</param>
+		/// <param name="inline">
+		/// If <c>true</c>, this function loads the JPEG image inline, so the image
+		/// content is copied to the file. This allows <paramref name="stream"/>
+		/// to be closed after this function returns.
+		/// </param>
+		/// <returns><c>true</c> on success.</returns>
+		/// <remarks>
+		/// The image object might already have an associated image, which is shared and
+		/// cached by the loaded pages. In that case, we need to clear the cached image
+		/// for all the loaded pages. Pass <paramref name="loadedPages"/> to this API
+		/// to clear the image cache. If the image is not previously shared, <c>null</c> is a
+		/// valid <paramref name="loadedPages"/> value.
+		/// </remarks>
+		public static bool FPDFImageObj_LoadJpegFile(FPDF_PAGE[] loadedPages, FPDF_PAGEOBJECT image_object, Stream stream, int count = 0, bool inline = true)
+		{
+			if (inline)
+				return FPDFImageObj_LoadJpegFileInline(ref loadedPages[0], loadedPages.Length, image_object, FPDF_FILEREAD.FromStream(stream, count));
+			else
+				return FPDFImageObj_LoadJpegFile(ref loadedPages[0], loadedPages.Length, image_object, FPDF_FILEREAD.FromStream(stream, count));
+		}
+
+		/// <summary>
+		/// Set <paramref name="bitmap"/> to <paramref name="image_object"/>.
+		/// </summary>
+		/// <param name="loadedPages">All loaded pages, may be <c>null</c>.</param>
+		/// <param name="image_object">Handle to an image object.</param>
+		/// <param name="bitmap">Handle of the bitmap.</param>
+		/// <returns><c>true</c> on success.</returns>
+		public static bool FPDFImageObj_SetBitmap(FPDF_PAGE[] loadedPages, FPDF_PAGEOBJECT image_object, FPDF_BITMAP bitmap)
+		{
+			return FPDFImageObj_SetBitmap(ref loadedPages[0], loadedPages.Length, image_object, bitmap);
+		}
+
+		/// <summary>
+		/// Returns a font object loaded from a stream of data. The font is loaded
+		/// into the document. The caller does not need to free the returned object.
+		/// </summary>
+		/// <param name="document">Handle to the document.</param>
+		/// <param name="cid">A value specifying if the font is a CID font or not.</param>
+		/// <param name="data">The data, which will be copied by the font object.</param>
+		/// <param name="index">The index of the first byte to be copied from <paramref name="data"/>.</param>
+		/// <param name="count">The number of bytes to copy from <paramref name="data"/> or a negative value to copy all bytes.</param>
+		/// <returns>Returns NULL on failure.</returns>
+		public static FPDF_FONT FPDFText_LoadFont(FPDF_DOCUMENT document, FontTypes font_type, bool cid, byte[] data, int index = -1, int count = 0)
+		{
+			if (count < 0)
+				count = data.Length - index;
+			return FPDFText_LoadFont(document, ref data[index], (uint)count, font_type, cid);
 		}
 
 		#endregion

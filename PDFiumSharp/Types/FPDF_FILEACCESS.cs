@@ -7,6 +7,7 @@ License: Microsoft Reciprocal License (MS-RL)
 #endregion
 using System;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace PDFiumSharp.Types
 {
@@ -28,6 +29,25 @@ namespace PDFiumSharp.Types
 			_fileLength = fileLength;
 			_readBlock = readBlock;
 			_param = IntPtr.Zero;
+		}
+
+		public static FPDF_FILEREAD FromStream(Stream stream, int count = 0)
+		{
+			if (count < 0)
+				count = (int)(stream.Length - stream.Position);
+			var start = stream.Position;
+			byte[] data = null;
+			FPDF_FILEREAD fileRead = new FPDF_FILEREAD(count, (ignore, position, buffer, size) =>
+			{
+				stream.Position = start + position;
+				if (data == null || data.Length < size)
+					data = new byte[size];
+				if (stream.Read(data, 0, size) != size)
+					return false;
+				Marshal.Copy(data, 0, buffer, size);
+				return true;
+			});
+			return fileRead;
 		}
     }
 
