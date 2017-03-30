@@ -32,7 +32,7 @@ string[] Imports = {
 	"public;double;FPDF_GetPageHeight(FPDF_PAGE page)",
 	"public;bool;FPDF_GetPageSizeByIndex(FPDF_DOCUMENT document, int page_index, out double width, out double height)",
 	"public;void;FPDF_RenderPageBitmap(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None);",
-	"public;void;FPDF_RenderPageBitmapWithMatrix(FPDF_BITMAP bitmap, FPDF_PAGE page, ref FS_MATRIX matrix, ref FS_RECTF clipping, RenderingFlags flags = RenderingFlags.None)",
+	"public;void;FPDF_RenderPageBitmapWithMatrix(FPDF_BITMAP bitmap, FPDF_PAGE page, [MarshalAs(UnmanagedType.LPStruct)] FS_MATRIX matrix, [MarshalAs(UnmanagedType.LPStruct)] FS_RECTF clipping, RenderingFlags flags = RenderingFlags.None)",
 	"public;void;FPDF_ClosePage(FPDF_PAGE page)",
 	"public;void;FPDF_CloseDocument(FPDF_DOCUMENT document)",
 	"public;void;FPDF_DeviceToPage(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotate, int device_x, int device_y, out double page_x, out double page_y)",
@@ -139,6 +139,8 @@ namespace PDFiumSharp
 {
 	public static partial class PDFium
 	{
+
+		static readonly object _lock = new object();
 <# // ------------------------------------------------------ Code Start ------------------------------------------------------
 foreach (string import in Imports)
 {
@@ -187,9 +189,9 @@ foreach (string import in Imports)
 	{
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
 			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				PlatformInvoke.<#=name#>_x64(<#=args#>);
+				lock(_lock) { PlatformInvoke.<#=name#>_x64(<#=args#>); }
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				PlatformInvoke.<#=name#>_x86(<#=args#>);
+				lock(_lock) { PlatformInvoke.<#=name#>_x86(<#=args#>); }
 			else
 				throw new PlatformNotSupportedException();
 <# // ------------------------------------------------------ Code Start ------------------------------------------------------
@@ -198,9 +200,9 @@ foreach (string import in Imports)
 	{
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
 			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
-				return PlatformInvoke.<#=name#>_x64(<#=args#>);
+				lock(_lock) { return PlatformInvoke.<#=name#>_x64(<#=args#>); }
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
-				return PlatformInvoke.<#=name#>_x86(<#=args#>);
+				lock(_lock) { return PlatformInvoke.<#=name#>_x86(<#=args#>); }
 			else
 				throw new PlatformNotSupportedException();
 <# // ------------------------------------------------------ Code Start ------------------------------------------------------
