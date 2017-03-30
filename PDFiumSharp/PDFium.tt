@@ -24,7 +24,7 @@ string[] Imports = {
 	"private;FPDF_DOCUMENT;FPDF_LoadCustomDocument(FPDF_FILEREAD fileRead, [MarshalAs(UnmanagedType.LPStr)] string password);",
 	"public;bool;FPDF_GetFileVersion(FPDF_DOCUMENT doc, out int fileVersion)",
 	"public;FPDF_ERR;FPDF_GetLastError()",
-	"public;uint;FPDF_GetDocPermissions(FPDF_DOCUMENT document)",
+	"public;DocumentPermissions;FPDF_GetDocPermissions(FPDF_DOCUMENT document)",
 	"public;int;FPDF_GetSecurityHandlerRevision(FPDF_DOCUMENT document)",
 	"public;int;FPDF_GetPageCount(FPDF_DOCUMENT document)",
 	"public;FPDF_PAGE;FPDF_LoadPage(FPDF_DOCUMENT document, int page_index)",

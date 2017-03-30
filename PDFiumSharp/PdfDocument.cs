@@ -46,6 +46,14 @@ namespace PDFiumSharp
 		/// </summary>
 		public int FileVersion { get { PDFium.FPDF_GetFileVersion(Handle, out int fileVersion); return fileVersion; } }
 
+		/// <summary>
+		/// Gets the revision of the security handler.
+		/// </summary>
+		/// <seealso cref="http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF Reference: Table 21</seealso>
+		public int SecurityHandlerRevision => PDFium.FPDF_GetSecurityHandlerRevision(Handle);
+
+		public DocumentPermissions Permissions => PDFium.FPDF_GetDocPermissions(Handle);
+
 		PdfDocument(FPDF_DOCUMENT doc)
 		{
 			if (doc.IsNull)

@@ -16,21 +16,36 @@ namespace PDFiumSharp
 {
 	public static class RenderingExtensionsGdiPlus
 	{
-		public static void Render(this PdfPage page, Bitmap bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		/// <summary>
+		/// Renders the page to a <see cref="Bitmap"/>
+		/// </summary>
+		/// <param name="page">The page which is to be rendered.</param>
+		/// <param name="renderTarget">The bitmap to which the page is to be rendered.</param>
+		/// <param name="rectDest">The destination rectangle in <paramref name="renderTarget"/>.</param>
+		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
+		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
+		public static void Render(this PdfPage page, Bitmap renderTarget, (int left, int top, int width, int height) rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			if (bitmap == null)
-				throw new ArgumentNullException(nameof(bitmap));
+			if (renderTarget == null)
+				throw new ArgumentNullException(nameof(renderTarget));
 
-			var format = GetBitmapFormat(bitmap);
-			var data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
-			using (var tmp = new PDFiumBitmap(bitmap.Width, bitmap.Height, format, data.Scan0, data.Stride))
-				page.Render(tmp, rectDest, rotation, flags);
-			bitmap.UnlockBits(data);
+			var format = GetBitmapFormat(renderTarget);
+			var data = renderTarget.LockBits(new System.Drawing.Rectangle(0, 0, renderTarget.Width, renderTarget.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, renderTarget.PixelFormat);
+			using (var tmp = new PDFiumBitmap(renderTarget.Width, renderTarget.Height, format, data.Scan0, data.Stride))
+				page.Render(tmp, rectDest, orientation, flags);
+			renderTarget.UnlockBits(data);
 		}
 
-		public static void Render(this PdfPage page, Bitmap bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		/// <summary>
+		/// Renders the page to a <see cref="Bitmap"/>
+		/// </summary>
+		/// <param name="page">The page which is to be rendered.</param>
+		/// <param name="renderTarget">The bitmap to which the page is to be rendered.</param>
+		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
+		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
+		public static void Render(this PdfPage page, Bitmap bitmap, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(bitmap, (0, 0, bitmap.Width, bitmap.Height), rotation, flags);
+			page.Render(bitmap, (0, 0, bitmap.Width, bitmap.Height), orientation, flags);
 		}
 
 		static BitmapFormats GetBitmapFormat(System.Drawing.Bitmap bitmap)

@@ -104,20 +104,27 @@ namespace PDFiumSharp
 		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
 		/// </summary>
-		public void Render(PDFiumBitmap bitmap, (int left, int top, int width, int height) rectDest, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		/// <param name="renderTarget">The bitmap to which the page is to be rendered.</param>
+		/// <param name="rectDest">The destination rectangle in <paramref name="renderTarget"/>.</param>
+		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
+		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
+		public void Render(PDFiumBitmap renderTarget, (int left, int top, int width, int height) rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			if (bitmap == null)
-				throw new ArgumentNullException(nameof(bitmap));
+			if (renderTarget == null)
+				throw new ArgumentNullException(nameof(renderTarget));
 
-			PDFium.FPDF_RenderPageBitmap(bitmap.Handle, this.Handle, rectDest.left, rectDest.top, rectDest.width, rectDest.height, rotation, flags);
+			PDFium.FPDF_RenderPageBitmap(renderTarget.Handle, this.Handle, rectDest.left, rectDest.top, rectDest.width, rectDest.height, orientation, flags);
 		}
 
 		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
 		/// </summary>
-		public void Render(PDFiumBitmap bitmap, PageOrientations rotation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		/// <param name="renderTarget">The bitmap to which the page is to be rendered.</param>
+		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
+		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
+		public void Render(PDFiumBitmap renderTarget, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			Render(bitmap, (0, 0, bitmap.Width, bitmap.Height), rotation, flags);
+			Render(renderTarget, (0, 0, renderTarget.Width, renderTarget.Height), orientation, flags);
 		}
 	}
 }
