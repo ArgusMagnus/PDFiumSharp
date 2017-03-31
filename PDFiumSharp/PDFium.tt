@@ -111,6 +111,9 @@ string[] Imports = {
 	"public;FPDF_PAGEOBJECT;FPDFPageObj_NewTextObj(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string font, float font_size)",
 	"public;bool;FPDFText_SetText(FPDF_PAGEOBJECT text_object, [MarshalAs(UnmanagedType.LPStr)] string text)",
 	"private;FPDF_FONT;FPDFText_LoadFont(FPDF_DOCUMENT document, ref byte data, uint size, FontTypes font_type, bool cid)",
+
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_ext.h
+	"public;PageModes;FPDFDoc_GetPageMode(FPDF_DOCUMENT document)",
 	
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_ppo.h
 	"public;bool;FPDF_ImportPages(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc, [MarshalAs(UnmanagedType.LPStr)] string pagerange, int index)",
