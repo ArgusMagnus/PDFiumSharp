@@ -114,6 +114,9 @@ string[] Imports = {
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_ext.h
 	"public;PageModes;FPDFDoc_GetPageMode(FPDF_DOCUMENT document)",
+
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_flatten.h
+	"public;FlattenResults;FPDFPage_Flatten(FPDF_PAGE page, FlattenFlags nFlag)",
 	
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_ppo.h
 	"public;bool;FPDF_ImportPages(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc, [MarshalAs(UnmanagedType.LPStr)] string pagerange, int index)",
