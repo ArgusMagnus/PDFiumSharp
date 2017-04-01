@@ -342,5 +342,19 @@ namespace PDFiumSharp
 
 		#endregion
 
+		#region https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_structtree.h
+
+		/// <summary>
+		/// Get the alternative text for a given element.
+		/// </summary>
+		/// <param name="struct_element">Handle to the struct element.</param>
+		/// <returns>The alternative text for <paramref name="struct_element"/>.</returns>
+		public static string FPDF_StructElement_GetAltText(FPDF_STRUCTELEMENT struct_element)
+		{
+			return GetUtf16String((ref byte buffer, uint length) => FPDF_StructElement_GetAltText(struct_element, ref buffer, length));
+		}
+
+		#endregion
+
 	}
 }

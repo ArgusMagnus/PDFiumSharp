@@ -122,9 +122,29 @@ string[] Imports = {
 	"public;bool;FPDF_ImportPages(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc, [MarshalAs(UnmanagedType.LPStr)] string pagerange, int index)",
 	"public;bool;FPDF_CopyViewerPreferences(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc)",
 
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_progressive.h
+	"public;RenderingStatus;FPDF_RenderPageBitmap_Start(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotate, RenderingFlags flags, IFSDK_PAUSE pause)",
+	"public;RenderingStatus;FPDF_RenderPage_Continue(FPDF_PAGE page, IFSDK_PAUSE pause)",
+	"public;void;FPDF_RenderPage_Close(FPDF_PAGE page)",
+
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_save.h
 	"private;bool;FPDF_SaveAsCopy(FPDF_DOCUMENT document, FPDF_FILEWRITE fileWrite, SaveFlags flags)",
-	"private;bool;FPDF_SaveWithVersion(FPDF_DOCUMENT document, FPDF_FILEWRITE fileWrite, SaveFlags flags, int fileVersion)" };
+	"private;bool;FPDF_SaveWithVersion(FPDF_DOCUMENT document, FPDF_FILEWRITE fileWrite, SaveFlags flags, int fileVersion)",
+
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_searchex.h
+	"public;int;FPDFText_GetCharIndexFromTextIndex(FPDF_TEXTPAGE text_page, int nTextIndex)",
+	"public;int;FPDFText_GetTextIndexFromCharIndex(FPDF_TEXTPAGE text_page, int nCharIndex)",
+
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_structtree.h
+	"public;FPDF_STRUCTTREE;FPDF_StructTree_GetForPage(FPDF_PAGE page)",
+	"public;void;FPDF_StructTree_Close(FPDF_STRUCTTREE struct_tree)",
+	"public;int;FPDF_StructTree_CountChildren(FPDF_STRUCTTREE struct_tree)",
+	"public;FPDF_STRUCTELEMENT;FPDF_StructTree_GetChildAtIndex(FPDF_STRUCTTREE struct_tree, int index)",
+	"private;uint;FPDF_StructElement_GetAltText(FPDF_STRUCTELEMENT struct_element, ref byte buffer, uint buflen)",
+	"public;int;FPDF_StructElement_CountChildren(FPDF_STRUCTELEMENT struct_element)",
+	"public;FPDF_STRUCTELEMENT;FPDF_StructElement_GetChildAtIndex(FPDF_STRUCTELEMENT struct_element, int index)"
+	
+	};
 
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
 #region Copyright and License
