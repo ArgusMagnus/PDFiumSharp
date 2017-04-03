@@ -169,6 +169,16 @@ string[] Imports = {
 	"public;void;FPDFLink_GetRect(FPDF_PAGELINK link_page, int link_index, int rect_index, out double left, out double top, out double right, out double bottom)",
 	"public;void;FPDFLink_CloseWebLinks(FPDF_PAGELINK link_page)",
 
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_transformpage.h
+	"public;void;FPDFPage_SetMediaBox(FPDF_PAGE page, float left, float bottom, float right, float top)",
+	"public;void;FPDFPage_SetCropBox(FPDF_PAGE page, float left, float bottom, float right, float top)",
+	"public;bool;FPDFPage_GetMediaBox(FPDF_PAGE page, out float left, out float bottom, out float right, out float top)",
+	"public;bool;FPDFPage_GetCropBox(FPDF_PAGE page, out float left, out float bottom, out float right, out float top)",
+	"public;bool;FPDFPage_TransFormWithClip(FPDF_PAGE page, [MarshalAs(UnmanagedType.LPStruct)] FS_MATRIX matrix, [MarshalAs(UnmanagedType.LPStruct)] FS_RECTF clipRect)",
+	"public;void;FPDFPageObj_TransformClipPath(FPDF_PAGEOBJECT page_object, double a, double b, double c, double d, double e, double f)",
+	"public;FPDF_CLIPPATH;FPDF_CreateClipPath(float left, float bottom, float right, float top)",
+	"public;void;FPDF_DestroyClipPath(FPDF_CLIPPATH clipPath)",
+	"public;void;FPDFPage_InsertClipPath(FPDF_PAGE page, FPDF_CLIPPATH clipPath)"
 };
 
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
