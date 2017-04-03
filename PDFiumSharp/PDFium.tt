@@ -142,9 +142,34 @@ string[] Imports = {
 	"public;FPDF_STRUCTELEMENT;FPDF_StructTree_GetChildAtIndex(FPDF_STRUCTTREE struct_tree, int index)",
 	"private;uint;FPDF_StructElement_GetAltText(FPDF_STRUCTELEMENT struct_element, ref byte buffer, uint buflen)",
 	"public;int;FPDF_StructElement_CountChildren(FPDF_STRUCTELEMENT struct_element)",
-	"public;FPDF_STRUCTELEMENT;FPDF_StructElement_GetChildAtIndex(FPDF_STRUCTELEMENT struct_element, int index)"
-	
-	};
+	"public;FPDF_STRUCTELEMENT;FPDF_StructElement_GetChildAtIndex(FPDF_STRUCTELEMENT struct_element, int index)",
+
+	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_text.h
+	"public;FPDF_TEXTPAGE;FPDFText_LoadPage(FPDF_PAGE page)",
+	"public;void;FPDFText_ClosePage(FPDF_TEXTPAGE text_page)",
+	"public;int;FPDFText_CountChars(FPDF_TEXTPAGE text_page)",
+	"public;char;FPDFText_GetUnicode(FPDF_TEXTPAGE text_page, int index);[return: MarshalAs(UnmanagedType.U4)]",
+	"public;double;FPDFText_GetFontSize(FPDF_TEXTPAGE text_page, int index)",
+	"public;void;FPDFText_GetCharBox(FPDF_TEXTPAGE text_page, int index, out double left, out double right, out double bottom, out double top)",
+	"public;int;FPDFText_GetCharIndexAtPos(FPDF_TEXTPAGE text_page, double x, double y, double xTolerance, double yTolerance)",
+	"private;int;FPDFText_GetText(FPDF_TEXTPAGE text_page, int start_index, int count, ref byte result)",
+	"public;int;FPDFText_CountRects(FPDF_TEXTPAGE text_page, int start_index, int count)",
+	"public;void;FPDFText_GetRect(FPDF_TEXTPAGE text_page, int rect_index, out double left, out double top, out double right, out double bottom)",
+	"private;int;FPDFText_GetBoundedText(FPDF_TEXTPAGE text_page, double left, double top, double right, double bottom, ref byte buffer, int buflen)",
+	"public;FPDF_SCHHANDLE;FPDFText_FindStart(FPDF_TEXTPAGE text_page, [MarshalAs(UnmanagedType.LPWStr)] string findwhat, SearchFlags flags, int start_index)",
+	"public;bool;FPDFText_FindNext(FPDF_SCHHANDLE handle)",
+	"public;bool;FPDFText_FindPrev(FPDF_SCHHANDLE handle)",
+	"public;int;FPDFText_GetSchResultIndex(FPDF_SCHHANDLE handle)",
+	"public;int;FPDFText_GetSchCount(FPDF_SCHHANDLE handle)",
+	"public;void;FPDFText_FindClose(FPDF_SCHHANDLE handle)",
+	"public;FPDF_PAGELINK;FPDFLink_LoadWebLinks(FPDF_TEXTPAGE text_page)",
+	"public;int;FPDFLink_CountWebLinks(FPDF_PAGELINK link_page)",
+	"private;int;FPDFLink_GetURL(FPDF_PAGELINK link_page, int link_index, ref byte buffer, int buflen)",
+	"public;int;FPDFLink_CountRects(FPDF_PAGELINK link_page, int link_index)",
+	"public;void;FPDFLink_GetRect(FPDF_PAGELINK link_page, int link_index, int rect_index, out double left, out double top, out double right, out double bottom)",
+	"public;void;FPDFLink_CloseWebLinks(FPDF_PAGELINK link_page)",
+
+};
 
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
 #region Copyright and License
@@ -165,7 +190,6 @@ namespace PDFiumSharp
 {
 	public static partial class PDFium
 	{
-
 		static readonly object _lock = new object();
 <# // ------------------------------------------------------ Code Start ------------------------------------------------------
 foreach (string import in Imports)

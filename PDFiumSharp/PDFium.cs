@@ -41,21 +41,24 @@ namespace PDFiumSharp
 			return true;
 		}
 
-		delegate uint GetStringHandler(ref byte buffer, uint length);
+		delegate int GetStringHandler(ref byte buffer, int length);
 
-		static string GetUtf16String(GetStringHandler handler)
+		static string GetUtf16String(GetStringHandler handler, int lengthUnit, bool lengthIncludesTerminator)
 		{
 			byte b = 0;
-			uint length = handler(ref b, 0);
-			var buffer = new byte[length];
+			int length = handler(ref b, 0);
+			var buffer = new byte[length * lengthUnit];
 			handler(ref buffer[0], length);
-			return Encoding.Unicode.GetString(buffer, 0, (int)length - 2);
+			length *= lengthUnit;
+			if (lengthIncludesTerminator)
+				length -= 2;
+			return Encoding.Unicode.GetString(buffer, 0, length);
 		}
 
 		static string GetAsciiString(GetStringHandler handler)
 		{
 			byte b = 0;
-			uint length = handler(ref b, 0);
+			int length = handler(ref b, 0);
 			var buffer = new byte[length];
 			handler(ref buffer[0], length);
 			return Encoding.ASCII.GetString(buffer, 0, (int)length - 1);
@@ -64,7 +67,7 @@ namespace PDFiumSharp
 		static string GetUtf8String(GetStringHandler handler)
 		{
 			byte b = 0;
-			uint length = handler(ref b, 0);
+			int length = handler(ref b, 0);
 			var buffer = new byte[length];
 			handler(ref buffer[0], length);
 			return Encoding.UTF8.GetString(buffer, 0, (int)length - 1);
@@ -140,7 +143,7 @@ namespace PDFiumSharp
 		/// <returns>The title of the bookmark.</returns>
 		public static string FPDFBookmark_GetTitle(FPDF_BOOKMARK bookmark)
 		{
-			return GetUtf16String((ref byte buffer, uint length) => FPDFBookmark_GetTitle(bookmark, ref buffer, length));
+			return GetUtf16String((ref byte buffer, int length) => (int)FPDFBookmark_GetTitle(bookmark, ref buffer, (uint)length), sizeof(byte), true);
 		}
 
 		/// <summary>
@@ -150,7 +153,7 @@ namespace PDFiumSharp
 		/// <returns>The file path of <paramref name="action"/>.</returns>
 		public static string FPDFAction_GetFilePath(FPDF_ACTION action)
 		{
-			return GetUtf16String((ref byte buffer, uint length) => FPDFAction_GetFilePath(action, ref buffer, length));
+			return GetUtf16String((ref byte buffer, int length) => (int)FPDFAction_GetFilePath(action, ref buffer, (uint)length), sizeof(byte), true);
 		}
 
 		/// <summary>
@@ -161,7 +164,7 @@ namespace PDFiumSharp
 		/// <returns>The URI path of <paramref name="action"/>.</returns>
 		public static string FPDFAction_GetURIPath(FPDF_DOCUMENT document, FPDF_ACTION action)
 		{
-			return GetAsciiString((ref byte buffer, uint length) => FPDFAction_GetURIPath(document, action, ref buffer, length));
+			return GetAsciiString((ref byte buffer, int length) => (int)FPDFAction_GetURIPath(document, action, ref buffer, (uint)length));
 		}
 
 		/// <summary>
@@ -194,7 +197,7 @@ namespace PDFiumSharp
 		/// <seealso href="http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF Reference</seealso>
 		public static string FPDF_GetMetaText(FPDF_DOCUMENT document, string tag)
 		{
-			return GetUtf16String((ref byte buffer, uint length) => FPDF_GetMetaText(document, tag, ref buffer, length));
+			return GetUtf16String((ref byte buffer, int length) => (int)FPDF_GetMetaText(document, tag, ref buffer, (uint)length), sizeof(byte), true);
 		}
 
 		/// <summary>
@@ -219,7 +222,7 @@ namespace PDFiumSharp
 		/// <returns>The page label.</returns>
 		public static string FPDF_GetPageLabel(FPDF_DOCUMENT document, int page_index)
 		{
-			return GetUtf16String((ref byte buffer, uint length) => FPDF_GetPageLabel(document, page_index, ref buffer, length));
+			return GetUtf16String((ref byte buffer, int length) => (int)FPDF_GetPageLabel(document, page_index, ref buffer, (uint)length), sizeof(byte), true);
 		}
 
 		#endregion
@@ -351,10 +354,30 @@ namespace PDFiumSharp
 		/// <returns>The alternative text for <paramref name="struct_element"/>.</returns>
 		public static string FPDF_StructElement_GetAltText(FPDF_STRUCTELEMENT struct_element)
 		{
-			return GetUtf16String((ref byte buffer, uint length) => FPDF_StructElement_GetAltText(struct_element, ref buffer, length));
+			return GetUtf16String((ref byte buffer, int length) => (int)FPDF_StructElement_GetAltText(struct_element, ref buffer, (uint)length), sizeof(byte), true);
 		}
 
 		#endregion
 
+		#region https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_text.h
+
+		public static string FPDFText_GetText(FPDF_TEXTPAGE text_page, int start_index, int count)
+		{
+			var buffer = new byte[2 * (count + 1)];
+			int length = FPDFText_GetText(text_page, start_index, count, ref buffer[0]);
+			return Encoding.Unicode.GetString(buffer, 0, (length - 1) * 2);
+		}
+
+		public static string FPDFText_GetBoundedText(FPDF_TEXTPAGE text_page, double left, double top, double right, double bottom)
+		{
+			return GetUtf16String((ref byte buffer, int length) => FPDFText_GetBoundedText(text_page, left, top, right, bottom, ref buffer, length), sizeof(ushort), false);
+		}
+
+		public static string FPDFLink_GetURL(FPDF_PAGELINK link_page, int link_index)
+		{
+			return GetUtf16String((ref byte buffer, int length) => FPDFLink_GetURL(link_page, link_index, ref buffer, length), sizeof(ushort), true);
+		}
+
+		#endregion
 	}
 }
