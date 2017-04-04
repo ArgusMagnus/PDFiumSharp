@@ -55,6 +55,8 @@ namespace PDFiumSharp
 			}
 		}
 
+		public PageModes PageMode => PDFium.FPDFDoc_GetPageMode(Handle);
+
 		PdfDocument(FPDF_DOCUMENT doc)
 			: base(doc)
 		{
@@ -137,6 +139,8 @@ namespace PDFiumSharp
 		}
 
 		public string GetMetaText(MetadataTags tag) => PDFium.FPDF_GetMetaText(Handle, tag);
+
+		public void CopyViewerPreferencesFrom(PdfDocument srcDoc) => PDFium.FPDF_CopyViewerPreferences(Handle, srcDoc.Handle);
 
 		protected override void Dispose(FPDF_DOCUMENT handle)
 		{

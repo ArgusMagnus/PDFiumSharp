@@ -332,6 +332,8 @@ namespace PDFiumSharp
 		/// The new PDF file version of the saved file.
 		/// 14 for 1.4, 15 for 1.5, etc. Values smaller than 10 are ignored.
 		/// </param>
+		/// <seealso cref="PDFium.FPDF_SaveAsCopy(FPDF_DOCUMENT, FPDF_FILEWRITE, SaveFlags)"/>
+		/// <seealso cref="PDFium.FPDF_SaveWithVersion(FPDF_DOCUMENT, FPDF_FILEWRITE, SaveFlags, int)"/>
 		public static bool FPDF_SaveAsCopy(FPDF_DOCUMENT document, Stream stream, SaveFlags flags, int version = 0)
 		{
 			byte[] buffer = null;

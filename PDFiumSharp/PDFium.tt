@@ -478,24 +478,24 @@ var Imports = new[] {
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_ext.h
 	new { Method = "PageModes FPDFDoc_GetPageMode(FPDF_DOCUMENT document)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDocument.PageMode'/>" },
 		  Attributes = new string[] { } },
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_flatten.h
 	new { Method = "FlattenResults FPDFPage_Flatten(FPDF_PAGE page, FlattenFlags nFlag)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfPage.Flatten(FlattenFlags)'/>" },
 		  Attributes = new string[] { } },
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_ppo.h
 	new { Method = "bool FPDF_ImportPages(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc, [MarshalAs(UnmanagedType.LPStr)] string pagerange, int index)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfPageCollection.Insert(int, PdfDocument, int[])'/>", "<seealso cref='PdfPageCollection.Add(PdfDocument, int[])'/>", "<seealso cref='PdfDocument.Pages'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "bool FPDF_CopyViewerPreferences(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDocument.CopyViewerPreferencesFrom(PdfDocument)'/>" },
 		  Attributes = new string[] { } },
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_progressive.h
@@ -517,12 +517,12 @@ var Imports = new[] {
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_save.h
 	new { Method = "bool FPDF_SaveAsCopy(FPDF_DOCUMENT document, FPDF_FILEWRITE fileWrite, SaveFlags flags)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDF_SaveAsCopy(FPDF_DOCUMENT, Stream, SaveFlags, int)'/>", "<seealso cref='PdfDocument.Save(Stream, SaveFlags, int)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "bool FPDF_SaveWithVersion(FPDF_DOCUMENT document, FPDF_FILEWRITE fileWrite, SaveFlags flags, int fileVersion)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDF_SaveAsCopy(FPDF_DOCUMENT, Stream, SaveFlags, int)'/>", "<seealso cref='PdfDocument.Save(Stream, SaveFlags, int)'/>" },
 		  Attributes = new string[] { } },
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_searchex.h
