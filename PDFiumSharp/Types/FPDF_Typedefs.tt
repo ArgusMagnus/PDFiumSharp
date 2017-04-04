@@ -43,6 +43,7 @@ License: Microsoft Reciprocal License (MS-RL)
 // DO NOT MODIFY
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace PDFiumSharp.Types
 {
@@ -52,9 +53,9 @@ foreach (string name in Names)
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
 	/// <summary>Handle to a <#=name#></summary>
 	[StructLayout(LayoutKind.Sequential)]
-    public struct <#=name#>
+    public struct <#=name#> : IHandle<<#=name#>>
 	{
-		readonly IntPtr _ptr;
+		IntPtr _ptr;
 
 		/// <summary>Gets a value indicating whether the handle is <c>null</c>.</summary>
 		public bool IsNull => _ptr == IntPtr.Zero;
@@ -63,6 +64,13 @@ foreach (string name in Names)
 
 		/// <summary>Gets a handle representing <c>null</c>.</summary>
 		public static <#=name#> Null => new <#=name#>();
+
+		<#=name#>(IntPtr ptr)
+		{
+			_ptr = ptr;
+		}
+
+		<#=name#> IHandle<<#=name#>>.SetToNull() => new <#=name#>(Interlocked.Exchange(ref _ptr, IntPtr.Zero));
 	}
 
 <# // ------------------------------------------------------ Code Start ------------------------------------------------------

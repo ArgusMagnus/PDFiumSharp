@@ -14,32 +14,14 @@ using System.Linq;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfDocument : IDisposable
+    public sealed class PdfDocument : NativeWrapper<FPDF_DOCUMENT>
     {
-		FPDF_DOCUMENT _ptr = FPDF_DOCUMENT.Null;
-
-		/// <summary>
-		/// Handle which can be used with the native <see cref="PDFium"/> functions.
-		/// </summary>
-		public FPDF_DOCUMENT Handle
-		{
-			get
-			{
-				if (_ptr.IsNull)
-					throw new ObjectDisposedException(nameof(PdfDocument));
-				return _ptr;
-			}
-		}
-
 		/// <summary>
 		/// Gets the pages in the current <see cref="PdfDocument"/>.
 		/// </summary>
 		public PdfPageCollection Pages { get; }
 
-		/// <summary>
-		/// Gets a value indicating whether the <see cref="PdfDocument"/> was already closed.
-		/// </summary>
-		public bool IsDisposed => _ptr.IsNull;
+		public PdfDestinationCollection Destinations { get; }
 
 		/// <summary>
 		/// Gets the PDF file version. File version: 14 for 1.4, 15 for 1.5, ...
@@ -54,12 +36,19 @@ namespace PDFiumSharp
 
 		public DocumentPermissions Permissions => PDFium.FPDF_GetDocPermissions(Handle);
 
+		public bool PrintPrefersScaling => PDFium.FPDF_VIEWERREF_GetPrintScaling(Handle);
+
+		public int PrintCopyCount => PDFium.FPDF_VIEWERREF_GetNumCopies(Handle);
+
+		public DuplexTypes DuplexType => PDFium.FPDF_VIEWERREF_GetDuplex(Handle);
+
 		PdfDocument(FPDF_DOCUMENT doc)
+			: base(doc)
 		{
 			if (doc.IsNull)
 				throw new PDFiumException();
-			_ptr = doc;
 			Pages = new PdfPageCollection(this);
+			Destinations = new PdfDestinationCollection(this);
 		}
 
 		/// <summary>
@@ -101,17 +90,7 @@ namespace PDFiumSharp
 		/// <summary>
 		/// Closes the <see cref="PdfDocument"/> and frees unmanaged resources.
 		/// </summary>
-		public void Close()
-		{
-			if (!_ptr.IsNull)
-			{
-				((IDisposable)Pages).Dispose();
-				PDFium.FPDF_CloseDocument(_ptr);
-				_ptr = FPDF_DOCUMENT.Null;
-			}
-		}
-
-		void IDisposable.Dispose() => Close();
+		public void Close() => ((IDisposable)this).Dispose();
 
 		/// <summary>
 		/// Saves the <see cref="PdfDocument"/> to a <paramref name="stream"/>.
@@ -136,6 +115,12 @@ namespace PDFiumSharp
 		{
 			using (var stream = new FileStream(filename, FileMode.Create))
 				return Save(stream, flags, version);
+		}
+
+		protected override void Dispose(FPDF_DOCUMENT handle)
+		{
+			((IDisposable)Pages).Dispose();
+			PDFium.FPDF_CloseDocument(handle);
 		}
 	}
 }

@@ -13,28 +13,8 @@ using System.Runtime.InteropServices;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfPage : IDisposable
+    public sealed class PdfPage : NativeWrapper<FPDF_PAGE>
     {
-		FPDF_PAGE _ptr;
-
-		/// <summary>
-		/// Handle which can be used with the native <see cref="PDFium"/> functions.
-		/// </summary>
-		public FPDF_PAGE Handle
-		{
-			get
-			{
-				if (_ptr.IsNull)
-					throw new ObjectDisposedException(nameof(PdfPage));
-				return _ptr;
-			}
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether the <see cref="PdfPage"/> was already unloaded.
-		/// </summary>
-		public bool IsDisposed => _ptr.IsNull;
-
 		/// <summary>
 		/// Gets the page width (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
@@ -81,25 +61,16 @@ namespace PDFiumSharp
 		public PdfDocument Document { get; }
 
 		PdfPage(PdfDocument doc, FPDF_PAGE page, int index)
+			: base(page)
 		{
 			if (page.IsNull)
 				throw new PDFiumException();
 			Document = doc;
-			_ptr = page;
 			Index = index;
 		}
 
 		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(doc, PDFium.FPDF_LoadPage(doc.Handle, index), index);
 		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, PDFium.FPDFPage_New(doc.Handle, index, width, height), index);
-
-		void IDisposable.Dispose()
-		{
-			if (!_ptr.IsNull)
-			{
-				PDFium.FPDF_ClosePage(_ptr);
-				_ptr = FPDF_PAGE.Null;
-			}
-		}
 
 		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
@@ -125,6 +96,11 @@ namespace PDFiumSharp
 		public void Render(PDFiumBitmap renderTarget, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			Render(renderTarget, (0, 0, renderTarget.Width, renderTarget.Height), orientation, flags);
+		}
+
+		protected override void Dispose(FPDF_PAGE handle)
+		{
+			PDFium.FPDF_ClosePage(handle);
 		}
 	}
 }

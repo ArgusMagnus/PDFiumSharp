@@ -120,6 +120,8 @@ namespace PDFiumSharp
 		/// The destination handle and name for a given index, or (<see cref="FPDF_DEST.Null"/>, <c>null</c>)
 		/// if there is no named destination corresponding to <paramref name="index"/>.
 		/// </returns>
+		/// <seealso cref="PdfDestinationCollection[int]"/>
+		/// <seealso cref="PdfDocument.Destinations"/>
 		public static (FPDF_DEST Destination, string Name) FPDF_GetNamedDest(FPDF_DOCUMENT document, int index)
 		{
 			FPDF_GetNamedDest(document, index, IntPtr.Zero, out int length);

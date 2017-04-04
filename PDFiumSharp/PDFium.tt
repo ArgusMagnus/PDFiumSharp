@@ -178,7 +178,7 @@ var Imports = new[] {
 
 	new { Method = "DuplexTypes FPDF_VIEWERREF_GetDuplex(FPDF_DOCUMENT document)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDocument.DuplexType'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "uint FPDF_VIEWERREF_GetName(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string key, ref byte buffer, uint length)", // Entry not found in Dll
@@ -188,22 +188,22 @@ var Imports = new[] {
 
 	new { Method = "int FPDF_CountNamedDests(FPDF_DOCUMENT document)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDestinationCollection.Count'/>", "<seealso cref='PdfDocument.Destinations'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_DEST FPDF_GetNamedDestByName(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string name)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDestinationCollection[string]'/>", "<seealso cref='PdfDocument.Destinations'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_DEST FPDF_GetNamedDest(FPDF_DOCUMENT document, int index, IntPtr buffer, out int buflen)",
 		  AccessModifier = "private",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDF_GetNamedDest(FPDF_DOCUMENT, int)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_DEST FPDF_GetNamedDest(FPDF_DOCUMENT document, int index, ref byte buffer, ref int buflen)",
 		  AccessModifier = "private",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDF_GetNamedDest(FPDF_DOCUMENT, int)'/>" },
 		  Attributes = new string[] { } },
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_doc.h
@@ -343,8 +343,9 @@ var Imports = new[] {
 		  Documentation = new string[] { "<seealso cref='PdfPage.Orientation'/>" },
 		  Attributes = new string[] { } },
 
+		  // The |page_obj| will be automatically freed.
 	new { Method = "void FPDFPage_InsertObject(FPDF_PAGE page, FPDF_PAGEOBJECT page_obj)",
-		  AccessModifier = "public",
+		  AccessModifier = "private",
 		  Documentation = new string[] { },
 		  Attributes = new string[] { } },
 

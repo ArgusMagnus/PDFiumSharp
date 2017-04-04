@@ -15,23 +15,8 @@ namespace PDFiumSharp
 	/// <summary>
 	/// A bitmap to which a <see cref="PdfPage"/> can be rendered.
 	/// </summary>
-    public sealed class PDFiumBitmap : IDisposable
+    public sealed class PDFiumBitmap : NativeWrapper<FPDF_BITMAP>
     {
-		FPDF_BITMAP _ptr;
-
-		/// <summary>
-		/// Handle which can be used with the native <see cref="PDFium"/> functions.
-		/// </summary>
-		public FPDF_BITMAP Handle
-		{
-			get
-			{
-				if (_ptr.IsNull)
-					throw new ObjectDisposedException(nameof(PDFiumBitmap));
-				return _ptr;
-			}
-		}
-
 		public int Width => PDFium.FPDFBitmap_GetWidth(Handle);
 		public int Height => PDFium.FPDFBitmap_GetHeight(Handle);
 		public int Stride => PDFium.FPDFBitmap_GetStride(Handle);
@@ -40,11 +25,11 @@ namespace PDFiumSharp
 		public int BytesPerPixel => GetBytesPerPixel(Format);
 
 		PDFiumBitmap(FPDF_BITMAP bitmap, BitmapFormats format)
+			: base(bitmap)
 		{
 			if (bitmap.IsNull)
 				throw new PDFiumException();
 			GetBytesPerPixel(format);
-			_ptr = bitmap;
 			Format = format;
 		}
 
@@ -87,15 +72,6 @@ namespace PDFiumSharp
 		public PDFiumBitmap(int width, int height, BitmapFormats format, IntPtr scan0, int stride)
 			: this(PDFium.FPDFBitmap_CreateEx(width, height, format, scan0, stride), format) { }
 
-		public void Dispose()
-		{
-			if (!_ptr.IsNull)
-			{
-				PDFium.FPDFBitmap_Destroy(_ptr);
-				_ptr = FPDF_BITMAP.Null;
-			}
-		}
-
 		/// <summary>
 		/// Fills a rectangle in the <see cref="PDFiumBitmap"/> with <paramref name="color"/>.
 		/// The pixel values in the rectangle are replaced and not blended.
@@ -111,5 +87,10 @@ namespace PDFiumSharp
 		/// </summary>
 		/// <param name="color"></param>
 		public void Fill(FPDF_COLOR color) => FillRectangle(0, 0, Width, Height, color);
-    }
+
+		protected override void Dispose(FPDF_BITMAP handle)
+		{
+			PDFium.FPDFBitmap_Destroy(handle);
+		}
+	}
 }
