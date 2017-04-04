@@ -31,13 +31,15 @@ namespace PDFiumSharp.Types
 
 		protected NativeWrapper(T handle)
 		{
+			if (handle.IsNull)
+				throw new PDFiumException();
 			_handle = handle;
 		}
 
 		/// <summary>
 		/// Implementors should clean up here. This method is guaranteed to only be called once.
 		/// </summary>
-		protected abstract void Dispose(T handle);
+		protected virtual void Dispose(T handle) { }
 
 		void IDisposable.Dispose()
 		{

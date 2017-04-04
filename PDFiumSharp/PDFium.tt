@@ -113,12 +113,12 @@ var Imports = new[] {
 
 	new { Method = "void FPDF_DeviceToPage(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotate, int device_x, int device_y, out double page_x, out double page_y)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfPage.DeviceToPage((int left, int top, int width, int height), int, int, PageOrientations)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "void FPDF_PageToDevice(FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotate, double page_x, double page_y, out int device_x, out int device_y)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfPage.PageToDevice((int left, int top, int width, int height), double, double, PageOrientations)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_BITMAP FPDFBitmap_Create(int width, int height, bool hasAlpha)",
@@ -209,62 +209,62 @@ var Imports = new[] {
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_doc.h
 	new { Method = "FPDF_BOOKMARK FPDFBookmark_GetFirstChild(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDocument.Bookmarks'/>", "<seealso cref='PdfBookmark.Children'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_BOOKMARK FPDFBookmark_GetNextSibling(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDocument.Bookmarks'/>", "<seealso cref='PdfBookmark.Children'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "uint FPDFBookmark_GetTitle(FPDF_BOOKMARK bookmark, ref byte buffer, uint buflen)",
-		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  AccessModifier = "private",
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDFBookmark_GetTitle(FPDF_BOOKMARK)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_BOOKMARK FPDFBookmark_Find(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPWStr)] string title)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDocument.FindBookmark(string)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_DEST FPDFBookmark_GetDest(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfBookmark.Destination'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_ACTION FPDFBookmark_GetAction(FPDF_BOOKMARK bookmark)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfBookmark.Action'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "ActionTypes FPDFAction_GetType(FPDF_ACTION action)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfAction.Type'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_DEST FPDFAction_GetDest(FPDF_DOCUMENT document, FPDF_ACTION action)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfAction.Destination'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "uint FPDFAction_GetFilePath(FPDF_ACTION action, ref byte buffer, uint buflen)",
 		  AccessModifier = "private",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDFAction_GetFilePath(FPDF_ACTION)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "uint FPDFAction_GetURIPath(FPDF_DOCUMENT document, FPDF_ACTION action, ref byte buffer, uint buflen)",
 		  AccessModifier = "private",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDFAction_GetURIPath(FPDF_DOCUMENT, FPDF_ACTION)'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "int FPDFDest_GetPageIndex(FPDF_DOCUMENT document, FPDF_DEST dest)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDestination.PageIndex'/>", "<seealso cref='PdfDocument.Destinations'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "bool FPDFDest_GetLocationInPage(FPDF_DEST dest, out bool hasXCoord, out bool hasYCoord, out bool hasZoom, out float x, out float y, out float zoom)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PdfDestination.LocationInPage'/>", "<seealso cref='PdfDocument.Destinations'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "FPDF_LINK FPDFLink_GetLinkAtPoint(FPDF_PAGE page, double x, double y)",
@@ -309,12 +309,13 @@ var Imports = new[] {
 
 	new { Method = "uint FPDF_GetMetaText(FPDF_DOCUMENT document, [MarshalAs(UnmanagedType.LPStr)] string tag, ref byte buffer, uint buflen)",
 		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDF_GetMetaText(FPDF_DOCUMENT, string)'/>", "<seealso cref='PDFium.FPDF_GetMetaText(FPDF_DOCUMENT, MetadataTags)'/>" },
 		  Attributes = new string[] { } },
 
+		  // Entry point not found
 	new { Method = "uint FPDF_GetPageLabel(FPDF_DOCUMENT document, int page_index, ref byte buffer, uint buflen)",
-		  AccessModifier = "public",
-		  Documentation = new string[] { },
+		  AccessModifier = "private",
+		  Documentation = new string[] { "<seealso cref='PDFium.FPDF_GetPageLabel(FPDF_DOCUMENT, int)'/>" },
 		  Attributes = new string[] { } },
 
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdf_edit.h

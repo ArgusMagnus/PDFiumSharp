@@ -153,6 +153,7 @@ namespace PDFiumSharp
 		/// </summary>
 		/// <param name="action">Handle to the action. Must be of type <see cref="ActionTypes.RemoteGoTo"/> or <see cref="ActionTypes.Launch"/>.</param>
 		/// <returns>The file path of <paramref name="action"/>.</returns>
+		/// <seealso cref="PdfAction.FilePath"/>
 		public static string FPDFAction_GetFilePath(FPDF_ACTION action)
 		{
 			return GetUtf16String((ref byte buffer, int length) => (int)FPDFAction_GetFilePath(action, ref buffer, (uint)length), sizeof(byte), true);
@@ -164,6 +165,7 @@ namespace PDFiumSharp
 		/// <param name="document">Handle to the document.</param>
 		/// <param name="action">Handle to the action. Must be of type <see cref="ActionTypes.Uri"/>.</param>
 		/// <returns>The URI path of <paramref name="action"/>.</returns>
+		/// <seealso cref="PdfAction.Uri"/>
 		public static string FPDFAction_GetURIPath(FPDF_DOCUMENT document, FPDF_ACTION action)
 		{
 			return GetAsciiString((ref byte buffer, int length) => (int)FPDFAction_GetURIPath(document, action, ref buffer, (uint)length));
@@ -197,6 +199,7 @@ namespace PDFiumSharp
 		/// 'Document Information Dictionary'.
 		/// </remarks>
 		/// <seealso href="http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF Reference</seealso>
+		/// <seealso cref="PdfDocument.GetMetaText(MetadataTags)"/>
 		public static string FPDF_GetMetaText(FPDF_DOCUMENT document, string tag)
 		{
 			return GetUtf16String((ref byte buffer, int length) => (int)FPDF_GetMetaText(document, tag, ref buffer, (uint)length), sizeof(byte), true);
@@ -214,6 +217,7 @@ namespace PDFiumSharp
 		/// 'Document Information Dictionary'.
 		/// </remarks>
 		/// <seealso href="http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF Reference</seealso>
+		/// <seealso cref="PdfDocument.GetMetaText(MetadataTags)"/>
 		public static string FPDF_GetMetaText(FPDF_DOCUMENT document, MetadataTags tag) => FPDF_GetMetaText(document, tag.ToString());
 
 		/// <summary>
@@ -222,10 +226,11 @@ namespace PDFiumSharp
 		/// <param name="document">Handle to the document.</param>
 		/// <param name="page_index">The zero-based index of the page.</param>
 		/// <returns>The page label.</returns>
-		public static string FPDF_GetPageLabel(FPDF_DOCUMENT document, int page_index)
-		{
-			return GetUtf16String((ref byte buffer, int length) => (int)FPDF_GetPageLabel(document, page_index, ref buffer, (uint)length), sizeof(byte), true);
-		}
+		/// <seealso cref="PdfPage.Label"/>
+		//public static string FPDF_GetPageLabel(FPDF_DOCUMENT document, int page_index)
+		//{
+		//	return GetUtf16String((ref byte buffer, int length) => (int)FPDF_GetPageLabel(document, page_index, ref buffer, (uint)length), sizeof(byte), true);
+		//}
 
 		#endregion
 

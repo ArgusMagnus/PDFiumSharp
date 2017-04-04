@@ -60,6 +60,8 @@ namespace PDFiumSharp
 		/// </summary>
 		public PdfDocument Document { get; }
 
+		//public string Label => PDFium.FPDF_GetPageLabel(Document.Handle, Index);
+
 		PdfPage(PdfDocument doc, FPDF_PAGE page, int index)
 			: base(page)
 		{
@@ -96,6 +98,20 @@ namespace PDFiumSharp
 		public void Render(PDFiumBitmap renderTarget, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			Render(renderTarget, (0, 0, renderTarget.Width, renderTarget.Height), orientation, flags);
+		}
+
+		public (double X, double Y) DeviceToPage((int left, int top, int width, int height) displayArea, int deviceX, int deviceY, PageOrientations orientation = PageOrientations.Normal)
+		{
+			(var left, var top, var width, var height) = displayArea;
+			PDFium.FPDF_DeviceToPage(Handle, left, top, width, height, orientation, deviceX, deviceY, out var x, out var y);
+			return (x, y);
+		}
+
+		public (int X, int Y) PageToDevice((int left, int top, int width, int height) displayArea, double pageX, double pageY, PageOrientations orientation = PageOrientations.Normal)
+		{
+			(var left, var top, var width, var height) = displayArea;
+			PDFium.FPDF_PageToDevice(Handle, left, top, width, height, orientation, pageX, pageY, out var x, out var y);
+			return (x, y);
 		}
 
 		protected override void Dispose(FPDF_PAGE handle)

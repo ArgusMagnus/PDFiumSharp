@@ -42,6 +42,19 @@ namespace PDFiumSharp
 
 		public DuplexTypes DuplexType => PDFium.FPDF_VIEWERREF_GetDuplex(Handle);
 
+		public IEnumerable<PdfBookmark> Bookmarks
+		{
+			get
+			{
+				FPDF_BOOKMARK handle = PDFium.FPDFBookmark_GetFirstChild(Handle, FPDF_BOOKMARK.Null);
+				while (!handle.IsNull)
+				{
+					yield return new PdfBookmark(this, handle);
+					handle = PDFium.FPDFBookmark_GetNextSibling(this.Handle, handle);
+				}
+			}
+		}
+
 		PdfDocument(FPDF_DOCUMENT doc)
 			: base(doc)
 		{
@@ -116,6 +129,14 @@ namespace PDFiumSharp
 			using (var stream = new FileStream(filename, FileMode.Create))
 				return Save(stream, flags, version);
 		}
+
+		public PdfBookmark FindBookmark(string title)
+		{
+			var handle = PDFium.FPDFBookmark_Find(Handle, title);
+			return handle.IsNull ? null : new PdfBookmark(this, handle);
+		}
+
+		public string GetMetaText(MetadataTags tag) => PDFium.FPDF_GetMetaText(Handle, tag);
 
 		protected override void Dispose(FPDF_DOCUMENT handle)
 		{
