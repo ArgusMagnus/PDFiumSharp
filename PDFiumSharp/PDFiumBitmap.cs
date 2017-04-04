@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using PDFiumSharp.Types;
+using System.IO;
+using PDFiumSharp.BMP;
+using System.Runtime.InteropServices;
 
 namespace PDFiumSharp
 {
@@ -87,6 +90,37 @@ namespace PDFiumSharp
 		/// </summary>
 		/// <param name="color"></param>
 		public void Fill(FPDF_COLOR color) => FillRectangle(0, 0, Width, Height, color);
+
+		/// <summary>
+		/// Saves the <see cref="PDFiumBitmap"/> in the <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
+		/// </summary>
+		public void Save(Stream stream, double dpiX = 0, double dpiY = 0)
+		{
+			const double MetersPerInch = 0.0254;
+			if (Format == BitmapFormats.FPDFBitmap_Gray || Format == BitmapFormats.FPDFBitmap_BGRx)
+				throw new NotSupportedException($"Bitmap format {Format} is not yet supported.");
+
+			int ppmX = (int)Math.Round(dpiX / MetersPerInch);
+			int ppmY = (int)Math.Round(dpiY / MetersPerInch);
+
+			uint pixelArrayOffset = BmpFileHeader.Size + BitmapInfoHeader.Size;
+			ushort bpp = (ushort)(BytesPerPixel * 8);
+			uint bmpStride = ((bpp * (uint)Width + 31) / 32) * 4;
+			uint pixelArraySize = (uint)bmpStride * (uint)Height;
+
+			var fileHeader = new BmpFileHeader(pixelArrayOffset + pixelArraySize, pixelArrayOffset);
+			var infoHeader = new BitmapInfoHeader(Width, Height, bpp, ppmX, ppmY);
+
+			fileHeader.Write(stream);
+			infoHeader.Write(stream);
+			var buffer = new byte[bmpStride];
+			for (int y = Height - 1; y >= 0; y--)
+			{
+				IntPtr ptr = Scan0 + y * Stride;
+				Marshal.Copy(ptr, buffer, 0, Stride);
+				stream.Write(buffer, 0, buffer.Length);
+			}
+		}
 
 		protected override void Dispose(FPDF_BITMAP handle)
 		{
