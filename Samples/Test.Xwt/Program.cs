@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xwt;
 using Xwt.Drawing;
 using PDFiumSharp;
+using System.IO;
 
 namespace Test.Xwt
 {
@@ -21,9 +22,13 @@ namespace Test.Xwt
 			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var page = doc.Pages[0];
-				BitmapImage bitmap = new ImageBuilder(page.Width, page.Height).ToBitmap();
-				page.Render(bitmap);
-				window.Content = new ImageView(bitmap);
+				using (var bitmap = new PDFiumBitmap((int)page.Width, (int)page.Height, true))
+				using (var file = new FileStream("Test.bmp", FileMode.Create))
+				{
+					page.Render(bitmap, PageOrientations.Normal);
+					bitmap.Save(file);
+					window.Content = new ImageView(Image.FromStream(bitmap.AsBmpStream()));
+				}
 			}
 
 			window.Show();

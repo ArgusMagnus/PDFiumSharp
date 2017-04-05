@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PDFiumSharp;
+using System.IO;
 
 namespace TestConsole
 {
@@ -13,8 +14,16 @@ namespace TestConsole
 		{
 			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
-				var tmp = PDFium.FPDF_GetMetaText(doc.Handle, MetadataTags.CreationDate);
-				Console.WriteLine(tmp);
+				int i = 0;
+				foreach (var page in doc.Pages)
+				{
+					using (var bitmap = new PDFiumBitmap((int)page.Width, (int)page.Height, true))
+					using (var stream = new FileStream($"{i++}.bmp", FileMode.Create))
+					{
+						page.Render(bitmap);
+						bitmap.Save(stream);
+					}
+				}
 			}
 			Console.ReadKey();
 		}
