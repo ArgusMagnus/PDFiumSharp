@@ -16,8 +16,16 @@
 			<title>Getting Started</title>
 			<content>
 				<para>
-					The easiest way to get going is to reference the NuGet packages. There are four NuGet packages available:
+					The easiest way to get going is to reference the NuGet packages. There are five NuGet packages available:
 					<list class="bullet">
+						<listItem>
+							<externalLink>
+								<linkText>PDFium.Windows</linkText>
+								<linkUri>https://www.nuget.org/packages/PDFium.Windows/</linkUri>
+							</externalLink>
+							contains the native PDFium binaries for windows. Either install this package or provide the binaries yourself
+							(put pdfium_x64.dll, pdfium_x86.dll in the application directory).
+						</listItem>
 						<listItem>
 							<externalLink>
 								<linkText>PDFiumSharp</linkText>
@@ -26,6 +34,7 @@
 							contains the core package. With this you can create, open, manipulate, render and save PDF documents.
 							<codeEntityReference>T:PDFiumSharp.PdfPage</codeEntityReference>s can be rendered to
 							<codeEntityReference>T:PDFiumSharp.PDFiumBitmap</codeEntityReference>s (which are simply memory buffers).
+							This package depends on the presence of the native PDFium binaries.
 						</listItem>
 						<listItem>
 							<externalLink>

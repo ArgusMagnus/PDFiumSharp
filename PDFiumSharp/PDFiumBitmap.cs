@@ -64,7 +64,8 @@ namespace PDFiumSharp
 		/// <summary>
 		/// Creates a new <see cref="PDFiumBitmap"/> using memory allocated by the caller.
 		/// The caller is responsible for freeing the memory and that the adress stays
-		/// valid during the lifetime of the returned <see cref="PDFiumBitmap"/>.
+		/// valid during the lifetime of the returned <see cref="PDFiumBitmap"/>. To free
+		/// unmanaged resources, <see cref="Dispose"/> must be called.
 		/// </summary>
 		/// <param name="width">The width of the new bitmap.</param>
 		/// <param name="height">The height of the new bitmap.</param>
@@ -112,6 +113,8 @@ namespace PDFiumSharp
 		/// <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
 		/// </summary>
 		public Stream AsBmpStream(double dpiX = 72, double dpiY = 72) => new BmpStream(this, dpiX, dpiY);
+
+		public void Dispose() => ((IDisposable)this).Dispose();
 
 		protected override void Dispose(FPDF_BITMAP handle)
 		{
@@ -261,7 +264,7 @@ namespace PDFiumSharp
 				else if (origin == SeekOrigin.Current)
 					Position += offset;
 				else if (origin == SeekOrigin.End)
-					Position = Length - offset;
+					Position = Length + offset;
 				return Position;
 			}
 
