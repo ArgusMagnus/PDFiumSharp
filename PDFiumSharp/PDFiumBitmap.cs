@@ -99,6 +99,15 @@ namespace PDFiumSharp
 		}
 
 		/// <summary>
+		/// Saves the <see cref="PDFiumBitmap"/> in the <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
+		/// </summary>
+		public void Save(string filename, double dpiX = 72, double dpiY = 72)
+		{
+			using (FileStream stream = new FileStream(filename, FileMode.Create))
+				Save(stream, dpiX, dpiY);
+		}
+
+		/// <summary>
 		/// Exposes the underlying image data directly as read-only stream in the
 		/// <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
 		/// </summary>
