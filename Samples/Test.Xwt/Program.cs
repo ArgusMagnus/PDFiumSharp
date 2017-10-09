@@ -22,11 +22,10 @@ namespace Test.Xwt
 			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var page = doc.Pages[0];
-				using (var bitmap = new PDFiumBitmap((int)page.Width, (int)page.Height, true))
-				using (var file = new FileStream("Test.bmp", FileMode.Create))
+				using (var bitmap = new PDFiumBitmap((int)page.Width, (int)page.Height, false))
 				{
 					page.Render(bitmap, PageOrientations.Normal);
-					bitmap.Save(file);
+					bitmap.Save("Page0.bmp");
 					window.Content = new ImageView(Image.FromStream(bitmap.AsBmpStream()));
 				}
 			}

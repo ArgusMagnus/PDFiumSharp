@@ -8,7 +8,7 @@ namespace PDFiumSharp.Types
     public abstract class NativeWrapper<T> : IDisposable
 		where T : struct, IHandle<T>
     {
-		readonly T _handle;
+		T _handle;
 
 		/// <summary>
 		/// Handle which can be used with the native <see cref="PDFium"/> functions.
