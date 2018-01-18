@@ -5,13 +5,23 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <AssemblyVersion>0.1.2.0</AssemblyVersion>
     <Copyright>Copyright © Tobias Meyer 2017</Copyright>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\PDFiumSharp.xml</DocumentationFile>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DocumentationFile>bin\Release\netstandard1.4\PDFiumSharp.xml</DocumentationFile>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>

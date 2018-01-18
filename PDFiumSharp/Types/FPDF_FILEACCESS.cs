@@ -11,8 +11,10 @@ using System.IO;
 
 namespace PDFiumSharp.Types
 {
-	public delegate bool FileReadBlockHandler(IntPtr ignore, int position, IntPtr buffer, int size);
-	public delegate bool FileWriteBlockHandler(IntPtr ignore, IntPtr data, int size);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool FileReadBlockHandler(IntPtr ignore, int position, IntPtr buffer, int size);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool FileWriteBlockHandler(IntPtr ignore, IntPtr data, int size);
 
 	[StructLayout(LayoutKind.Sequential)]
     public class FPDF_FILEREAD
@@ -33,7 +35,7 @@ namespace PDFiumSharp.Types
 
 		public static FPDF_FILEREAD FromStream(Stream stream, int count = 0)
 		{
-			if (count < 0)
+			if (count <= 0)
 				count = (int)(stream.Length - stream.Position);
 			var start = stream.Position;
 			byte[] data = null;
