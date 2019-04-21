@@ -116,7 +116,9 @@ namespace PDFiumSharp
 
 		public FlattenResults Flatten(FlattenFlags flags) => PDFium.FPDFPage_Flatten(Handle, flags);
 
-		protected override void Dispose(FPDF_PAGE handle)
+        public void Dispose() => ((IDisposable)this).Dispose();
+
+        protected override void Dispose(FPDF_PAGE handle)
 		{
 			PDFium.FPDF_ClosePage(handle);
 		}
