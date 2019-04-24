@@ -50,10 +50,15 @@ namespace PDFiumSharp
 			set => PDFium.FPDFPage_SetRotation(Handle, value);
 		}
 
-		/// <summary>
-		/// Gets the zero-based index of the page in the <see cref="Document"/>
-		/// </summary>
-		public int Index { get; internal set; } = -1;
+        /// <summary>
+        /// Get the transparency of the page
+        /// </summary>
+        public bool HasTransparency => PDFium.FPDFPage_HasTransparency(Handle);
+
+        /// <summary>
+        /// Gets the zero-based index of the page in the <see cref="Document"/>
+        /// </summary>
+        public int Index { get; internal set; } = -1;
 
 		/// <summary>
 		/// Gets the <see cref="PdfDocument"/> which contains the page.
