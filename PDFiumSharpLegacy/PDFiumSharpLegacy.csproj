@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{23B8D0F9-D347-4607-A848-8AAF53406578}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PDFiumSharp</RootNamespace>
+    <AssemblyName>PDFiumSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\PDFiumSharp\ActionTypes.cs">
+      <Link>ActionTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\BitmapFormats.cs">
+      <Link>BitmapFormats.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\DocumentPermissions.cs">
+      <Link>DocumentPermissions.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\DuplexTypes.cs">
+      <Link>DuplexTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\FlattenFlags.cs">
+      <Link>FlattenFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\FontTypes.cs">
+      <Link>FontTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\MetadataTags.cs">
+      <Link>MetadataTags.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PageModes.cs">
+      <Link>PageModes.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PageOrientations.cs">
+      <Link>PageOrientations.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PathFillModes.cs">
+      <Link>PathFillModes.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfAction.cs">
+      <Link>PdfAction.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfBookmark.cs">
+      <Link>PdfBookmark.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfDestination.cs">
+      <Link>PdfDestination.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfDestinationCollection.cs">
+      <Link>PdfDestinationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfDocument.cs">
+      <Link>PdfDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PDFium.cs">
+      <Link>PDFium.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PDFium.g.cs">
+      <Link>PDFium.g.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PDFium.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PDFiumBitmap.cs">
+      <Link>PDFiumBitmap.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PDFiumException.cs">
+      <Link>PDFiumException.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfPage.cs">
+      <Link>PdfPage.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PdfPageCollection.cs">
+      <Link>PdfPageCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\PinnedGCHandle.cs">
+      <Link>PinnedGCHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\RenderingFlags.cs">
+      <Link>RenderingFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\RenderingStatus.cs">
+      <Link>RenderingStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\SaveFlags.cs">
+      <Link>SaveFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\SearchFlags.cs">
+      <Link>SearchFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FPDF_COLOR.cs">
+      <Link>Types\FPDF_COLOR.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FPDF_ERR.cs">
+      <Link>Types\FPDF_ERR.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FPDF_FILEACCESS.cs">
+      <Link>Types\FPDF_FILEACCESS.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FPDF_LIBRARY_CONFIG.cs">
+      <Link>Types\FPDF_LIBRARY_CONFIG.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FPDF_Typedefs.g.cs">
+      <Link>Types\FPDF_Typedefs.g.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FPDF_Typedefs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FS_MATRIX.cs">
+      <Link>Types\FS_MATRIX.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FS_QUADPOINTSF.cs">
+      <Link>Types\FS_QUADPOINTSF.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\FS_RECTF.cs">
+      <Link>Types\FS_RECTF.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\IFSDK_PAUSE.cs">
+      <Link>Types\IFSDK_PAUSE.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\IHandle.cs">
+      <Link>Types\IHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\PDFiumSharp\Types\NativeWrapper.cs">
+      <Link>Types\NativeWrapper.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\PDFiumSharp\PDFium.tt">
+      <Link>PDFium.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PDFium.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="..\PDFiumSharp\PDFium.xml">
+      <Link>PDFium.xml</Link>
+    </Content>
+    <Content Include="..\PDFiumSharp\Types\FPDF_Typedefs.tt">
+      <Link>Types\FPDF_Typedefs.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FPDF_Typedefs.g.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
