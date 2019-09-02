@@ -23,7 +23,7 @@ namespace PDFiumSharp
 
 		public PdfDestinationCollection Destinations { get; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets the PDF file version. File version: 14 for 1.4, 15 for 1.5, ...
 		/// </summary>
 		public int FileVersion { get { PDFium.FPDF_GetFileVersion(Handle, out int fileVersion); return fileVersion; } }
@@ -91,16 +91,19 @@ namespace PDFiumSharp
 		public PdfDocument(byte[] data, int index = 0, int count = -1, string password = null)
 			: this(PDFium.FPDF_LoadDocument(data, index, count, password)) { }
 
-		/// <summary>
-		/// Loads a <see cref="PdfDocument"/> from '<paramref name="count"/>' bytes read from a <paramref name="stream"/>.
-		/// <see cref="Close"/> must be called in order to free unmanaged resources.
-		/// </summary>
-		/// <param name="count">
-		/// The number of bytes to read from the <paramref name="stream"/>.
-		/// If the value is equal to or smaller than 0, the stream is read to the end.
-		/// </param>
-		public PdfDocument(Stream stream, int count = 0, string password = null)
-			: this(PDFium.FPDF_LoadDocument(stream, count, password)) { }
+        /// <summary>
+        /// Loads a <see cref="PdfDocument"/> from '<paramref name="count"/>' bytes read from a <paramref name="stream"/>.
+        /// <see cref="Close"/> must be called in order to free unmanaged resources.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="fileRead"></param>
+        /// <param name="count">
+        /// The number of bytes to read from the <paramref name="stream"/>.
+        /// If the value is equal to or smaller than 0, the stream is read to the end.
+        /// </param>
+        /// <param name="password"></param>
+        public PdfDocument(Stream stream, FPDF_FILEREAD fileRead, int count = 0, string password = null)
+            : this(PDFium.FPDF_LoadDocument(stream, fileRead, count, password)) { }
 
 		/// <summary>
 		/// Closes the <see cref="PdfDocument"/> and frees unmanaged resources.
