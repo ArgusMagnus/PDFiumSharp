@@ -18,7 +18,7 @@ namespace PDFiumSharp
 {
 	/// <summary>
 	/// Static class containing the native (imported) PDFium functions.
-	/// In case of missing documentation, refer to the <see href="https://pdfium.googlesource.com/pdfium/+/master/public">PDFium header files</see>. 
+	/// In case of missing documentation, refer to the <see href="https://pdfium.googlesource.com/pdfium/+/refs/heads/chromium/3907/public">PDFium header files</see>. 
 	/// </summary>
 	public static partial class PDFium
     {
@@ -28,6 +28,18 @@ namespace PDFiumSharp
 		/// loaded for some reason.
 		/// </summary>
 		public static bool IsAvailable { get; }
+
+		//public partial interface INative { }
+
+		//sealed partial class X86 : INative
+		//{
+		//	const string DllName = "pdfium_x86";
+		//}
+
+		//sealed partial class X64 : INative
+		//{
+		//	const string DllName = "pdfium_x64";
+		//}
 
 		static PDFium()
 		{
@@ -47,6 +59,8 @@ namespace PDFiumSharp
 		{
 			byte b = 0;
 			int length = handler(ref b, 0);
+			if (length == 0)
+				return string.Empty;
 			var buffer = new byte[length * lengthUnit];
 			handler(ref buffer[0], length);
 			length *= lengthUnit;

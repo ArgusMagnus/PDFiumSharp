@@ -120,5 +120,16 @@ namespace PDFiumSharp
 		{
 			PDFium.FPDF_ClosePage(handle);
 		}
+
+		public PdfTextPage GetTextPage() => PdfTextPage.Load(this);
+
+		public IEnumerable<PdfLink> Links
+		{
+			get
+			{
+				foreach (var handle in PDFium.FPDFLink_Enumerate(Handle))
+					yield return new PdfLink(this, handle);
+			}
+		}
 	}
 }

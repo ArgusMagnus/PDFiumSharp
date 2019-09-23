@@ -12,7 +12,7 @@ License: Microsoft Reciprocal License (MS-RL)
 <# // ------------------------------------------------------ Code Start ------------------------------------------------------
 const string DllName32 = "pdfium_x86";
 const string DllName64 = "pdfium_x64";
-const string CallingConvention = "CallingConvention.StdCall";
+const string CallingConvention = "CallingConvention.Cdecl";
 
 var Imports = new[] {
 	// https://pdfium.googlesource.com/pdfium/+/master/public/fpdfview.h
@@ -257,9 +257,14 @@ var Imports = new[] {
 		  Documentation = new string[] { "<seealso cref='PDFium.FPDFAction_GetURIPath(FPDF_DOCUMENT, FPDF_ACTION)'/>" },
 		  Attributes = new string[] { } },
 
-	new { Method = "int FPDFDest_GetPageIndex(FPDF_DOCUMENT document, FPDF_DEST dest)",
+	new { Method = "int FPDFDest_GetDestPageIndex(FPDF_DOCUMENT document, FPDF_DEST dest)",
 		  AccessModifier = "public",
 		  Documentation = new string[] { "<seealso cref='PdfDestination.PageIndex'/>", "<seealso cref='PdfDocument.Destinations'/>" },
+		  Attributes = new string[] { } },
+
+	new { Method = "uint FPDFDest_GetView(FPDF_DEST dest, out uint nParams, ref float paramsArray)",
+		  AccessModifier = "public",
+		  Documentation = new string[] { "<seealso cref='PdfDestination.LocationInPage'/>", "<seealso cref='PdfDocument.Destinations'/>" },
 		  Attributes = new string[] { } },
 
 	new { Method = "bool FPDFDest_GetLocationInPage(FPDF_DEST dest, out bool hasXCoord, out bool hasYCoord, out bool hasZoom, out float x, out float y, out float zoom)",
@@ -598,7 +603,12 @@ var Imports = new[] {
 		  Documentation = new string[] { },
 		  Attributes = new string[] { } },
 
-	new { Method = "void FPDFText_GetCharBox(FPDF_TEXTPAGE text_page, int index, out double left, out double right, out double bottom, out double top)",
+	new { Method = "bool FPDFText_GetCharBox(FPDF_TEXTPAGE text_page, int index, out double left, out double right, out double bottom, out double top)",
+		  AccessModifier = "public",
+		  Documentation = new string[] { },
+		  Attributes = new string[] { } },
+
+	new { Method = "bool FPDFText_GetCharOrigin(FPDF_TEXTPAGE text_page, int index, out double x, out double y)",
 		  AccessModifier = "public",
 		  Documentation = new string[] { },
 		  Attributes = new string[] { } },
