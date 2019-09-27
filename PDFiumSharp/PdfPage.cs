@@ -131,5 +131,7 @@ namespace PDFiumSharp
 					yield return new PdfLink(this, handle);
 			}
 		}
+
+		public void Dispose() => ((IDisposable)this).Dispose();
 	}
 }

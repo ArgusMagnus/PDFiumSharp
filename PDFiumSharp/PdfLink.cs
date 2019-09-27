@@ -18,5 +18,15 @@ namespace PDFiumSharp
 			Destination = new PdfDestination(page.Document, PDFium.FPDFLink_GetDest(page.Document.Handle, handle), null);
 			Action = new PdfAction(page.Document, PDFium.FPDFLink_GetAction(handle));
 		}
+
+		public FS_RECTF AnnotationRectangle
+		{
+			get
+			{
+				if (PDFium.FPDFLink_GetAnnotRect(Handle, out var rect))
+					return rect;
+				return new FS_RECTF(float.NaN, float.NaN, float.NaN, float.NaN);
+			}
+		}
 	}
 }

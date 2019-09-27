@@ -16,10 +16,15 @@ namespace PDFiumSharp
 {
     public sealed class PdfDocument : NativeWrapper<FPDF_DOCUMENT>
     {
+		int _pageCount = -1;
+		public int PageCount => _pageCount > -1 ? _pageCount : (_pageCount = PDFium.FPDF_GetPageCount(Handle));
+
+		public PdfPage GetPage(int index) => PdfPage.Load(this, index);
+
 		/// <summary>
 		/// Gets the pages in the current <see cref="PdfDocument"/>.
 		/// </summary>
-		public PdfPageCollection Pages { get; }
+		//public PdfPageCollection Pages { get; }
 
 		public PdfDestinationCollection Destinations { get; }
 

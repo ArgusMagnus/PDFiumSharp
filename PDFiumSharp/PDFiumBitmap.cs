@@ -26,8 +26,8 @@ namespace PDFiumSharp
 		public BitmapFormats Format { get; }
 		public int BytesPerPixel => GetBytesPerPixel(Format);
 
-		PDFiumBitmap(FPDF_BITMAP bitmap, BitmapFormats format)
-			: base(bitmap)
+		PDFiumBitmap(FPDF_BITMAP bitmap, BitmapFormats format, long unmanagedMemorySize)
+			: base(bitmap, unmanagedMemorySize)
 		{
 			if (bitmap.IsNull)
 				throw new PDFiumException();
@@ -59,7 +59,7 @@ namespace PDFiumSharp
 		/// <see cref="BitmapFormats.FPDFBitmap_BGRA"/> or <see cref="BitmapFormats.FPDFBitmap_BGRx"/>.
 		/// </remarks>
 		public PDFiumBitmap(int width, int height, bool hasAlpha)
-			: this(PDFium.FPDFBitmap_Create(width, height, hasAlpha), hasAlpha ? BitmapFormats.FPDFBitmap_BGRA : BitmapFormats.FPDFBitmap_BGRx) { }
+			: this(PDFium.FPDFBitmap_Create(width, height, hasAlpha), hasAlpha ? BitmapFormats.FPDFBitmap_BGRA : BitmapFormats.FPDFBitmap_BGRx, 4L * width * height) { }
 
 		/// <summary>
 		/// Creates a new <see cref="PDFiumBitmap"/> using memory allocated by the caller.
@@ -73,7 +73,7 @@ namespace PDFiumSharp
 		/// <param name="scan0">The adress of the memory block which holds the pixel values.</param>
 		/// <param name="stride">The number of bytes per image row.</param>
 		public PDFiumBitmap(int width, int height, BitmapFormats format, IntPtr scan0, int stride)
-			: this(PDFium.FPDFBitmap_CreateEx(width, height, format, scan0, stride), format) { }
+			: this(PDFium.FPDFBitmap_CreateEx(width, height, format, scan0, stride), format, 0) { }
 
 		/// <summary>
 		/// Fills a rectangle in the <see cref="PDFiumBitmap"/> with <paramref name="color"/>.
@@ -112,7 +112,7 @@ namespace PDFiumSharp
 		/// Exposes the underlying image data directly as read-only stream in the
 		/// <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
 		/// </summary>
-		public Stream AsBmpStream(double dpiX = 72, double dpiY = 72) => new BmpStream(this, dpiX, dpiY);
+		public Stream AsBmpStream(double dpiX = 96, double dpiY = 96) => new BmpStream(this, dpiX, dpiY);
 
 		public void Dispose() => ((IDisposable)this).Dispose();
 

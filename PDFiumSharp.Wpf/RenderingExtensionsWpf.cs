@@ -62,6 +62,24 @@ namespace PDFiumSharp
 			page.Render(renderTarget, (0, 0, renderTarget.PixelWidth, renderTarget.PixelHeight), orientation, flags);
 		}
 
+		public static ImageSource CreateImageSource(this PdfPage page, int width, int height, bool withAlpha = true, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		{
+			using (var memoryBitmap = new PDFiumBitmap(width, height, withAlpha))
+			{
+				page.Render(memoryBitmap);
+				var bitmap = new BitmapImage();
+				bitmap.BeginInit();
+				bitmap.DecodePixelWidth = width;
+				bitmap.DecodePixelHeight = height;
+				bitmap.CacheOption = BitmapCacheOption.OnLoad;
+				bitmap.StreamSource = memoryBitmap.AsBmpStream();
+				bitmap.EndInit();
+				bitmap.StreamSource = null;
+				bitmap.Freeze();
+				return bitmap;
+			}
+		}
+
 		static BitmapFormats GetBitmapFormat(PixelFormat pixelFormat)
 		{
 			if (pixelFormat == PixelFormats.Bgra32)

@@ -9,6 +9,7 @@ namespace PDFiumSharp.Types
 		where T : struct, IHandle<T>
     {
 		T _handle;
+		readonly long _unmanagedMemorySize;
 
 		/// <summary>
 		/// Handle which can be used with the native <see cref="PDFium"/> functions.
@@ -29,11 +30,14 @@ namespace PDFiumSharp.Types
 		/// </summary>
 		public bool IsDisposed => _handle.IsNull;
 
-		protected NativeWrapper(T handle)
+		protected NativeWrapper(T handle, long unmanagedMemorySize = 0)
 		{
 			if (handle.IsNull)
 				throw new PDFiumException();
 			_handle = handle;
+			_unmanagedMemorySize = unmanagedMemorySize;
+			if (_unmanagedMemorySize > 0)
+				GC.AddMemoryPressure(_unmanagedMemorySize);
 		}
 
 		/// <summary>
@@ -45,7 +49,11 @@ namespace PDFiumSharp.Types
 		{
 			var oldHandle = _handle.SetToNull();
 			if (!oldHandle.IsNull)
+			{
 				Dispose(oldHandle);
+				if (_unmanagedMemorySize > 0)
+					GC.RemoveMemoryPressure(_unmanagedMemorySize);
+			}
 		}
 	}
 }
