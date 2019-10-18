@@ -88,17 +88,19 @@ namespace PDFiumSharp
 			return FPDF_LoadMemDocument(ref data[index], count, password);
 		}
 
-		/// <summary>
-		/// Loads a PDF document from '<paramref name="count"/>' bytes read from a stream.
-		/// </summary>
-		/// <param name="count">
-		/// The number of bytes to read from the <paramref name="stream"/>.
-		/// If the value is equal to or smaller than 0, the stream is read to the end.
-		/// </param>
-		public static FPDF_DOCUMENT FPDF_LoadDocument(Stream stream, int count = 0, string password = null)
-		{
-			return FPDF_LoadCustomDocument(FPDF_FILEREAD.FromStream(stream, count), password);
-		}
+        /// <summary>
+        /// Loads a PDF document from '<paramref name="count"/>' bytes read from a stream.
+        /// </summary>
+        /// <param name="fileRead"></param>
+        /// <param name="count">
+        /// The number of bytes to read from the <paramref name="stream"/>.
+        /// If the value is equal to or smaller than 0, the stream is read to the end.
+        /// </param>
+        /// <param name="stream"></param>
+        public static FPDF_DOCUMENT FPDF_LoadDocument(Stream stream, FPDF_FILEREAD fileRead, int count = 0, string password = null)
+        {
+            return FPDF_LoadCustomDocument(fileRead, password);
+        }
 
 		//public static string FPDF_VIEWERREF_GetName(FPDF_DOCUMENT document, string key)
 		//{

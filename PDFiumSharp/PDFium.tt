@@ -807,7 +807,7 @@ foreach (var import in Imports)
 	if (returnType == "void")
 	{
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64 || (RuntimeInformation.ProcessArchitecture == Architecture.X86 && IntPtr.Size == 8))
 				lock(_lock) { PlatformInvoke.<#=name#>_x64(<#=args#>); }
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
 				lock(_lock) { PlatformInvoke.<#=name#>_x86(<#=args#>); }
@@ -818,7 +818,7 @@ foreach (var import in Imports)
 	else
 	{
 // --------------------------------------------------------- Code End ----------------------------------------------------- #>
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64 || (RuntimeInformation.ProcessArchitecture == Architecture.X86 && IntPtr.Size == 8))
 				lock(_lock) { return PlatformInvoke.<#=name#>_x64(<#=args#>); }
 			else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
 				lock(_lock) { return PlatformInvoke.<#=name#>_x86(<#=args#>); }

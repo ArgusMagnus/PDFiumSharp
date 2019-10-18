@@ -25,7 +25,7 @@ namespace PDFiumSharp.Types
 		readonly uint _argb;
 
 		public byte A => _a;
-		public byte R => _b;
+		public byte R => _r;
 		public byte G => _g;
 		public byte B => _b;
 		public int ARGB => unchecked((int)_argb);

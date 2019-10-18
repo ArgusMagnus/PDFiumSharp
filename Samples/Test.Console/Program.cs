@@ -16,14 +16,16 @@ namespace TestConsole
 			{
 				int i = 0;
 				foreach (var page in doc.Pages)
-				{
-					using (var bitmap = new PDFiumBitmap((int)page.Width, (int)page.Height, true))
-					using (var stream = new FileStream($"{i++}.bmp", FileMode.Create))
-					{
-						page.Render(bitmap);
-						bitmap.Save(stream);
-					}
-				}
+                    using (page)
+                    {
+                        using (var bitmap = new PDFiumBitmap((int)page.Width, (int)page.Height, true))
+                        using (var stream = new FileStream($"{i++}.bmp", FileMode.Create))
+                        {
+                            page.Render(bitmap);
+                            bitmap.Save(stream);
+                        }
+                    }
+                
 			}
 			Console.ReadKey();
 		}
