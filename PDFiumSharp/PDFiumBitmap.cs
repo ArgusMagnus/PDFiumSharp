@@ -94,7 +94,7 @@ namespace PDFiumSharp
 		/// <summary>
 		/// Saves the <see cref="PDFiumBitmap"/> in the <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
 		/// </summary>
-		public void Save(Stream stream, double dpiX = 72, double dpiY = 72)
+		public void Save(Stream stream, double dpiX = 96, double dpiY = 96)
 		{
 			AsBmpStream(dpiX, dpiY).CopyTo(stream);
 		}
@@ -102,7 +102,7 @@ namespace PDFiumSharp
 		/// <summary>
 		/// Saves the <see cref="PDFiumBitmap"/> in the <see href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</see> file format.
 		/// </summary>
-		public void Save(string filename, double dpiX = 72, double dpiY = 72)
+		public void Save(string filename, double dpiX = 96, double dpiY = 96)
 		{
 			using (FileStream stream = new FileStream(filename, FileMode.Create))
 				Save(stream, dpiX, dpiY);

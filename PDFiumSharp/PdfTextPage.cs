@@ -41,5 +41,15 @@ namespace PDFiumSharp
 				return (x, y);
 			return (double.NaN, double.NaN);
 		}
+
+        public (double Left, double Top, double Right, double Bottom) GetCharBox(int index)
+        {
+            if (index < 0 || index >= CharCount)
+                throw new IndexOutOfRangeException();
+
+            if (PDFium.FPDFText_GetCharBox(Handle, index, out var left, out var right, out var bottom, out var top))
+                return (left, top, right, bottom);
+            return (double.NaN, double.NaN, double.NaN, double.NaN);
+        }
 	}
 }

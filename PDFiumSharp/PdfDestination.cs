@@ -44,13 +44,31 @@ namespace PDFiumSharp
 		{
 			Unkown = 0,
 			XYZ,
+			/// <summary>
+			/// Fit the entire page within the window both vertically and horizontally.
+			/// </summary>
 			Fit,
+			/// <summary>
+			/// Fit the entire width of the page within the window.
+			/// </summary>
 			FitHorizontal,
+			/// <summary>
+			/// Fit the entire height of the page within the window.
+			/// </summary>
 			FitVertical,
 			FitR,
-			FitB,
-			FitBH,
-			FitBV
+			/// <summary>
+			/// Fit the bounding box within the window both vertically and horizontally.
+			/// </summary>
+			FitBoundingBox,
+			/// <summary>
+			/// Fit the entire width of the bounding box within the window.
+			/// </summary>
+			FitBoundingBoxHorizontal,
+			/// <summary>
+			/// Fit the entire height of the bounding box within the window.
+			/// </summary>
+			FitBoundingBoxVertical
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -81,6 +99,15 @@ namespace PDFiumSharp
 				_y2 = float.NaN;
 				Type = (ViewFitTypes)PDFium.FPDFDest_GetView(handle, out var count, ref _x);
 			}
+
+            public View(float left, float top, float right, float bottom, ViewFitTypes type)
+            {
+                _x = left;
+                _y = top;
+                _x2 = right;
+                _y2 = bottom;
+                Type = type;
+            }
 		}
 	}
 }

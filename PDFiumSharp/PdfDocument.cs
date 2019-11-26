@@ -67,7 +67,7 @@ namespace PDFiumSharp
 		{
 			if (doc.IsNull)
 				throw new PDFiumException();
-			Pages = new PdfPageCollection(this);
+			//Pages = new PdfPageCollection(this);
 			Destinations = new PdfDestinationCollection(this);
 		}
 
@@ -149,7 +149,7 @@ namespace PDFiumSharp
 
 		protected override void Dispose(FPDF_DOCUMENT handle)
 		{
-			((IDisposable)Pages).Dispose();
+			//((IDisposable)Pages).Dispose();
 			PDFium.FPDF_CloseDocument(handle);
 		}
 	}

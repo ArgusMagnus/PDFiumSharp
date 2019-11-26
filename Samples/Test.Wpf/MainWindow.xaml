@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-		<Image x:Name="_ctrlImage"/>
-	</Grid>
+        Title="MainWindow" Width="1280" Height="720" x:Name="_win">
+	<TreeView x:Name="_list" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True" Background="Black"  >
+		<TreeView.ItemsPanel>
+			<ItemsPanelTemplate>
+				<VirtualizingStackPanel HorizontalAlignment="Center"/>
+			</ItemsPanelTemplate>
+		</TreeView.ItemsPanel>
+		<TreeView.ItemTemplate>
+			<DataTemplate>
+				<local:PdfPageView Model="{Binding}" HorizontalAlignment="Center" GoToRequested="PdfPageView_GoToRequested">
+					<local:PdfPageView.LayoutTransform>
+						<ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="{Binding Zoom, ElementName=_win}" ScaleY="{Binding Zoom, ElementName=_win}"/>
+					</local:PdfPageView.LayoutTransform>
+				</local:PdfPageView>
+			</DataTemplate>
+		</TreeView.ItemTemplate>
+	</TreeView>
 </Window>

@@ -15,8 +15,10 @@ namespace PDFiumSharp
 			:base(handle)
 		{
 			Page = page;
-			Destination = new PdfDestination(page.Document, PDFium.FPDFLink_GetDest(page.Document.Handle, handle), null);
-			Action = new PdfAction(page.Document, PDFium.FPDFLink_GetAction(handle));
+            var dest = PDFium.FPDFLink_GetDest(page.Document.Handle, handle);
+            Destination = dest.IsNull ? null : new PdfDestination(page.Document, dest, null);
+            var action = PDFium.FPDFLink_GetAction(handle);
+            Action = action.IsNull ? null : new PdfAction(page.Document, action);
 		}
 
 		public FS_RECTF AnnotationRectangle
