@@ -91,6 +91,11 @@ var Imports = new[] {
 		  Documentation = new string[] { "<seealso cref='PdfPage.Size'/>" },
 		  Attributes = new string[] { } },
 
+	new { Method = "void FPDF_RenderPage(IntPtr dc, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotation, RenderingFlags flags)",
+		  AccessModifier = "public",
+		  Documentation = new string[] { "<seealso cref='PdfPage.Render'/>" },
+		  Attributes = new string[] { } },
+
 	new { Method = "void FPDF_RenderPageBitmap(FPDF_BITMAP bitmap, FPDF_PAGE page, int start_x, int start_y, int size_x, int size_y, PageOrientations rotation, RenderingFlags flags)",
 		  AccessModifier = "public",
 		  Documentation = new string[] { "<seealso cref='PdfPage.Render'/>" },

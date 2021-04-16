@@ -75,6 +75,21 @@ namespace PDFiumSharp
 		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, PDFium.FPDFPage_New(doc.Handle, index, width, height), index);
 
 		/// <summary>
+		/// Renders the page to a device context (dc)
+		/// </summary>
+		/// <param name="renderTarget">The bitmap to which the page is to be rendered.</param>
+		/// <param name="rectDest">The destination rectangle in <paramref name="renderTarget"/>.</param>
+		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
+		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
+		public void Render(IntPtr renderTarget, (int left, int top, int width, int height) rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		{
+			if (renderTarget == IntPtr.Zero)
+				throw new ArgumentNullException(nameof(renderTarget));
+
+			PDFium.FPDF_RenderPage(renderTarget, this.Handle, rectDest.left, rectDest.top, rectDest.width, rectDest.height, orientation, flags);
+		}
+
+		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
 		/// </summary>
 		/// <param name="renderTarget">The bitmap to which the page is to be rendered.</param>
