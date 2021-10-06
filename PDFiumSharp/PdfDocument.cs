@@ -16,15 +16,15 @@ namespace PDFiumSharp
 {
     public sealed class PdfDocument : NativeWrapper<FPDF_DOCUMENT>
     {
-		int _pageCount = -1;
-		public int PageCount => _pageCount > -1 ? _pageCount : (_pageCount = PDFium.FPDF_GetPageCount(Handle));
+		//int _pageCount = -1;
+		//public int PageCount => _pageCount > -1 ? _pageCount : (_pageCount = PDFium.FPDF_GetPageCount(Handle));
 
-		public PdfPage GetPage(int index) => PdfPage.Load(this, index);
+		//public PdfPage GetPage(int index) => PdfPage.Load(this, index);
 
 		/// <summary>
 		/// Gets the pages in the current <see cref="PdfDocument"/>.
 		/// </summary>
-		//public PdfPageCollection Pages { get; }
+		public PdfPageCollection Pages { get; }
 
 		public PdfDestinationCollection Destinations { get; }
 
@@ -67,7 +67,7 @@ namespace PDFiumSharp
 		{
 			if (doc.IsNull)
 				throw new PDFiumException();
-			//Pages = new PdfPageCollection(this);
+			Pages = new PdfPageCollection(this);
 			Destinations = new PdfDestinationCollection(this);
 		}
 
@@ -149,7 +149,7 @@ namespace PDFiumSharp
 
 		protected override void Dispose(FPDF_DOCUMENT handle)
 		{
-			//((IDisposable)Pages).Dispose();
+			((IDisposable)Pages).Dispose();
 			PDFium.FPDF_CloseDocument(handle);
 		}
 	}

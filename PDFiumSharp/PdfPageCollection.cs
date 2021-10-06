@@ -23,10 +23,10 @@ namespace PDFiumSharp
 			_doc = doc;
 			_pages = new List<PdfPage>(PDFium.FPDF_GetPageCount(doc.Handle));
 
-            //Initialize _pages with null entries
-            for(int i=this.Count;i>0;i--)
-                _pages.Add(null);
-        }
+			//Initialize _pages with null entries
+			for (int i = this.Count; i > 0; i--)
+				_pages.Add(null);
+		}
 
 		/// <summary>
 		/// Gets the number of pages in the <see cref="PdfDocument"/>.

@@ -40,7 +40,7 @@ namespace Test.Wpf
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			_doc = new PdfDocument(@"\\sst1dc00\DataIndumo\Temp\metob\EPLAN\420191_NeumühleRickenbach_Annahme_+UV405_Rev03.pdf");
+			_doc = new PdfDocument(@"TestDoc.pdf", "password");
 			_list.ItemsSource = _doc?.Pages;
 		}
 

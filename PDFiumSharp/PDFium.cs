@@ -27,24 +27,7 @@ namespace PDFiumSharp
 		/// <c>false</c> is returned if the native libraries could not be
 		/// loaded for some reason.
 		/// </summary>
-		public static bool IsAvailable { get; }
-
-		//public partial interface INative { }
-
-		//sealed partial class X86 : INative
-		//{
-		//	const string DllName = "pdfium_x86";
-		//}
-
-		//sealed partial class X64 : INative
-		//{
-		//	const string DllName = "pdfium_x64";
-		//}
-
-		static PDFium()
-		{
-			IsAvailable = Initialize();
-		}
+		public static bool IsAvailable { get; } = Initialize();
 
 		static bool Initialize()
 		{
@@ -144,7 +127,7 @@ namespace PDFiumSharp
 			var buffer = new byte[length];
 			var dest = FPDF_GetNamedDest(document, index, ref buffer[0], ref length);
 			if (length < 1)
-				return (FPDF_DEST.Null, null);
+                return (FPDF_DEST.Null, null);
 			return (dest, Encoding.Unicode.GetString(buffer, 0, (int)length - 2));
 		}
 
