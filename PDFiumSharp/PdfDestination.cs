@@ -13,28 +13,30 @@ using System.Runtime.InteropServices;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfDestination : NativeWrapper<FPDF_DEST>
+    public sealed class PdfDestination : NativeWrapper<Native.FpdfDestT>
     {
 		public PdfDocument Document { get; }
 		public string Name { get; }
 
-		public int PageIndex => PDFium.FPDFDest_GetDestPageIndex(Document.Handle, Handle);
+		public int PageIndex => Native.fpdf_doc.FPDFDestGetDestPageIndex(Document.NativeObject, NativeObject);
 
 		public (float X, float Y, float Zoom) LocationInPage
 		{
 			get
 			{
-				if (!PDFium.FPDFDest_GetLocationInPage(Handle, out bool hasX, out bool hasY, out bool hasZ, out float x, out float y, out float z))
+				bool hasX = default, hasY = default, hasZ = default;
+				float x = default, y = default, z = default;
+				if (!Native.fpdf_doc.FPDFDestGetLocationInPage(NativeObject, ref hasX, ref hasY, ref hasZ, ref x, ref y, ref z))
 					return ((hasX ? x : float.NaN), (hasY ? y : float.NaN), (hasZ ? z : float.NaN));
 				return (float.NaN, float.NaN, float.NaN);
 			}
 		}
 
 
-		public View GetView() => new View(Handle);
+		public View GetView() => new View(NativeObject);
 
-		internal PdfDestination(PdfDocument doc, FPDF_DEST handle, string name)
-			:base(handle)
+		internal PdfDestination(PdfDocument doc, Native.FpdfDestT nativeObj, string name)
+			:base(nativeObj)
 		{
 			Document = doc;
 			Name = name;
@@ -91,13 +93,14 @@ namespace PDFiumSharp
 
 			public ViewFitTypes Type { get; }
 
-			internal View(FPDF_DEST handle)
+			internal View(Native.FpdfDestT nativeObj)
 			{
 				_x = float.NaN;
 				_y = float.NaN;
 				_x2 = float.NaN;
 				_y2 = float.NaN;
-				Type = (ViewFitTypes)PDFium.FPDFDest_GetView(handle, out var count, ref _x);
+				uint count = default;
+				Type = (ViewFitTypes)Native.fpdf_doc.FPDFDestGetView(nativeObj, ref count, ref _x);
 			}
 
             public View(float left, float top, float right, float bottom, ViewFitTypes type)

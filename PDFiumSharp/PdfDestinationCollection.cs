@@ -17,7 +17,7 @@ namespace PDFiumSharp
 		readonly PdfDocument _doc;
 
 		/// 
-		public int Count => PDFium.FPDF_CountNamedDests(_doc.Handle);
+		public int Count => checked((int)Native.fpdfview.FPDF_CountNamedDests(_doc.NativeObject));
 
 		internal PdfDestinationCollection(PdfDocument doc)
 		{
@@ -28,8 +28,8 @@ namespace PDFiumSharp
 		{
 			get
 			{
-				var handle = PDFium.FPDF_GetNamedDestByName(_doc.Handle, name);
-				return handle.IsNull ? null : new PdfDestination(_doc, handle, name);
+				var dest = Native.fpdfview.FPDF_GetNamedDestByName(_doc.NativeObject, name);
+				return dest == null ? null : new PdfDestination(_doc, dest, name);
 			}
 		}
 
@@ -39,8 +39,8 @@ namespace PDFiumSharp
 			{
 				if (index < 0 || index >= Count)
 					throw new ArgumentOutOfRangeException(nameof(index));
-				(var handle, var name) = PDFium.FPDF_GetNamedDest(_doc.Handle, index);
-				return handle.IsNull ? null : new PdfDestination(_doc, handle, name);
+				var dest = Native.fpdfview.FPDF_GetNamedDest(_doc.NativeObject, index, out var name);
+				return dest == null ? null : new PdfDestination(_doc, dest, name);
 			}
 		}
 

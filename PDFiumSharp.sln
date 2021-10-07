@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.GdiPlus", "PDFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Xwt", "PDFiumSharp.Xwt\PDFiumSharp.Xwt.csproj", "{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Wpf", "PDFiumSharp.Wpf\PDFiumSharp.Wpf.csproj", "{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.Wpf", "PDFiumSharp.Wpf\PDFiumSharp.Wpf.csproj", "{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{488D350A-7DF4-4E38-9398-409C89A2A9E6}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console", "Samples\Test.Console\Test.Console.csproj", "{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Nuget", "Samples\Test.Nuget\Test.Nuget.csproj", "{AE8ED031-D549-449C-9273-5F0369BF7E56}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.CppSharp", "PDFiumSharp.CppSharp\PDFiumSharp.CppSharp.csproj", "{83439038-FC44-4C52-8241-E21C82A435DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83439038-FC44-4C52-8241-E21C82A435DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83439038-FC44-4C52-8241-E21C82A435DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83439038-FC44-4C52-8241-E21C82A435DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83439038-FC44-4C52-8241-E21C82A435DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

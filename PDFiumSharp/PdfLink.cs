@@ -5,29 +5,31 @@ using PDFiumSharp.Types;
 
 namespace PDFiumSharp
 {
-	public sealed class PdfLink : NativeWrapper<FPDF_LINK>
+    public sealed class PdfLink : NativeWrapper<Native.FpdfLinkT>
 	{
 		public PdfPage Page { get; }
 		public PdfDestination Destination { get; }
 		public PdfAction Action { get; }
 
-		internal PdfLink(PdfPage page, FPDF_LINK handle)
-			:base(handle)
+		internal PdfLink(PdfPage page, Native.FpdfLinkT nativeObj)
+			:base(nativeObj)
 		{
-			Page = page;
-            var dest = PDFium.FPDFLink_GetDest(page.Document.Handle, handle);
-            Destination = dest.IsNull ? null : new PdfDestination(page.Document, dest, null);
-            var action = PDFium.FPDFLink_GetAction(handle);
-            Action = action.IsNull ? null : new PdfAction(page.Document, action);
+			Page = page;			
+            var dest = Native.fpdf_doc.FPDFLinkGetDest(page.Document.NativeObject, nativeObj);
+			Destination = dest == null ? null : new PdfDestination(page.Document, dest, null);
+			var action = Native.fpdf_doc.FPDFLinkGetAction(nativeObj);
+            Action = action == null ? null : new PdfAction(page.Document, action);
 		}
 
-		public FS_RECTF AnnotationRectangle
+		public RectangleFloat AnnotationRectangle
 		{
 			get
 			{
-				if (PDFium.FPDFLink_GetAnnotRect(Handle, out var rect))
-					return rect;
-				return new FS_RECTF(float.NaN, float.NaN, float.NaN, float.NaN);
+				RectangleFloat result = default;
+				using Native.FS_RECTF_ rect = new(ref result);
+				if (Native.fpdf_doc.FPDFLinkGetAnnotRect(NativeObject, rect))
+					return result;
+				return new(float.NaN, float.NaN, float.NaN, float.NaN);
 			}
 		}
 	}

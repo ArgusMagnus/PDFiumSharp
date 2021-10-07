@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using PDFiumSharp.Extensions;
 
 namespace PDFiumSharp
 {
@@ -19,12 +20,12 @@ namespace PDFiumSharp
 		/// <param name="rectDest">The destination rectangle in <paramref name="renderTarget"/>.</param>
 		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
 		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
-		public static void Render(this PdfPage page, WriteableBitmap renderTarget, (int left, int top, int width, int height) rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, WriteableBitmap renderTarget, RectangleInt32 rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (renderTarget == null)
 				throw new ArgumentNullException(nameof(renderTarget));
 
-			if (rectDest.left >= renderTarget.PixelWidth || rectDest.top >= renderTarget.PixelHeight)
+			if (rectDest.Left >= renderTarget.PixelWidth || rectDest.Top >= renderTarget.PixelHeight)
 				return;
 
 			var bitmapFormat = GetBitmapFormat(renderTarget.Format);
@@ -34,19 +35,23 @@ namespace PDFiumSharp
 				page.Render(tmpBitmap, rectDest, orientation, flags);
 			}
 
-			if (rectDest.left < 0)
+			var (left, top, _, _, width, height) = rectDest;
+
+			if (left < 0)
 			{
-				rectDest.width += rectDest.left;
-				rectDest.left = 0;
+				width += left;
+				left = 0;
 			}
-			if (rectDest.top < 0)
+			if (top < 0)
 			{
-				rectDest.height += rectDest.top;
-				rectDest.top = 0;
+				height += top;
+				top = 0;
 			}
-			rectDest.width = Math.Min(rectDest.width, renderTarget.PixelWidth);
-			rectDest.height = Math.Min(rectDest.height, renderTarget.PixelHeight);
-			renderTarget.AddDirtyRect(new Int32Rect(rectDest.left, rectDest.top, rectDest.width, rectDest.height));
+
+			width = Math.Min(width, renderTarget.PixelWidth);
+			height = Math.Min(height, renderTarget.PixelHeight);
+
+			renderTarget.AddDirtyRect(new Int32Rect(left, top, width, height));
 			renderTarget.Unlock();
 		}
 
@@ -59,7 +64,7 @@ namespace PDFiumSharp
 		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
 		public static void Render(this PdfPage page, WriteableBitmap renderTarget, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(renderTarget, (0, 0, renderTarget.PixelWidth, renderTarget.PixelHeight), orientation, flags);
+			page.Render(renderTarget, new(0, 0, renderTarget.PixelWidth, renderTarget.PixelHeight, true), orientation, flags);
 		}
 
 		public static ImageSource CreateImageSource(this PdfPage page, int width, int height, bool withAlpha = true, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)

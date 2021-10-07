@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace PDFiumSharp.Types
 {
 	[StructLayout(LayoutKind.Explicit)]
-	public struct FPDF_COLOR
+	public readonly struct PDFiumColor
 	{
 		[FieldOffset(0)]
 		readonly byte _a;
@@ -30,7 +30,7 @@ namespace PDFiumSharp.Types
 		public byte B => _b;
 		public int ARGB => unchecked((int)_argb);
 
-		public FPDF_COLOR(byte r, byte g, byte b, byte a = 255)
+		public PDFiumColor(byte r, byte g, byte b, byte a = 255)
 		{
 			_argb = 0;
 			_a = a;
@@ -39,7 +39,7 @@ namespace PDFiumSharp.Types
 			_b = b;
 		}
 
-		public FPDF_COLOR(int argb)
+		public PDFiumColor(int argb)
 		{
 			_a = 0;
 			_r = 0;
@@ -48,7 +48,7 @@ namespace PDFiumSharp.Types
 			_argb = unchecked((uint)argb);
 		}
 
-		FPDF_COLOR(uint argb)
+		PDFiumColor(uint argb)
 		{
 			_a = 0;
 			_r = 0;
@@ -57,6 +57,6 @@ namespace PDFiumSharp.Types
 			_argb = argb;
 		}
 
-		public static implicit operator FPDF_COLOR(uint argb) => new FPDF_COLOR(argb);
+		public static implicit operator PDFiumColor(uint argb) => new PDFiumColor(argb);
 	}
 }

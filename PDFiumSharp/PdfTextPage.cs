@@ -5,51 +5,52 @@ using PDFiumSharp.Types;
 
 namespace PDFiumSharp
 {
-	public sealed class PdfTextPage : NativeWrapper<FPDF_TEXTPAGE>
+	public sealed class PdfTextPage : NativeWrapper<Native.FpdfTextpageT>
 	{
 		public PdfPage Page { get; }
 
 		int _charCount = -2;
-		public int CharCount => _charCount > -2 ? _charCount : (_charCount = PDFium.FPDFText_CountChars(Handle));
+		public int CharCount => _charCount > -2 ? _charCount : (_charCount = Native.fpdf_text.FPDFTextCountChars(NativeObject));
 
-		PdfTextPage(PdfPage page, FPDF_TEXTPAGE textPage)
+		PdfTextPage(PdfPage page, Native.FpdfTextpageT textPage)
 			: base(textPage)
 		{
-			if (textPage.IsNull)
-				throw new PDFiumException();
 			Page = page;
 		}
 
-		internal static PdfTextPage Load(PdfPage page) => new PdfTextPage(page, PDFium.FPDFText_LoadPage(page.Handle));
+		internal static PdfTextPage Load(PdfPage page) => new PdfTextPage(page, Native.fpdf_text.FPDFTextLoadPage(page.NativeObject));
 
-		protected override void Dispose(FPDF_TEXTPAGE handle)
+		public void Dispose()
 		{
-			PDFium.FPDFText_ClosePage(handle);
+			if (SetNativeObjectToNull(out var nativeObject))
+				Native.fpdf_text.FPDFTextClosePage(NativeObject);
 		}
 
-		public string GetBoundedText(double left, double top, double right, double bottom)
-			=> PDFium.FPDFText_GetBoundedText(Handle, left, top, right, bottom);
+		public string GetBoundedText(RectangleDouble bounds)
+			=> Native.fpdf_text.FPDFTextGetBoundedText(NativeObject, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
 
-		public string GetText(int startIndex = 0, int count = -1) => PDFium.FPDFText_GetText(Handle, startIndex, count < 0 ? CharCount : count);
+		public string GetText(int startIndex = 0, int count = -1) => Native.fpdf_text.FPDFTextGetText(NativeObject, startIndex, count < 0 ? CharCount : count);
 
-		public (double X, double Y) GetCharOrigin(int index)
+		public CoordinatesDouble GetCharOrigin(int index)
 		{
 			if (index < 0 || index >= CharCount)
 				throw new IndexOutOfRangeException();
 
-			if (PDFium.FPDFText_GetCharOrigin(Handle, index, out var x, out var y))
-				return (x, y);
-			return (double.NaN, double.NaN);
+			double x = default, y = default;
+			if (Native.fpdf_text.FPDFTextGetCharOrigin(NativeObject, index, ref x, ref y))
+				return new(x, y);
+			return new(double.NaN, double.NaN);
 		}
 
-        public (double Left, double Top, double Right, double Bottom) GetCharBox(int index)
+        public RectangleDouble GetCharBox(int index)
         {
             if (index < 0 || index >= CharCount)
                 throw new IndexOutOfRangeException();
 
-            if (PDFium.FPDFText_GetCharBox(Handle, index, out var left, out var right, out var bottom, out var top))
-                return (left, top, right, bottom);
-            return (double.NaN, double.NaN, double.NaN, double.NaN);
+			double left = default, right = default, bottom = default, top = default;
+            if (Native.fpdf_text.FPDFTextGetCharBox(NativeObject, index, ref left, ref right, ref bottom, ref top))
+                return new(left, top, right, bottom);
+            return new(double.NaN, double.NaN, double.NaN, double.NaN);
         }
 	}
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PDFiumSharp.CppSharp": {
+      "commandName": "Project",
+      "commandLineArgs": "\"$(ProjectDir)pdfium\" \"$(ProjectDir)..\\PDFiumSharp\\Native\""
+    }
+  }
+}

@@ -13,30 +13,31 @@ using System.Runtime.InteropServices;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfPage : NativeWrapper<FPDF_PAGE>
+    public sealed class PdfPage : NativeWrapper<Native.FpdfPageT>, IDisposable
     {
 		/// <summary>
 		/// Gets the page width (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
 		/// </summary>
-		public double Width => PDFium.FPDF_GetPageWidth(Handle);
+		public double Width => Native.fpdfview.FPDF_GetPageWidth(NativeObject);
 
 		/// <summary>
 		/// Gets the page height (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
 		/// </summary>
-		public double Height => PDFium.FPDF_GetPageHeight(Handle);
+		public double Height => Native.fpdfview.FPDF_GetPageHeight(NativeObject);
 
 		/// <summary>
 		/// Gets the page width and height (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
 		/// </summary>
-		public (double Width, double Height) Size
+		public SizeDouble Size
 		{
 			get
 			{
-				if (PDFium.FPDF_GetPageSizeByIndex(Document.Handle, Index, out var width, out var height))
-					return (width, height);
+				double width = default, height = default;
+				if (Native.fpdfview.FPDF_GetPageSizeByIndex(Document.NativeObject, Index, ref width, ref height) != 0)
+					return new(width, height);
 				throw new PDFiumException();
 			}
 		}
@@ -46,8 +47,8 @@ namespace PDFiumSharp
 		/// </summary>
 		public PageOrientations Orientation
 		{
-			get => PDFium.FPDFPage_GetRotation(Handle);
-			set => PDFium.FPDFPage_SetRotation(Handle, value);
+			get => (PageOrientations)Native.fpdf_edit.FPDFPageGetRotation(NativeObject);
+			set => Native.fpdf_edit.FPDFPageSetRotation(NativeObject, (int)value);
 		}
 
 		/// <summary>
@@ -62,17 +63,15 @@ namespace PDFiumSharp
 
 		//public string Label => PDFium.FPDF_GetPageLabel(Document.Handle, Index);
 
-		PdfPage(PdfDocument doc, FPDF_PAGE page, int index)
-			: base(page)
+		PdfPage(PdfDocument doc, Native.FpdfPageT nativeObj, int index)
+			: base(nativeObj)
 		{
-			if (page.IsNull)
-				throw new PDFiumException();
 			Document = doc;
 			Index = index;
 		}
 
-		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(doc, PDFium.FPDF_LoadPage(doc.Handle, index), index);
-		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, PDFium.FPDFPage_New(doc.Handle, index, width, height), index);
+		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(doc, Native.fpdfview.FPDF_LoadPage(doc.NativeObject, index), index);
+		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, Native.fpdf_edit.FPDFPageNew(doc.NativeObject, index, width, height), index);
 
 		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
@@ -81,12 +80,12 @@ namespace PDFiumSharp
 		/// <param name="rectDest">The destination rectangle in <paramref name="renderTarget"/>.</param>
 		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
 		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
-		public void Render(PDFiumBitmap renderTarget, (int left, int top, int width, int height) rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public void Render(PDFiumBitmap renderTarget, RectangleInt32 rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (renderTarget == null)
 				throw new ArgumentNullException(nameof(renderTarget));
 
-			PDFium.FPDF_RenderPageBitmap(renderTarget.Handle, this.Handle, rectDest.left, rectDest.top, rectDest.width, rectDest.height, orientation, flags);
+			Native.fpdfview.FPDF_RenderPageBitmap(renderTarget.NativeObject, NativeObject, rectDest.Left, rectDest.Top, rectDest.Width, rectDest.Height, (int)orientation, (int)flags);
 		}
 
 		/// <summary>
@@ -97,28 +96,29 @@ namespace PDFiumSharp
 		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
 		public void Render(PDFiumBitmap renderTarget, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			Render(renderTarget, (0, 0, renderTarget.Width, renderTarget.Height), orientation, flags);
+			Render(renderTarget, new(0, 0, renderTarget.Width, renderTarget.Height), orientation, flags);
 		}
 
-		public (double X, double Y) DeviceToPage((int left, int top, int width, int height) displayArea, int deviceX, int deviceY, PageOrientations orientation = PageOrientations.Normal)
+		public CoordinatesDouble DeviceToPage(RectangleInt32 displayArea, CoordinatesInt32 coordDevice, PageOrientations orientation = PageOrientations.Normal)
 		{
-			(var left, var top, var width, var height) = displayArea;
-			PDFium.FPDF_DeviceToPage(Handle, left, top, width, height, orientation, deviceX, deviceY, out var x, out var y);
-			return (x, y);
+			double x = default, y = default;
+			Native.fpdfview.FPDF_DeviceToPage(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordDevice.X, coordDevice.Y, ref x, ref y);
+			return new(x, y);
 		}
 
-		public (int X, int Y) PageToDevice((int left, int top, int width, int height) displayArea, double pageX, double pageY, PageOrientations orientation = PageOrientations.Normal)
+		public CoordinatesInt32 PageToDevice(RectangleInt32 displayArea, CoordinatesDouble coordPage, PageOrientations orientation = PageOrientations.Normal)
 		{
-			(var left, var top, var width, var height) = displayArea;
-			PDFium.FPDF_PageToDevice(Handle, left, top, width, height, orientation, pageX, pageY, out var x, out var y);
-			return (x, y);
+			int x = default, y = default;
+			Native.fpdfview.FPDF_PageToDevice(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordPage.X, coordPage.Y, ref x, ref y);
+			return new(x, y);
 		}
 
-		public FlattenResults Flatten(FlattenFlags flags) => PDFium.FPDFPage_Flatten(Handle, flags);
+		public FlattenResults Flatten(FlattenFlags flags) => (FlattenResults)Native.fpdf_flatten.FPDFPageFlatten(NativeObject, (int)flags);
 
-		protected override void Dispose(FPDF_PAGE handle)
+		public void Dispose()
 		{
-			PDFium.FPDF_ClosePage(handle);
+			if (SetNativeObjectToNull(out var nativeObject))
+				Native.fpdfview.FPDF_ClosePage(nativeObject);
 		}
 
 		public PdfTextPage GetTextPage() => PdfTextPage.Load(this);
@@ -127,11 +127,11 @@ namespace PDFiumSharp
 		{
 			get
 			{
-				foreach (var handle in PDFium.FPDFLink_Enumerate(Handle))
-					yield return new PdfLink(this, handle);
+				int idx = 0;
+				var nativeObj = Native.FpdfLinkT.__CreateInstance(IntPtr.Zero);
+				while (Native.fpdf_doc.FPDFLinkEnumerate(NativeObject, ref idx, nativeObj))
+					yield return new PdfLink(this, Native.FpdfLinkT.__CreateInstance(nativeObj.__Instance));
 			}
 		}
-
-		public void Dispose() => ((IDisposable)this).Dispose();
 	}
 }

@@ -15,6 +15,6 @@ namespace PDFiumSharp
 	public sealed class PDFiumException : Exception
 	{
 		public PDFiumException()
-			: base($"PDFium Error: {PDFium.FPDF_GetLastError().GetDescription()}") { }
+			: base($"PDFium Error: {((PDFiumErrors)Native.fpdfview.FPDF_GetLastError()).GetDescription()}") { }
 	}
 }

@@ -9,9 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PDFiumSharp.Types
+namespace PDFiumSharp
 {
-	public enum FPDF_ERR : uint
+	public enum PDFiumErrors : uint
 	{
 		/// <summary>
 		/// No error.
@@ -59,21 +59,21 @@ namespace PDFiumSharp.Types
 		XFALAYOUT = 8
 	}
 
-	public static class FPDF_ERR_Extension
+	public static class PDFiumErrorsExtensions
 	{
-		public static string GetDescription(this FPDF_ERR error)
+		public static string GetDescription(this PDFiumErrors error)
 		{
 			switch(error)
 			{
-				case FPDF_ERR.SUCCESS: return "No error.";
-				case FPDF_ERR.UNKNOWN: return "Unkown error.";
-				case FPDF_ERR.FILE: return "File not found or could not be opened.";
-				case FPDF_ERR.FORMAT:return "File not in PDF format or corrupted.";
-				case FPDF_ERR.PASSWORD:return "Password required or incorrect password.";
-				case FPDF_ERR.SECURITY:return "Unsupported security scheme.";
-				case FPDF_ERR.PAGE:return "Page not found or content error.";
-				case FPDF_ERR.XFALOAD:return "Load XFA error.";
-				case FPDF_ERR.XFALAYOUT:return "Layout XFA error.";
+				case PDFiumErrors.SUCCESS: return "No error.";
+				case PDFiumErrors.UNKNOWN: return "Unkown error.";
+				case PDFiumErrors.FILE: return "File not found or could not be opened.";
+				case PDFiumErrors.FORMAT:return "File not in PDF format or corrupted.";
+				case PDFiumErrors.PASSWORD:return "Password required or incorrect password.";
+				case PDFiumErrors.SECURITY:return "Unsupported security scheme.";
+				case PDFiumErrors.PAGE:return "Page not found or content error.";
+				case PDFiumErrors.XFALOAD:return "Load XFA error.";
+				case PDFiumErrors.XFALAYOUT:return "Layout XFA error.";
 				default: return $"{error} (No description available).";
 			}
 		}

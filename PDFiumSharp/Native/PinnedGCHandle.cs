@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace PDFiumSharp
+namespace PDFiumSharp.Native
 {
-	public struct PinnedGCHandle : IDisposable
+	readonly struct PinnedGCHandle : IDisposable
 	{
-		GCHandle _handle;
+		readonly GCHandle _handle;
 
 		PinnedGCHandle(GCHandle handle)
 		{

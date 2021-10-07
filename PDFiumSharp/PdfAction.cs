@@ -12,22 +12,22 @@ using PDFiumSharp.Types;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfAction : NativeWrapper<FPDF_ACTION>
+    public sealed class PdfAction : NativeWrapper<Native.FpdfActionT>
     {
-		public PdfDocument Document { get; }
+        public PdfDocument Document { get; }
 
-		public ActionTypes Type => PDFium.FPDFAction_GetType(Handle);
+        public ActionTypes Type => (ActionTypes)Native.fpdf_doc.FPDFActionGetType(NativeObject);
 
-		public PdfDestination Destination => new PdfDestination(Document, PDFium.FPDFAction_GetDest(Document.Handle, Handle), null);
+        public PdfDestination Destination => new PdfDestination(Document, Native.fpdf_doc.FPDFActionGetDest(Document.NativeObject, NativeObject), null);
 
-		public string FilePath => PDFium.FPDFAction_GetFilePath(Handle);
+        public string FilePath => Native.fpdf_doc.FPDFActionGetFilePath(NativeObject);
 
-		public Uri Uri => new Uri(PDFium.FPDFAction_GetURIPath(Document.Handle, Handle));
+        public Uri Uri => new Uri(Native.fpdf_doc.FPDFActionGetURIPath(Document.NativeObject, NativeObject));
 
-		internal PdfAction(PdfDocument doc, FPDF_ACTION actionHandle)
-			:base(actionHandle)
-		{
-			Document = doc;
-		}
+        internal PdfAction(PdfDocument doc, Native.FpdfActionT nativeObj)
+            : base(nativeObj)
+        {
+            Document = doc;
+        }
     }
 }

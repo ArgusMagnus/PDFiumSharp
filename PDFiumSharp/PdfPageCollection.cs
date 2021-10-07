@@ -21,17 +21,17 @@ namespace PDFiumSharp
 		internal PdfPageCollection(PdfDocument doc)
 		{
 			_doc = doc;
-			_pages = new List<PdfPage>(PDFium.FPDF_GetPageCount(doc.Handle));
+			_pages = new List<PdfPage>(Count);
 
 			//Initialize _pages with null entries
-			for (int i = this.Count; i > 0; i--)
+			while (_pages.Count < _pages.Capacity)
 				_pages.Add(null);
 		}
 
 		/// <summary>
 		/// Gets the number of pages in the <see cref="PdfDocument"/>.
 		/// </summary>
-		public int Count => PDFium.FPDF_GetPageCount(_doc.Handle);
+		public int Count => Native.fpdfview.FPDF_GetPageCount(_doc.NativeObject);
 
 		/// <summary>
 		/// Gets the <see cref="PdfPage"/> at the zero-based <paramref name="index"/> in the <see cref="PdfDocument"/>.
@@ -45,7 +45,7 @@ namespace PDFiumSharp
 					throw new ArgumentOutOfRangeException(nameof(index));
 				}
 
-				if (_pages[index] == null || _pages[index].IsDisposed)
+				if (_pages[index]?.NativeObject == null)
 					_pages[index] = PdfPage.Load(_doc, index);
 				return _pages[index];
 			}
@@ -74,36 +74,36 @@ namespace PDFiumSharp
 		/// Imports pages of <paramref name="sourceDocument"/> into the current <see cref="PdfDocument"/>.
 		/// </summary>
 		/// <seealso cref="PDFium.FPDF_ImportPages(Types.FPDF_DOCUMENT, Types.FPDF_DOCUMENT, int, int[])"/>
-		public bool Insert(int index, PdfDocument sourceDocument, params int[] srcPageIndices)
-		{
-            bool result = false;
-            if (index <= _pages.Count)
-            {
-                result = PDFium.FPDF_ImportPages(_doc.Handle, sourceDocument.Handle, index, srcPageIndices);
-                if (result)
-                {
-                    _pages.InsertRange(index, Enumerable.Repeat<PdfPage>(null, srcPageIndices.Length));
-                    for (int i = index; i < _pages.Count; i++)
-                    {
-                        if (_pages[i] != null)
-                            _pages[i].Index = i;
-                    }
-                }
-            }
-            else
-                throw new ArgumentOutOfRangeException(nameof(index));
+		//public bool Insert(int index, PdfDocument sourceDocument, params int[] srcPageIndices)
+		//{
+  //          bool result = false;
+  //          if (index <= _pages.Count)
+  //          {
+  //              result = Native.fpdf_ppo.FPDF_ImportPages(_doc.NativeObject, sourceDocument.NativeObject, index, srcPageIndices);
+  //              if (result)
+  //              {
+  //                  _pages.InsertRange(index, Enumerable.Repeat<PdfPage>(null, srcPageIndices.Length));
+  //                  for (int i = index; i < _pages.Count; i++)
+  //                  {
+  //                      if (_pages[i] != null)
+  //                          _pages[i].Index = i;
+  //                  }
+  //              }
+  //          }
+  //          else
+  //              throw new ArgumentOutOfRangeException(nameof(index));
 
-            return result;
-		}
+  //          return result;
+		//}
 
 		/// <summary>
 		/// Imports pages of <paramref name="sourceDocument"/> into the current <see cref="PdfDocument"/>.
 		/// </summary>
 		/// <seealso cref="PDFium.FPDF_ImportPages(Types.FPDF_DOCUMENT, Types.FPDF_DOCUMENT, int, int[])"/>
-		public bool Add(PdfDocument sourceDocument, params int[] srcPageIndices)
-		{
-			return Insert(Count, sourceDocument, srcPageIndices);
-		}
+		//public bool Add(PdfDocument sourceDocument, params int[] srcPageIndices)
+		//{
+		//	return Insert(Count, sourceDocument, srcPageIndices);
+		//}
 
 		/// <summary>
 		/// Inserts a new page at <paramref name="index"/>.
@@ -150,7 +150,7 @@ namespace PDFiumSharp
 						_pages[i].Index = i;
 				}
 			}
-			PDFium.FPDFPage_Delete(_doc.Handle, index);
+			Native.fpdf_edit.FPDFPageDelete(_doc.NativeObject, index);
 		}
 
 		/// <summary>
