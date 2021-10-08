@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PDFiumSharp.NativeBinaries" Version="4660.0.7" />
+    <PackageReference Include="PDFiumSharp.NativeBinaries" Version="1.4660.0" />
   </ItemGroup>
 
 </Project>
