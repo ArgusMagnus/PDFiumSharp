@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <PDFiumBuild>4660</PDFiumBuild>
-    <VersionPrefix>$(PDFiumBuild).0.0</VersionPrefix>
+    <VersionPrefix>1.$(PDFiumBuild).0</VersionPrefix>
     <Authors>Tobias Meyer</Authors>
     <Copyright>Copyright © Tobias Meyer 2021</Copyright>
     <PackageLicenseExpression>MS-RL</PackageLicenseExpression>

@@ -3,7 +3,7 @@
   <Import Project="../Properties.props" />
 
   <PropertyGroup>
-    <VersionPrefix>$(PDFiumBuild).0.7</VersionPrefix>
+    <VersionPrefix>1.$(PDFiumBuild).0</VersionPrefix>
     <Description>Native PDFium binaries, as required by PDFiumSharp.</Description>
   </PropertyGroup>
 
