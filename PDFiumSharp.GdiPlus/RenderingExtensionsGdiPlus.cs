@@ -24,7 +24,7 @@ namespace PDFiumSharp
 		/// <param name="rectDest">The destination rectangle in <paramref name="renderTarget"/>.</param>
 		/// <param name="orientation">The orientation at which the page is to be rendered.</param>
 		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
-		public static void Render(this PdfPage page, Bitmap renderTarget, (int left, int top, int width, int height) rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
+		public static void Render(this PdfPage page, Bitmap renderTarget, RectangleInt32 rectDest, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
 			if (renderTarget == null)
 				throw new ArgumentNullException(nameof(renderTarget));
@@ -45,18 +45,27 @@ namespace PDFiumSharp
 		/// <param name="flags">The flags specifying how the page is to be rendered.</param>
 		public static void Render(this PdfPage page, Bitmap bitmap, PageOrientations orientation = PageOrientations.Normal, RenderingFlags flags = RenderingFlags.None)
 		{
-			page.Render(bitmap, (0, 0, bitmap.Width, bitmap.Height), orientation, flags);
+			page.Render(bitmap, new(0, 0, bitmap.Width, bitmap.Height, true), orientation, flags);
 		}
 
 		static BitmapFormats GetBitmapFormat(System.Drawing.Bitmap bitmap)
 		{
-			if (bitmap.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb)
-				return BitmapFormats.FPDFBitmap_BGR;
-			if (bitmap.PixelFormat == System.Drawing.Imaging.PixelFormat.Format32bppArgb)
-				return BitmapFormats.FPDFBitmap_BGRA;
-			if (bitmap.PixelFormat == System.Drawing.Imaging.PixelFormat.Format32bppRgb)
-				return BitmapFormats.FPDFBitmap_BGRx;
-			throw new NotSupportedException($"Pixel format {bitmap.PixelFormat} is not supported.");
+            switch(bitmap.PixelFormat)
+            {
+                case System.Drawing.Imaging.PixelFormat.Format24bppRgb: return BitmapFormats.FPDFBitmap_BGR;
+                case System.Drawing.Imaging.PixelFormat.Format32bppArgb: return BitmapFormats.FPDFBitmap_BGRA;
+                case System.Drawing.Imaging.PixelFormat.Format32bppRgb: return BitmapFormats.FPDFBitmap_BGRx;
+                default: throw new NotSupportedException($"Pixel format {bitmap.PixelFormat} is not supported.");
+            }
 		}
-	}
+    }
+
+    namespace GdiPlusExtensions
+    {
+        public static class Int32RectExtensions
+        {
+            public static Rectangle ToInt32Rect(this in RectangleInt32 rect) => new(rect.Left, rect.Top, rect.Width, rect.Height);
+            public static RectangleInt32 ToRectangleInt32(this Rectangle rect) => new RectangleInt32(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        }
+    }
 }

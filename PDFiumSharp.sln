@@ -5,27 +5,32 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp", "PDFiumSharp\PDFiumSharp.csproj", "{782D0C5A-2A13-480C-AF88-6DADC726566E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.GdiPlus", "PDFiumSharp.GdiPlus\PDFiumSharp.GdiPlus.csproj", "{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.GdiPlus", "PDFiumSharp.GdiPlus\PDFiumSharp.GdiPlus.csproj", "{2D52FEFF-2445-4446-A4A0-65DCEBD639AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFiumSharp.Xwt", "PDFiumSharp.Xwt\PDFiumSharp.Xwt.csproj", "{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.Xwt", "PDFiumSharp.Xwt\PDFiumSharp.Xwt.csproj", "{D4B5EA2E-E30A-46FB-9287-75B45E4369C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.Wpf", "PDFiumSharp.Wpf\PDFiumSharp.Wpf.csproj", "{7136E66D-28BD-4F64-BEDA-C2C76D25DCA1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{488D350A-7DF4-4E38-9398-409C89A2A9E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.GdiPlus", "Samples\Test.GdiPlus\Test.GdiPlus.csproj", "{53FF1CA6-1F5F-4BAD-BBDA-D7A069ED358F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.GdiPlus", "Samples\Test.GdiPlus\Test.GdiPlus.csproj", "{53FF1CA6-1F5F-4BAD-BBDA-D7A069ED358F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Wpf", "Samples\Test.Wpf\Test.Wpf.csproj", "{658D44AA-30DC-475D-BB04-53C97B3D62C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Wpf", "Samples\Test.Wpf\Test.Wpf.csproj", "{658D44AA-30DC-475D-BB04-53C97B3D62C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Xwt", "Samples\Test.Xwt\Test.Xwt.csproj", "{75F6A0DD-A179-4E5A-800F-B0DD9182E534}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Xwt", "Samples\Test.Xwt\Test.Xwt.csproj", "{75F6A0DD-A179-4E5A-800F-B0DD9182E534}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Documentation", "Documentation\Documentation.shfbproj", "{EA9AF510-96CD-4694-BE0F-50E9DDE5DFA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console", "Samples\Test.Console\Test.Console.csproj", "{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Nuget", "Samples\Test.Nuget\Test.Nuget.csproj", "{AE8ED031-D549-449C-9273-5F0369BF7E56}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.CppSharp", "PDFiumSharp.CppSharp\PDFiumSharp.CppSharp.csproj", "{83439038-FC44-4C52-8241-E21C82A435DC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.NativeBinaries", "PDFiumSharp.NativeBinaries\PDFiumSharp.NativeBinaries.csproj", "{B05A7BB5-99D4-4AA5-8F96-6A6CA4FA21B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10F9E913-FE6C-483A-BC73-CBA2A0355F9B}"
+	ProjectSection(SolutionItems) = preProject
+		Properties.props = Properties.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,14 +72,14 @@ Global
 		{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE8ED031-D549-449C-9273-5F0369BF7E56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83439038-FC44-4C52-8241-E21C82A435DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83439038-FC44-4C52-8241-E21C82A435DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83439038-FC44-4C52-8241-E21C82A435DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83439038-FC44-4C52-8241-E21C82A435DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05A7BB5-99D4-4AA5-8F96-6A6CA4FA21B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05A7BB5-99D4-4AA5-8F96-6A6CA4FA21B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05A7BB5-99D4-4AA5-8F96-6A6CA4FA21B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05A7BB5-99D4-4AA5-8F96-6A6CA4FA21B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,7 +89,6 @@ Global
 		{658D44AA-30DC-475D-BB04-53C97B3D62C5} = {488D350A-7DF4-4E38-9398-409C89A2A9E6}
 		{75F6A0DD-A179-4E5A-800F-B0DD9182E534} = {488D350A-7DF4-4E38-9398-409C89A2A9E6}
 		{C07538E4-238C-42AC-BC19-8AFA66BD6BC2} = {488D350A-7DF4-4E38-9398-409C89A2A9E6}
-		{AE8ED031-D549-449C-9273-5F0369BF7E56} = {488D350A-7DF4-4E38-9398-409C89A2A9E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B376B73A-D4AB-40B7-ABF6-D956AE255B81}

@@ -5,7 +5,7 @@ using PDFiumSharp.Types;
 
 namespace PDFiumSharp
 {
-	public sealed class PdfTextPage : NativeWrapper<Native.FpdfTextpageT>
+	public sealed class PdfTextPage : NativeWrapper<Native.FpdfTextpageT>, IDisposable
 	{
 		public PdfPage Page { get; }
 
@@ -26,10 +26,10 @@ namespace PDFiumSharp
 				Native.fpdf_text.FPDFTextClosePage(NativeObject);
 		}
 
-		public string GetBoundedText(RectangleDouble bounds)
-			=> Native.fpdf_text.FPDFTextGetBoundedText(NativeObject, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
+        public string GetBoundedText(in RectangleDouble bounds)
+            => Native.fpdf_text.FPDFTextGetBoundedText(NativeObject, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
 
-		public string GetText(int startIndex = 0, int count = -1) => Native.fpdf_text.FPDFTextGetText(NativeObject, startIndex, count < 0 ? CharCount : count);
+        public string GetText(int startIndex = 0, int count = -1) => Native.fpdf_text.FPDFTextGetText(NativeObject, startIndex, count < 0 ? CharCount : count);
 
 		public CoordinatesDouble GetCharOrigin(int index)
 		{

@@ -13,37 +13,31 @@ namespace TestConsole
 	{
 		static void Main(string[] args)
 		{
-			using (var doc = new PdfDocument(@"\\sst1dc00\DataIndumo\Temp\metob\EPLAN\420191_NeumühleRickenbach_Annahme_+UV405_Rev03.pdf"))
+			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
 				var viewsPerPage = new Dictionary<int, List<PdfDestination.View>>();
-				foreach (var bmarkList in doc.Bookmarks)
-				{
-					using (bmarkList)
-					{
-						if (bmarkList.Title == "Betriebsmittelliste")
-						{
-							foreach (var bmark in bmarkList.Children)
-							{
-								using (bmark)
-								{
-									//if (!Regex.IsMatch(bmark.Title, @"^K\d+\.?\d+:\d+$"))
-									//	continue;
+                foreach (var bmarkList in doc.Bookmarks)
+                {
+                    if (bmarkList.Title == "Betriebsmittelliste")
+                    {
+                        foreach (var bmark in bmarkList.Children)
+                        {
+                            //if (!Regex.IsMatch(bmark.Title, @"^K\d+\.?\d+:\d+$"))
+                            //	continue;
 
-									var view = bmark.Destination.GetView();
-									if (view.Type == PdfDestination.ViewFitTypes.Unkown || view.Type == PdfDestination.ViewFitTypes.XYZ)
-										continue;
-									if (!viewsPerPage.TryGetValue(bmark.Destination.PageIndex, out var list))
-									{
-										list = new List<PdfDestination.View>();
-										viewsPerPage.Add(bmark.Destination.PageIndex, list);
-									}
-									list.Add(view);
-								}
-							}
-							break;
-						}
-					}
-				}
+                            var view = bmark.Destination.GetView();
+                            if (view.Type == PdfDestination.ViewFitTypes.Unkown || view.Type == PdfDestination.ViewFitTypes.XYZ)
+                                continue;
+                            if (!viewsPerPage.TryGetValue(bmark.Destination.PageIndex, out var list))
+                            {
+                                list = new List<PdfDestination.View>();
+                                viewsPerPage.Add(bmark.Destination.PageIndex, list);
+                            }
+                            list.Add(view);
+                        }
+                        break;
+                    }
+                }
 
 				var dict = new Dictionary<string, List<string>>();
 
@@ -55,9 +49,9 @@ namespace TestConsole
 						foreach (var link in page.Links)
 						{
 							var dst = link.Destination;
-							if (dst.Handle.IsNull && link.Action.Type == ActionTypes.GoTo)
+							if (dst == null && link.Action.Type == ActionTypes.GoTo)
 								dst = link.Action.Destination;
-							if (!dst.Handle.IsNull)
+							if (dst != null)
 							{
 								var view = dst.GetView();
 							}
@@ -68,11 +62,11 @@ namespace TestConsole
 						var adrMatches = Regex.Matches(allText, @"^Adr\s*$", RegexOptions.Multiline);
 						foreach (var view in pair.Value)
 						{
-							var boundText = textPage.GetBoundedText(view.Left, view.Top, view.Right, view.Bottom);
+                            var boundText = textPage.GetBoundedText(new(view.Left, view.Top, view.Right, view.Bottom));
 							if (!Regex.IsMatch(boundText, @"^Sym\s*$", RegexOptions.Multiline) || !Regex.IsMatch(boundText, @"^Adr\s*$", RegexOptions.Multiline))
 								continue;
 
-							var symPos = (X: double.NaN, Y: double.NaN);
+							CoordinatesDouble symPos = new(double.NaN, double.NaN);
 							foreach (Match match in symMatches)
 							{
 								var pos = textPage.GetCharOrigin(match.Index);
@@ -85,7 +79,7 @@ namespace TestConsole
 							if (double.IsNaN(symPos.X))
 								continue;
 
-							var adrPos = (X: double.NaN, Y: double.NaN);
+							CoordinatesDouble adrPos = new(double.NaN, double.NaN);
 							foreach (Match match in adrMatches)
 							{
 								var pos = textPage.GetCharOrigin(match.Index);
@@ -116,22 +110,6 @@ namespace TestConsole
 
 							Console.WriteLine($"\t({view.Left:F0}, {view.Top:F0}, {view.Right:F0}, {view.Bottom:F0})");
 							Console.WriteLine($"\t\t{symbol} - {address}");
-
-							//var match = Regex.Match(text, @"^(?<Symbol>\w+_\w+):(?<Suffix>\w+)\s*$", RegexOptions.Multiline);
-							//if (!match.Success)
-							//	continue;
-							//var symbol = match.Groups["Symbol"].Value;
-							//var suffix = match.Groups["Suffix"].Value;
-							//match = Regex.Match(text, @"^(?<Adress>[EA][A-Z]*\d+\.\d+)\s*$", RegexOptions.Multiline);
-							//if (!match.Success)
-							//	continue;
-							//var adress = match.Groups["Adress"].Value;
-							//if (!dict.TryGetValue(symbol, out var list))
-							//{
-							//	list = new List<string>();
-							//	dict.Add(symbol, list);
-							//}
-							//list.Add($"\t:{suffix.PadRight(3)} {adress.PadLeft(8)}: ({view.Left:F0}, {view.Top:F0}, {view.Right:F0}, {view.Bottom:F0})");
 						}
 					}
 

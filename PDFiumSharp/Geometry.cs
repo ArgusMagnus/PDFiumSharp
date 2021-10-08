@@ -20,6 +20,9 @@ namespace PDFiumSharp
 			Height = height;
 		}
 
+        public SizeDouble(ISize<double> size)
+            : this(size.Width, size.Height) { }
+
 		bool IEquatable<ISize<double>>.Equals(ISize<double> other) => (Width, Height) == (other.Width, other.Height);
     }
 
@@ -40,6 +43,9 @@ namespace PDFiumSharp
 			Y = y;
 		}
 
+        public CoordinatesDouble(ICoordinates<double> coords)
+            : this(coords.X, coords.Y) { }
+
 		bool IEquatable<ICoordinates<double>>.Equals(ICoordinates<double> other) => (X, Y) == (other.X, other.Y);
     }
 
@@ -54,10 +60,13 @@ namespace PDFiumSharp
 			Y = y;
 		}
 
+        public CoordinatesInt32(ICoordinates<int> coords)
+            : this(coords.X, coords.Y) { }
+
         bool IEquatable<ICoordinates<int>>.Equals(ICoordinates<int> other) => (X, Y) == (other.X, other.Y);
 	}
 
-	public interface IRectangel<T> : IEquatable<IRectangel<T>>
+	public interface IRectangle<T> : IEquatable<IRectangle<T>>
 	{
 		public T Left { get; }
 		public T Top { get; }
@@ -67,7 +76,7 @@ namespace PDFiumSharp
 		public T Height { get; }
 	}
 
-	public readonly struct RectangleInt32 : IRectangel<int>
+	public readonly struct RectangleInt32 : IRectangle<int>
 	{
 		public int Left { get; }
 		public int Top { get; }
@@ -89,11 +98,14 @@ namespace PDFiumSharp
 			}
 		}
 
-		bool IEquatable<IRectangel<int>>.Equals(IRectangel<int> other) => (Left, Top, Right, Bottom) == (other.Left, other.Top, other.Right, other.Bottom);
+        public RectangleInt32(IRectangle<int> rect)
+            : this(rect.Left, rect.Top, rect.Right, rect.Bottom) { }
+
+		bool IEquatable<IRectangle<int>>.Equals(IRectangle<int> other) => (Left, Top, Right, Bottom) == (other.Left, other.Top, other.Right, other.Bottom);
     }
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public readonly struct RectangleFloat : IRectangel<float>
+	public readonly struct RectangleFloat : IRectangle<float>
 	{
 		// Must be first field
 		readonly Native.FS_RECTF_.__Internal _native;
@@ -116,13 +128,16 @@ namespace PDFiumSharp
 				_native.right += left;
 				_native.bottom += top;
 			}
-		}
+        }
 
-		bool IEquatable<IRectangel<float>>.Equals(IRectangel<float> other) => (Left, Top, Right, Bottom) == (other.Left, other.Top, other.Right, other.Bottom);
+        public RectangleFloat(IRectangle<float> rect)
+            : this(rect.Left, rect.Top, rect.Right, rect.Bottom) { }
+
+        bool IEquatable<IRectangle<float>>.Equals(IRectangle<float> other) => (Left, Top, Right, Bottom) == (other.Left, other.Top, other.Right, other.Bottom);
 	}
 
 
-	public readonly struct RectangleDouble : IRectangel<double>
+	public readonly struct RectangleDouble : IRectangle<double>
 	{
 		public double Left { get; }
 		public double Top { get; }
@@ -142,9 +157,12 @@ namespace PDFiumSharp
 				Right += left;
 				Bottom += top;
 			}
-		}
+        }
 
-		bool IEquatable<IRectangel<double>>.Equals(IRectangel<double> other) => (Left, Top, Right, Bottom) == (other.Left, other.Top, other.Right, other.Bottom);
+        public RectangleDouble(IRectangle<double> rect)
+            : this(rect.Left, rect.Top, rect.Right, rect.Bottom) { }
+
+        bool IEquatable<IRectangle<double>>.Equals(IRectangle<double> other) => (Left, Top, Right, Bottom) == (other.Left, other.Top, other.Right, other.Bottom);
 	}
 
 	namespace Extensions
@@ -162,7 +180,7 @@ namespace PDFiumSharp
 				y = coord.Y;
 			}
 
-			public static void Deconstruct<T>(this IRectangel<T> rect, out T left, out T top, out T right, out T bottom)
+			public static void Deconstruct<T>(this IRectangle<T> rect, out T left, out T top, out T right, out T bottom)
 			{
 				left = rect.Left;
 				top = rect.Top;
@@ -170,7 +188,7 @@ namespace PDFiumSharp
 				bottom = rect.Bottom;
 			}
 
-			public static void Deconstruct<T>(this IRectangel<T> rect, out T left, out T top, out T right, out T bottom, out T width, out T height)
+			public static void Deconstruct<T>(this IRectangle<T> rect, out T left, out T top, out T right, out T bottom, out T width, out T height)
 			{
 				left = rect.Left;
 				top = rect.Top;

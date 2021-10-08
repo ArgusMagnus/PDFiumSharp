@@ -111,6 +111,6 @@ namespace PDFiumSharp
                 _y2 = bottom;
                 Type = type;
             }
-		}
+        }
 	}
 }

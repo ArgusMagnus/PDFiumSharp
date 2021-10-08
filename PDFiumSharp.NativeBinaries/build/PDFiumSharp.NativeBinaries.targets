@@ -1,0 +1,11 @@
+<Project InitialTargets="ValidatePlatformTarget">
+
+  <Target Name="ValidatePlatformTarget" Condition="$(TargetFramework.StartsWith('net4'))">
+    <ItemGroup>
+      <PDFiumBinaries Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/pdfium.*" />
+      <PDFiumSupportedRuntimes Include="$(MSBuildThisFileDirectory)../runtimes/*/native/pdfium.*"/>
+    </ItemGroup>
+    <Warning Condition="'@(PDFiumBinaries)' == ''" Text="Native PDFium binaries for '$(RuntimeIdentifier)' not found. Consider explicitely setting 'RuntimeIdentifier' to a supported value: @(PDFiumSupportedRuntimes->'%(RecursiveDir)'->Replace('\native\', ''))" />
+  </Target>
+
+</Project>

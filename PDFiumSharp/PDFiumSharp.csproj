@@ -1,10 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../Properties.props" />  
+  
   <PropertyGroup>
-    <AssemblyVersion>0.1.2.0</AssemblyVersion>
-    <Copyright>Copyright © Tobias Meyer 2021</Copyright>
+    <VersionPrefix>$(PDFiumBuild).0.0</VersionPrefix>
+    <Description>C#/.NET Wrapper for the PDFium library. Native binaries are provided in the PDFiumSharp.NativeBinaries package.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -19,14 +24,14 @@
     <!--<PackageReference Include="System.ValueTuple" Version="4.5.0" />-->
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <None Update="pdfium_x64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="pdfium_x86.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <Compile Include="..\CppSharp\src\Runtime\*.cs" Link="Native\CppSharp\%(FileName)%(Extension)" />

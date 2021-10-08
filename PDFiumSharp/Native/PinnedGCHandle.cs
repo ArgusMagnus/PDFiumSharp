@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace PDFiumSharp.Native
 {
-	readonly struct PinnedGCHandle : IDisposable
+	public readonly struct PinnedGCHandle : IDisposable
 	{
 		readonly GCHandle _handle;
 

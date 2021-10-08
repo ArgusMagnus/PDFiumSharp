@@ -74,9 +74,9 @@ namespace Test.Wpf
 		{
 			var link = (PdfLink)((FrameworkElement)sender).Tag;
 			var dst = link.Destination;
-			if (dst.Handle.IsNull && link.Action.Type == ActionTypes.GoTo)
+			if (dst.NativeObject == null && link.Action.Type == ActionTypes.GoTo)
 				dst = link.Action.Destination;
-			if (!dst.Handle.IsNull)
+			if (dst.NativeObject != null)
 				GoToRequested?.Invoke(dst.PageIndex, dst.GetView());
 		}
 	}

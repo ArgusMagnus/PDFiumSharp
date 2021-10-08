@@ -1,11 +1,4 @@
-﻿#region Copyright and License
-/*
-This file is part of PDFiumSharp, a wrapper around the PDFium library for the .NET framework.
-Copyright (C) 2017 Tobias Meyer
-License: Microsoft Reciprocal License (MS-RL)
-*/
-#endregion
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,10 +26,10 @@ namespace PDFiumSharp
 			(var left, var top, var width, var height) = rectDest;
 
 			byte[] pixelBuffer = new byte[width * height * 4];
-			using (var pin = PinnedGCHandle.Pin(pixelBuffer))
+			using (var pin = Native.PinnedGCHandle.Pin(pixelBuffer))
 			using (var tmpBitamp = new PDFiumBitmap(rectDest.width, rectDest.height, BitmapFormats.FPDFBitmap_BGRA, pin.Pointer, rectDest.width * 4))
 			{
-				page.Render(tmpBitamp, (0, 0, width, height), orientation, flags);
+				page.Render(tmpBitamp, new(0, 0, width, height, true), orientation, flags);
 				for (int y = Math.Max(0, top); y < Math.Min(renderTarget.PixelHeight, top + height); y++)
 				{
 					int i = ((y - top) * width - left) * 4;

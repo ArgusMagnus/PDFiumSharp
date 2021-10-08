@@ -1,0 +1,1 @@
+Pre-compiled binaries source: https://github.com/bblanchon/pdfium-binaries

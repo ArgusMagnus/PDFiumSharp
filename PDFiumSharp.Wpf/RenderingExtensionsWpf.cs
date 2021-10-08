@@ -97,5 +97,14 @@ namespace PDFiumSharp
 				return BitmapFormats.FPDFBitmap_Gray;
 			throw new NotSupportedException($"Pixel format {pixelFormat} is not supported.");
 		}
-	}
+    }
+
+    namespace WpfExtensions
+    {
+        public static class Int32RectExtensions
+        {
+            public static Int32Rect ToInt32Rect(this in RectangleInt32 rect) => new(rect.Left, rect.Top, rect.Width, rect.Height);
+            public static RectangleInt32 ToRectangleInt32(this Int32Rect rect) => new RectangleInt32(rect.X, rect.Y, rect.Width, rect.Height, true);
+        }
+    }
 }

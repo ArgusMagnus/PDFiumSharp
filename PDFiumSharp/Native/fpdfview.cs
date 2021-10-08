@@ -11,13 +11,18 @@ namespace PDFiumSharp.Native
         /// <c>false</c> is returned if the native libraries could not be
         /// loaded for some reason.
         /// </summary>
-        public static bool IsAvailable { get; } = Initialize();
+        internal static bool IsAvailable { get; }
 
-        static bool Initialize()
+        static fpdfview()
         {
-            try { Native.fpdfview.FPDF_InitLibrary(); }
-            catch { return false; }
-            return true;
+            IsAvailable = Initialize();
+
+            static bool Initialize()
+            {
+                try { FPDF_InitLibrary(); }
+                catch { return false; }
+                return true;
+            }
         }
 
         public static FpdfDestT FPDF_GetNamedDest(FpdfDocumentT document, int index, out string name)

@@ -28,6 +28,7 @@ namespace Test.Wpf
 		PdfDocument _doc;
 		public MainWindow()
 		{
+			//var test = PDFium.IsAvailable;
 			InitializeComponent();
 			this.Loaded += MainWindow_Loaded;
 			Unloaded += MainWindow_Unloaded;
@@ -35,11 +36,12 @@ namespace Test.Wpf
 
 		private void MainWindow_Unloaded(object sender, RoutedEventArgs e)
 		{
-			_doc?.Close();
+			_doc?.Dispose();
 		}
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
+			var x = Environment.Is64BitProcess;
 			_doc = new PdfDocument(@"TestDoc.pdf", "password");
 			_list.ItemsSource = _doc?.Pages;
 		}

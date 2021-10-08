@@ -1,2 +1,0 @@
-nuget spec PDFiumSharp
-pause
