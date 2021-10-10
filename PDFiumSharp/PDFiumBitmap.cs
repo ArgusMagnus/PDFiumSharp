@@ -17,7 +17,7 @@ namespace PDFiumSharp
 	/// <summary>
 	/// A bitmap to which a <see cref="PdfPage"/> can be rendered.
 	/// </summary>
-    public sealed class PDFiumBitmap : NativeWrapper<Native.FpdfBitmapT>, IDisposable
+    public sealed class PDFiumBitmap : DisposableNativeWrapper<Native.FpdfBitmapT>
     {
 		public int Width => Native.fpdfview.FPDFBitmapGetWidth(NativeObject);
 		public int Height => Native.fpdfview.FPDFBitmapGetHeight(NativeObject);
@@ -120,15 +120,12 @@ namespace PDFiumSharp
 		/// </summary>
 		public Stream AsBmpStream(double dpiX = 96, double dpiY = 96) => new BmpStream(this, dpiX, dpiY);
 
-		public void Dispose()
-		{
-			if (!SetNativeObjectToNull(out var nativeObject))
-				return;
-
-			Native.fpdfview.FPDFBitmapDestroy(nativeObject);
-			if (_unmanagedMemorySize > 0)
-				GC.RemoveMemoryPressure(_unmanagedMemorySize);
-		}
+        protected override void Dispose(bool disposing, Native.FpdfBitmapT nativeObj)
+        {
+            Native.fpdfview.FPDFBitmapDestroy(nativeObj);
+            if (_unmanagedMemorySize > 0)
+                GC.RemoveMemoryPressure(_unmanagedMemorySize);
+        }
 
 		class BmpStream : Stream
 		{

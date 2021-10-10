@@ -5,7 +5,7 @@ using PDFiumSharp.Types;
 
 namespace PDFiumSharp
 {
-	public sealed class PdfTextPage : NativeWrapper<Native.FpdfTextpageT>, IDisposable
+	public sealed class PdfTextPage : DisposableNativeWrapper<Native.FpdfTextpageT>
 	{
 		public PdfPage Page { get; }
 
@@ -20,11 +20,8 @@ namespace PDFiumSharp
 
 		internal static PdfTextPage Load(PdfPage page) => new PdfTextPage(page, Native.fpdf_text.FPDFTextLoadPage(page.NativeObject));
 
-		public void Dispose()
-		{
-			if (SetNativeObjectToNull(out var nativeObject))
-				Native.fpdf_text.FPDFTextClosePage(NativeObject);
-		}
+        protected override void Dispose(bool disposing, Native.FpdfTextpageT nativeObj)
+            => Native.fpdf_text.FPDFTextClosePage(NativeObject);
 
         public string GetBoundedText(in RectangleDouble bounds)
             => Native.fpdf_text.FPDFTextGetBoundedText(NativeObject, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);

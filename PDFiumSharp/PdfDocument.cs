@@ -16,7 +16,7 @@ using System.Runtime.CompilerServices;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfDocument : NativeWrapper<Native.FpdfDocumentT>, IDisposable
+    public sealed class PdfDocument : DisposableNativeWrapper<Native.FpdfDocumentT>
     {
         //int _pageCount = -1;
         //public int PageCount => _pageCount > -1 ? _pageCount : (_pageCount = PDFium.FPDF_GetPageCount(Handle));
@@ -146,11 +146,10 @@ namespace PDFiumSharp
 
         public void CopyViewerPreferencesFrom(PdfDocument srcDoc) => Native.fpdf_ppo.FPDF_CopyViewerPreferences(NativeObject, srcDoc.NativeObject);
 
-        public void Dispose()
+        protected override void Dispose(bool disposing, Native.FpdfDocumentT nativeObj)
         {
             ((IDisposable)Pages).Dispose();
-            if (SetNativeObjectToNull(out var nativeObject))
-                Native.fpdfview.FPDF_CloseDocument(nativeObject);
+            Native.fpdfview.FPDF_CloseDocument(nativeObj);
         }
     }
 }

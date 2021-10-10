@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace PDFiumSharp
 {
-    public sealed class PdfPage : NativeWrapper<Native.FpdfPageT>, IDisposable
+    public sealed class PdfPage : DisposableNativeWrapper<Native.FpdfPageT>
     {
 		/// <summary>
 		/// Gets the page width (excluding non-displayable area) measured in points.
@@ -115,13 +115,10 @@ namespace PDFiumSharp
 
 		public FlattenResults Flatten(FlattenFlags flags) => (FlattenResults)Native.fpdf_flatten.FPDFPageFlatten(NativeObject, (int)flags);
 
-		public void Dispose()
-		{
-			if (SetNativeObjectToNull(out var nativeObject))
-				Native.fpdfview.FPDF_ClosePage(nativeObject);
-		}
+        protected override void Dispose(bool disposing, Native.FpdfPageT nativeObj)
+            => Native.fpdfview.FPDF_ClosePage(nativeObj);
 
-		public PdfTextPage GetTextPage() => PdfTextPage.Load(this);
+        public PdfTextPage GetTextPage() => PdfTextPage.Load(this);
 
 		public IEnumerable<PdfLink> Links
 		{

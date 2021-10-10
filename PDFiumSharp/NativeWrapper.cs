@@ -19,7 +19,7 @@ namespace PDFiumSharp
 
         T _nativeObject;
 
-        public virtual T NativeObject => _nativeObject;
+        public virtual T NativeObject => (_nativeObject != null && GetInstance(_nativeObject) != IntPtr.Zero) ? _nativeObject : throw new ObjectDisposedException(nameof(NativeObject));
 
         protected NativeWrapper(T nativeObj)
         {
@@ -31,23 +31,41 @@ namespace PDFiumSharp
             _nativeObject = nativeObj;
         }
 
-        protected bool SetNativeObjectToNull(out T oldValue)
+        protected virtual bool SetNativeObjectToNull(out T oldValue)
         {
             oldValue = Interlocked.Exchange(ref _nativeObject, default);
             return oldValue != default;
         }
     }
 
-    public abstract class NativeDisposableWrapper<T> : NativeWrapper<T>, IDisposable
-        where T : class, IDisposable
+    public abstract class DisposableNativeWrapper<T> : NativeWrapper<T>, IDisposable
+         where T : class
     {
-        public override T NativeObject => GetInstance(base.NativeObject) != IntPtr.Zero ? base.NativeObject : throw new ObjectDisposedException(nameof(NativeObject));
-        protected NativeDisposableWrapper(T nativeObj)
+        protected DisposableNativeWrapper(T nativeObj)
             : base(nativeObj) { }
 
-        void IDisposable.Dispose() => DisposeCore();
+        void Dispose(bool disposing)
+        {
+            if (SetNativeObjectToNull(out var nativeObj))
+                Dispose(disposing, nativeObj);
+        }
 
-        protected virtual void DisposeCore() => NativeObject.Dispose();
+        protected abstract void Dispose(bool disposing, T nativeObj);
 
+        ~DisposableNativeWrapper()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected override bool SetNativeObjectToNull(out T oldValue)
+            => throw new InvalidOperationException($"Not supported, call {nameof(Dispose)} instead.");
     }
 }
