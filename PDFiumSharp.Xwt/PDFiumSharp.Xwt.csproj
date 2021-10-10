@@ -3,7 +3,7 @@
   <Import Project="../Properties.props" />
 
   <PropertyGroup>
-    <VersionPrefix>$(PDFiumBuild).0.0</VersionPrefix>
+    <!--<VersionPrefix>1.$(PDFiumBuild).0</VersionPrefix>-->
     <Description>XWT extensions for PDFiumSharp</Description>
   </PropertyGroup>
 
