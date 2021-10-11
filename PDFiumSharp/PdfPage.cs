@@ -70,8 +70,8 @@ namespace PDFiumSharp
 			Index = index;
 		}
 
-		internal static PdfPage Load(PdfDocument doc, int index) => new PdfPage(doc, Native.fpdfview.FPDF_LoadPage(doc.NativeObject, index), index);
-		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new PdfPage(doc, Native.fpdf_edit.FPDFPageNew(doc.NativeObject, index, width, height), index);
+		internal static PdfPage Load(PdfDocument doc, int index) => new(doc, Native.fpdfview.FPDF_LoadPage(doc.NativeObject, index), index);
+		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new(doc, Native.fpdf_edit.FPDFPageNew(doc.NativeObject, index, width, height), index);
 
 		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
@@ -127,7 +127,7 @@ namespace PDFiumSharp
 				int idx = 0;
 				var nativeObj = Native.FpdfLinkT.__CreateInstance(IntPtr.Zero);
 				while (Native.fpdf_doc.FPDFLinkEnumerate(NativeObject, ref idx, nativeObj))
-					yield return new PdfLink(this, Native.FpdfLinkT.__CreateInstance(nativeObj.__Instance));
+					yield return new(this, Native.FpdfLinkT.__CreateInstance(nativeObj.__Instance));
 			}
 		}
 	}

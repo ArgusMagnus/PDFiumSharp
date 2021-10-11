@@ -16,10 +16,6 @@ using System.Collections.Generic;
 
 namespace PDFiumSharp
 {
-	/// <summary>
-	/// Static class containing the native (imported) PDFium functions.
-	/// In case of missing documentation, refer to the <see href="https://pdfium.googlesource.com/pdfium/+/refs/heads/chromium/4660/public">PDFium header files</see>. 
-	/// </summary>
 	public static class PDFium
     {
 		/// <summary>

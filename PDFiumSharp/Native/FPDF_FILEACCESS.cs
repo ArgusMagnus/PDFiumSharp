@@ -22,7 +22,7 @@ namespace PDFiumSharp.Native
 			if (count <= 0)
 				count = (int)(stream.Length - stream.Position);
 			var start = stream.Position;
-			byte[] data = null;
+			byte[]? data = null;
 
 			var fileRead = new FPDF_FILEACCESS();
 			fileRead.MFileLen = (uint)count;

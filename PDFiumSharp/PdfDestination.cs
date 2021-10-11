@@ -20,17 +20,12 @@ namespace PDFiumSharp
 
 		public int PageIndex => Native.fpdf_doc.FPDFDestGetDestPageIndex(Document.NativeObject, NativeObject);
 
-		public (float X, float Y, float Zoom) LocationInPage
-		{
-			get
-			{
-				bool hasX = default, hasY = default, hasZ = default;
-				float x = default, y = default, z = default;
-				if (!Native.fpdf_doc.FPDFDestGetLocationInPage(NativeObject, ref hasX, ref hasY, ref hasZ, ref x, ref y, ref z))
-					return ((hasX ? x : float.NaN), (hasY ? y : float.NaN), (hasZ ? z : float.NaN));
-				return (float.NaN, float.NaN, float.NaN);
-			}
-		}
+        public bool TryGetLocationInPage(out float x, out float y, out float zoom)
+        {
+            bool hasX = default, hasY = default, hasZ = default;
+            x = float.NaN; y = float.NaN; zoom = float.NaN;
+            return Native.fpdf_doc.FPDFDestGetLocationInPage(NativeObject, ref hasX, ref hasY, ref hasZ, ref x, ref y, ref zoom);
+        }
 
 
 		public View GetView() => new View(NativeObject);

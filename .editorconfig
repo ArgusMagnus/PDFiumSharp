@@ -20,3 +20,7 @@ indent_size = 2
 [*.json]
 indent_style = space
 indent_size = 2
+
+# Disable nullable warnings: https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references#nullable-contexts
+[**/CppSharp/src/Runtime/*.cs]
+generated_code = true

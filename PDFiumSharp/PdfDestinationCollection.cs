@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PDFiumSharp
 {
@@ -24,14 +25,7 @@ namespace PDFiumSharp
 			_doc = doc;
 		}
 
-		public PdfDestination this[string name]
-		{
-			get
-			{
-				var dest = Native.fpdfview.FPDF_GetNamedDestByName(_doc.NativeObject, name);
-				return dest == null ? null : new PdfDestination(_doc, dest, name);
-			}
-		}
+		public PdfDestination this[string name] => TryGetDestination(name, out var value) ? value : throw new KeyNotFoundException();
 
 		public PdfDestination this[int index]
 		{
@@ -39,10 +33,21 @@ namespace PDFiumSharp
 			{
 				if (index < 0 || index >= Count)
 					throw new ArgumentOutOfRangeException(nameof(index));
-				var dest = Native.fpdfview.FPDF_GetNamedDest(_doc.NativeObject, index, out var name);
-				return dest == null ? null : new PdfDestination(_doc, dest, name);
+                if (!Native.fpdfview.FPDF_GetNamedDest(_doc.NativeObject, index, out var dest, out var name))
+                    throw new KeyNotFoundException();
+				return new(_doc, dest, name);
 			}
 		}
+
+        public bool TryGetDestination(string name, [MaybeNullWhen(false)] out PdfDestination value)
+        {
+            value = default;
+            var dest = Native.fpdfview.FPDF_GetNamedDestByName(_doc.NativeObject, name);
+            if (dest == null)
+                return false;
+            value = new(_doc, dest, name);
+            return true;
+        }
 
 		IEnumerator<PdfDestination> IEnumerable<PdfDestination>.GetEnumerator()
 		{

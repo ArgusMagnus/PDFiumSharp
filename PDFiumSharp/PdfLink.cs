@@ -8,15 +8,15 @@ namespace PDFiumSharp
     public sealed class PdfLink : NativeWrapper<Native.FpdfLinkT>
 	{
 		public PdfPage Page { get; }
-		public PdfDestination Destination { get; }
-		public PdfAction Action { get; }
+		public PdfDestination? Destination { get; }
+		public PdfAction? Action { get; }
 
 		internal PdfLink(PdfPage page, Native.FpdfLinkT nativeObj)
 			:base(nativeObj)
 		{
 			Page = page;			
             var dest = Native.fpdf_doc.FPDFLinkGetDest(page.Document.NativeObject, nativeObj);
-			Destination = dest == null ? null : new PdfDestination(page.Document, dest, null);
+			Destination = dest == null ? null : new PdfDestination(page.Document, dest, string.Empty);
 			var action = Native.fpdf_doc.FPDFLinkGetAction(nativeObj);
             Action = action == null ? null : new PdfAction(page.Document, action);
 		}

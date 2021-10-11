@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PDFiumSharp
 {
@@ -83,7 +84,7 @@ namespace PDFiumSharp
         /// <see cref="Close"/> must be called in order to free unmanaged resources.
         /// </summary>
         /// <param name="fileName">Filepath of the PDF file to load.</param>
-        public PdfDocument(string fileName, string password = null)
+        public PdfDocument(string fileName, string? password = null)
             : this(Native.fpdfview.FPDF_LoadDocument(fileName, password)) { }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace PDFiumSharp
         /// <param name="data">Byte array containing the bytes of the PDF document to load.</param>
         /// <param name="index">The index of the first byte to be copied from <paramref name="data"/>.</param>
         /// <param name="count">The number of bytes to copy from <paramref name="data"/> or a negative value to copy all bytes.</param>
-        public unsafe PdfDocument(Span<byte> data, string password = null)
+        public unsafe PdfDocument(Span<byte> data, string? password = null)
             : this(Native.fpdfview.FPDF_LoadMemDocument(new IntPtr(Unsafe.AsPointer(ref MemoryMarshal.GetReference(data))), data.Length, password)) { }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace PDFiumSharp
         /// The number of bytes to read from the <paramref name="stream"/>.
         /// If the value is equal to or smaller than 0, the stream is read to the end.
         /// </param>
-        public PdfDocument(Stream stream, int count = 0, string password = null)
+        public PdfDocument(Stream stream, int count = 0, string? password = null)
             : this(Native.fpdfview.FPDF_LoadCustomDocument(Native.FPDF_FILEACCESS.FromStream(stream, count), password)) { }
 
         /// <summary>
@@ -136,10 +137,14 @@ namespace PDFiumSharp
                 return Save(stream, flags, version);
         }
 
-        public PdfBookmark FindBookmark(string title)
+        public bool FindBookmark(string title, [MaybeNullWhen(false)] out PdfBookmark bookmark)
         {
+            bookmark = default;
             var handle = Native.fpdf_doc.FPDFBookmarkFind(NativeObject, title);
-            return handle == null ? null : new PdfBookmark(this, handle);
+            if (handle == null)
+                return false;
+            bookmark = new(this, handle);
+            return true;
         }
 
         public string GetMetaText(MetadataTags tag) => Native.fpdf_doc.FPDF_GetMetaText(NativeObject, tag.ToString());

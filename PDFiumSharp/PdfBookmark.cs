@@ -14,31 +14,31 @@ namespace PDFiumSharp
 {
     public sealed class PdfBookmark : NativeWrapper<Native.FpdfBookmarkT>
     {
-		public PdfDocument Document { get; }
+        public PdfDocument Document { get; }
 
-		public IEnumerable<PdfBookmark> Children
-		{
-			get
-			{
-				var nativeObj = Native.fpdf_doc.FPDFBookmarkGetFirstChild(Document.NativeObject, NativeObject);
-				while (nativeObj != null)
-				{
-					yield return new PdfBookmark(Document, nativeObj);
-					nativeObj = Native.fpdf_doc.FPDFBookmarkGetNextSibling(Document.NativeObject, nativeObj);
-				}
-			}
-		}
+        public IEnumerable<PdfBookmark> Children
+        {
+            get
+            {
+                var nativeObj = Native.fpdf_doc.FPDFBookmarkGetFirstChild(Document.NativeObject, NativeObject);
+                while (nativeObj != null)
+                {
+                    yield return new PdfBookmark(Document, nativeObj);
+                    nativeObj = Native.fpdf_doc.FPDFBookmarkGetNextSibling(Document.NativeObject, nativeObj);
+                }
+            }
+        }
 
-		public string Title => Native.fpdf_doc.FPDFBookmarkGetTitle(NativeObject);
+        public string Title => Native.fpdf_doc.FPDFBookmarkGetTitle(NativeObject);
 
-		public PdfDestination Destination => new PdfDestination(Document, Native.fpdf_doc.FPDFBookmarkGetDest(Document.NativeObject, NativeObject), null);
+        public PdfDestination Destination => new(Document, Native.fpdf_doc.FPDFBookmarkGetDest(Document.NativeObject, NativeObject), string.Empty);
 
-		public PdfAction Action => new PdfAction(Document, Native.fpdf_doc.FPDFBookmarkGetAction(NativeObject));
+        public PdfAction Action => new(Document, Native.fpdf_doc.FPDFBookmarkGetAction(NativeObject));
 
-		internal PdfBookmark(PdfDocument doc, Native.FpdfBookmarkT handle)
-			:base(handle)
-		{
-			Document = doc;
-		}
-	}
+        internal PdfBookmark(PdfDocument doc, Native.FpdfBookmarkT handle)
+            : base(handle)
+        {
+            Document = doc;
+        }
+    }
 }

@@ -20,18 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.4" />
-    <!--<PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />-->
-    <!--<PackageReference Include="System.ValueTuple" Version="4.5.0" />-->
   </ItemGroup>
-
-  <!--<ItemGroup>
-    <None Update="pdfium_x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="pdfium_x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>-->
 
   <ItemGroup>
     <Compile Include="..\CppSharp\src\Runtime\*.cs" Link="Native\CppSharp\%(FileName)%(Extension)" />

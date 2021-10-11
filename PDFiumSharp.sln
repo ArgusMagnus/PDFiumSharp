@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Xwt", "Samples\Test.Xw
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Documentation", "Documentation\Documentation.shfbproj", "{EA9AF510-96CD-4694-BE0F-50E9DDE5DFA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console", "Samples\Test.Console\Test.Console.csproj", "{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Console", "Samples\Test.Console\Test.Console.csproj", "{C07538E4-238C-42AC-BC19-8AFA66BD6BC2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.CppSharp", "PDFiumSharp.CppSharp\PDFiumSharp.CppSharp.csproj", "{83439038-FC44-4C52-8241-E21C82A435DC}"
 EndProject
@@ -29,7 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFiumSharp.NativeBinaries"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10F9E913-FE6C-483A-BC73-CBA2A0355F9B}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.gitmodules = .gitmodules
+		LICENSE = LICENSE
 		Properties.props = Properties.props
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

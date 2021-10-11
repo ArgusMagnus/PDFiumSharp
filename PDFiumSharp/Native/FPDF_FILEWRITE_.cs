@@ -19,7 +19,7 @@ namespace PDFiumSharp.Native
 
         public static FPDF_FILEWRITE_ FromStream(Stream stream)
         {
-            byte[] buffer = null;
+            byte[]? buffer = null;
             return new FPDF_FILEWRITE_((data, size) =>
             {
                 if (buffer == null || buffer.Length < size)

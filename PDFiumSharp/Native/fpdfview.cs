@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PDFiumSharp.Native
 {
@@ -25,20 +26,21 @@ namespace PDFiumSharp.Native
             }
         }
 
-        public static FpdfDestT FPDF_GetNamedDest(FpdfDocumentT document, int index, out string name)
+        public static bool FPDF_GetNamedDest(FpdfDocumentT document, int index, [MaybeNullWhen(false)] out FpdfDestT dest, [MaybeNullWhen(false)] out string name)
         {
             name = default;
+            dest = default;
             int length = default;
             if (FPDF_GetNamedDest(document, index, IntPtr.Zero, ref length) == null || length < 1)
-                return default;
+                return false;
 
             var buffer = new byte[length];
             using (var pin = PinnedGCHandle.Pin(buffer))
             {
-                var dest = FPDF_GetNamedDest(document, index, pin.Pointer, ref length);
+                dest = FPDF_GetNamedDest(document, index, pin.Pointer, ref length);
                 if (dest != null)
                     name = Encoding.Unicode.GetString(buffer, 0, (int)length - 2);
-                return dest;
+                return name != null;
             }
         }
     }

@@ -18,11 +18,11 @@ namespace PDFiumSharp
 
         public ActionTypes Type => (ActionTypes)Native.fpdf_doc.FPDFActionGetType(NativeObject);
 
-        public PdfDestination Destination => new PdfDestination(Document, Native.fpdf_doc.FPDFActionGetDest(Document.NativeObject, NativeObject), null);
+        public PdfDestination Destination => new(Document, Native.fpdf_doc.FPDFActionGetDest(Document.NativeObject, NativeObject), string.Empty);
 
         public string FilePath => Native.fpdf_doc.FPDFActionGetFilePath(NativeObject);
 
-        public Uri Uri => new Uri(Native.fpdf_doc.FPDFActionGetURIPath(Document.NativeObject, NativeObject));
+        public Uri Uri => new(Native.fpdf_doc.FPDFActionGetURIPath(Document.NativeObject, NativeObject));
 
         internal PdfAction(PdfDocument doc, Native.FpdfActionT nativeObj)
             : base(nativeObj)
