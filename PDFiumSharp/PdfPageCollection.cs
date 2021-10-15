@@ -31,7 +31,7 @@ namespace PDFiumSharp
         /// <summary>
         /// Gets the number of pages in the <see cref="PdfDocument"/>.
         /// </summary>
-        public int Count => Native.fpdfview.FPDF_GetPageCount(_doc.NativeObject);
+        public int Count { get { lock (_doc.NativeObject) { return Native.fpdfview.FPDF_GetPageCount(_doc.NativeObject); } } }
 
         /// <summary>
         /// Gets the <see cref="PdfPage"/> at the zero-based <paramref name="index"/> in the <see cref="PdfDocument"/>.
@@ -42,7 +42,7 @@ namespace PDFiumSharp
             {
                 if (index >= _pages.Count)
                     throw new ArgumentOutOfRangeException(nameof(index));
-                if (_pages[index]?.NativeObject == null)
+                if (_pages[index]?.IsDisposed ?? true)
                     _pages[index] = PdfPage.Load(_doc, index);
                 return _pages[index]!;
             }
@@ -143,7 +143,7 @@ namespace PDFiumSharp
                         _pages[i]!.Index = i;
                 }
             }
-            Native.fpdf_edit.FPDFPageDelete(_doc.NativeObject, index);
+            lock (_doc.NativeObject) { Native.fpdf_edit.FPDFPageDelete(_doc.NativeObject, index); }
         }
 
         /// <summary>

@@ -14,10 +14,12 @@ namespace PDFiumSharp
 		internal PdfLink(PdfPage page, Native.FpdfLinkT nativeObj)
 			:base(nativeObj)
 		{
-			Page = page;			
-            var dest = Native.fpdf_doc.FPDFLinkGetDest(page.Document.NativeObject, nativeObj);
+			Page = page;
+            Native.FpdfDestT dest;
+            lock (page.Document.NativeObject) { dest = Native.fpdf_doc.FPDFLinkGetDest(page.Document.NativeObject, nativeObj); }
 			Destination = dest == null ? null : new PdfDestination(page.Document, dest, string.Empty);
-			var action = Native.fpdf_doc.FPDFLinkGetAction(nativeObj);
+            Native.FpdfActionT action;
+            lock (page.Document.NativeObject) { action = Native.fpdf_doc.FPDFLinkGetAction(nativeObj); }
             Action = action == null ? null : new PdfAction(page.Document, action);
 		}
 
@@ -27,8 +29,11 @@ namespace PDFiumSharp
 			{
 				RectangleFloat result = default;
 				using Native.FS_RECTF_ rect = new(ref result);
-				if (Native.fpdf_doc.FPDFLinkGetAnnotRect(NativeObject, rect))
-					return result;
+                lock (Page.Document.NativeObject)
+                {
+                    if (Native.fpdf_doc.FPDFLinkGetAnnotRect(NativeObject, rect))
+                        return result;
+                }
 				return new(float.NaN, float.NaN, float.NaN, float.NaN);
 			}
 		}

@@ -16,11 +16,19 @@ namespace PDFiumSharp
     {
         public PdfDocument Document { get; }
 
-        public ActionTypes Type => (ActionTypes)Native.fpdf_doc.FPDFActionGetType(NativeObject);
+        public ActionTypes Type { get { lock (Document.NativeObject) { return (ActionTypes)Native.fpdf_doc.FPDFActionGetType(NativeObject); } } }
 
-        public PdfDestination Destination => new(Document, Native.fpdf_doc.FPDFActionGetDest(Document.NativeObject, NativeObject), string.Empty);
+        public PdfDestination Destination
+        {
+            get
+            {
+                Native.FpdfDestT handle;
+                lock (Document.NativeObject) { handle = Native.fpdf_doc.FPDFActionGetDest(Document.NativeObject, NativeObject); }
+                return new(Document, handle, string.Empty);
+            }
+        }
 
-        public string FilePath => Native.fpdf_doc.FPDFActionGetFilePath(NativeObject);
+        public string FilePath { get { lock (Document.NativeObject) { return Native.fpdf_doc.FPDFActionGetFilePath(NativeObject); } } }
 
         public Uri Uri => new(Native.fpdf_doc.FPDFActionGetURIPath(Document.NativeObject, NativeObject));
 

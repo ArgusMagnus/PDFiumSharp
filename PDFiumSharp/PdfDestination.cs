@@ -18,17 +18,17 @@ namespace PDFiumSharp
 		public PdfDocument Document { get; }
 		public string Name { get; }
 
-		public int PageIndex => Native.fpdf_doc.FPDFDestGetDestPageIndex(Document.NativeObject, NativeObject);
+		public int PageIndex { get { lock (Document.NativeObject) { return Native.fpdf_doc.FPDFDestGetDestPageIndex(Document.NativeObject, NativeObject); } } }
 
         public bool TryGetLocationInPage(out float x, out float y, out float zoom)
         {
             bool hasX = default, hasY = default, hasZ = default;
             x = float.NaN; y = float.NaN; zoom = float.NaN;
-            return Native.fpdf_doc.FPDFDestGetLocationInPage(NativeObject, ref hasX, ref hasY, ref hasZ, ref x, ref y, ref zoom);
+            lock (Document.NativeObject) { return Native.fpdf_doc.FPDFDestGetLocationInPage(NativeObject, ref hasX, ref hasY, ref hasZ, ref x, ref y, ref zoom); }
         }
 
 
-		public View GetView() => new View(NativeObject);
+        public View GetView() { lock (Document.NativeObject) { return new View(NativeObject); } }
 
 		internal PdfDestination(PdfDocument doc, Native.FpdfDestT nativeObj, string name)
 			:base(nativeObj)

@@ -82,8 +82,8 @@ namespace PDFiumSharp
 		public int Top { get; }
 		public int Right { get; }
 		public int Bottom { get; }
-		public int Width => Right - Left;
-		public int Height => Bottom - Top;
+        public int Width => Math.Abs(Right - Left);
+        public int Height => Math.Abs(Bottom - Top);
 
 		public RectangleInt32(int left, int top, int right, int bottom, bool treatRightBottomAsWidthHeight = false)
 		{
@@ -114,10 +114,10 @@ namespace PDFiumSharp
 		public float Top => _native.top;
 		public float Right => _native.right;
 		public float Bottom => _native.bottom;
-		public float Width => Right - Left;
-		public float Height => Bottom - Top;
+        public float Width => Math.Abs(Right - Left);
+        public float Height => Math.Abs(Bottom - Top);
 
-		public RectangleFloat(float left, float top, float right, float bottom, bool treatRightBottomAsWidthHeight = false)
+        public RectangleFloat(float left, float top, float right, float bottom, bool treatRightBottomAsWidthHeight = false)
 		{
 			_native.left = left;
 			_native.top = top;
@@ -143,10 +143,10 @@ namespace PDFiumSharp
 		public double Top { get; }
 		public double Right { get; }
 		public double Bottom { get; }
-		public double Width => Right - Left;
-		public double Height => Bottom - Top;
+        public double Width => Math.Abs(Right - Left);
+        public double Height => Math.Abs(Bottom - Top);
 
-		public RectangleDouble(double left, double top, double right, double bottom, bool treatRightBottomAsWidthHeight = false)
+        public RectangleDouble(double left, double top, double right, double bottom, bool treatRightBottomAsWidthHeight = false)
 		{
 			Left = left;
 			Top = top;

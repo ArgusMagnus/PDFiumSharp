@@ -34,36 +34,37 @@ namespace PDFiumSharp
         /// <summary>
         /// Gets the PDF file version. File version: 14 for 1.4, 15 for 1.5, ...
         /// </summary>
-        public int FileVersion { get { int v = 0; Native.fpdfview.FPDF_GetFileVersion(NativeObject, ref v); return v; } }
+        public int FileVersion { get { int v = 0; lock (NativeObject) { Native.fpdfview.FPDF_GetFileVersion(NativeObject, ref v); } return v; } }
 
         /// <summary>
         /// Gets the revision of the security handler.
         /// </summary>
         /// <seealso href="http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF Reference: Table 21</seealso>
-        public int SecurityHandlerRevision => Native.fpdfview.FPDF_GetSecurityHandlerRevision(NativeObject);
+        public int SecurityHandlerRevision { get { lock (NativeObject) { return Native.fpdfview.FPDF_GetSecurityHandlerRevision(NativeObject); } } }
 
-        public DocumentPermissions Permissions => (DocumentPermissions)Native.fpdfview.FPDF_GetDocPermissions(NativeObject);
+        public DocumentPermissions Permissions { get { lock (NativeObject) { return (DocumentPermissions)Native.fpdfview.FPDF_GetDocPermissions(NativeObject); } } }
 
-        public bool PrintPrefersScaling => Native.fpdfview.FPDF_VIEWERREF_GetPrintScaling(NativeObject);
+        public bool PrintPrefersScaling { get { lock (NativeObject) { return Native.fpdfview.FPDF_VIEWERREF_GetPrintScaling(NativeObject); } } }
 
-        public int PrintCopyCount => Native.fpdfview.FPDF_VIEWERREF_GetNumCopies(NativeObject);
+        public int PrintCopyCount { get { lock (NativeObject) { return Native.fpdfview.FPDF_VIEWERREF_GetNumCopies(NativeObject); } } }
 
-        public Native.FPDF_DUPLEXTYPE_ DuplexType => Native.fpdfview.FPDF_VIEWERREF_GetDuplex(NativeObject);
+        public Native.FPDF_DUPLEXTYPE_ DuplexType { get { lock (NativeObject) { return Native.fpdfview.FPDF_VIEWERREF_GetDuplex(NativeObject); } } }
 
         public IEnumerable<PdfBookmark> Bookmarks
         {
             get
             {
-                var handle = Native.fpdf_doc.FPDFBookmarkGetFirstChild(NativeObject, null);
+                Native.FpdfBookmarkT handle;
+                lock (NativeObject) { handle = Native.fpdf_doc.FPDFBookmarkGetFirstChild(NativeObject, null); }
                 while (handle != null)
                 {
                     yield return new PdfBookmark(this, handle);
-                    handle = Native.fpdf_doc.FPDFBookmarkGetNextSibling(NativeObject, handle);
+                    lock (NativeObject) { handle = Native.fpdf_doc.FPDFBookmarkGetNextSibling(NativeObject, handle); }
                 }
             }
         }
 
-        public PageModes PageMode => (PageModes)Native.fpdf_ext.FPDFDocGetPageMode(NativeObject);
+        public PageModes PageMode { get { lock (NativeObject) { return (PageModes)Native.fpdf_ext.FPDFDocGetPageMode(NativeObject); } } }
 
         PdfDocument(Native.FpdfDocumentT doc)
             : base(doc)
@@ -118,10 +119,13 @@ namespace PDFiumSharp
         public bool Save(Stream stream, SaveFlags flags = SaveFlags.None, int version = 0)
         {
             var fileWrite = Native.FPDF_FILEWRITE_.FromStream(stream);
-            if (version >= 10)
-                return Native.fpdf_save.FPDF_SaveWithVersion(NativeObject, fileWrite, (uint)flags, version);
-            else
-                return Native.fpdf_save.FPDF_SaveAsCopy(NativeObject, fileWrite, (uint)flags);
+            lock (NativeObject)
+            {
+                if (version >= 10)
+                    return Native.fpdf_save.FPDF_SaveWithVersion(NativeObject, fileWrite, (uint)flags, version);
+                else
+                    return Native.fpdf_save.FPDF_SaveAsCopy(NativeObject, fileWrite, (uint)flags);
+            }
         }
 
         /// <summary>
@@ -140,21 +144,22 @@ namespace PDFiumSharp
         public bool FindBookmark(string title, [MaybeNullWhen(false)] out PdfBookmark bookmark)
         {
             bookmark = default;
-            var handle = Native.fpdf_doc.FPDFBookmarkFind(NativeObject, title);
+            Native.FpdfBookmarkT handle;
+            lock (NativeObject) { handle = Native.fpdf_doc.FPDFBookmarkFind(NativeObject, title); }
             if (handle == null)
                 return false;
             bookmark = new(this, handle);
             return true;
         }
 
-        public string GetMetaText(MetadataTags tag) => Native.fpdf_doc.FPDF_GetMetaText(NativeObject, tag.ToString());
+        public string GetMetaText(MetadataTags tag) { lock (NativeObject) { return Native.fpdf_doc.FPDF_GetMetaText(NativeObject, tag.ToString()); } }
 
-        public void CopyViewerPreferencesFrom(PdfDocument srcDoc) => Native.fpdf_ppo.FPDF_CopyViewerPreferences(NativeObject, srcDoc.NativeObject);
+        public void CopyViewerPreferencesFrom(PdfDocument srcDoc) { lock (NativeObject) { Native.fpdf_ppo.FPDF_CopyViewerPreferences(NativeObject, srcDoc.NativeObject); } }
 
-        protected override void Dispose(bool disposing, Native.FpdfDocumentT nativeObj)
+        protected override void Dispose(bool disposing)
         {
             ((IDisposable)Pages).Dispose();
-            Native.fpdfview.FPDF_CloseDocument(nativeObj);
+            lock (NativeObject) { Native.fpdfview.FPDF_CloseDocument(NativeObject); }
         }
     }
 }

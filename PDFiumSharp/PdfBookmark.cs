@@ -20,20 +20,37 @@ namespace PDFiumSharp
         {
             get
             {
-                var nativeObj = Native.fpdf_doc.FPDFBookmarkGetFirstChild(Document.NativeObject, NativeObject);
+                Native.FpdfBookmarkT nativeObj;
+                lock (Document.NativeObject) { nativeObj = Native.fpdf_doc.FPDFBookmarkGetFirstChild(Document.NativeObject, NativeObject); }
                 while (nativeObj != null)
                 {
                     yield return new PdfBookmark(Document, nativeObj);
-                    nativeObj = Native.fpdf_doc.FPDFBookmarkGetNextSibling(Document.NativeObject, nativeObj);
+                    lock (Document.NativeObject) { nativeObj = Native.fpdf_doc.FPDFBookmarkGetNextSibling(Document.NativeObject, nativeObj); }
                 }
             }
         }
 
-        public string Title => Native.fpdf_doc.FPDFBookmarkGetTitle(NativeObject);
+        public string Title { get { lock (Document.NativeObject) { return Native.fpdf_doc.FPDFBookmarkGetTitle(NativeObject); } } }
 
-        public PdfDestination Destination => new(Document, Native.fpdf_doc.FPDFBookmarkGetDest(Document.NativeObject, NativeObject), string.Empty);
+        public PdfDestination Destination
+        {
+            get
+            {
+                Native.FpdfDestT handle;
+                lock (Document.NativeObject) { handle = Native.fpdf_doc.FPDFBookmarkGetDest(Document.NativeObject, NativeObject); }
+                return new(Document, handle, string.Empty);
+            }
+        }
 
-        public PdfAction Action => new(Document, Native.fpdf_doc.FPDFBookmarkGetAction(NativeObject));
+        public PdfAction Action
+        {
+            get
+            {
+                Native.FpdfActionT handle;
+                lock (Document.NativeObject) { handle = Native.fpdf_doc.FPDFBookmarkGetAction(NativeObject); }
+                return new(Document, handle);
+            }
+        }
 
         internal PdfBookmark(PdfDocument doc, Native.FpdfBookmarkT handle)
             : base(handle)

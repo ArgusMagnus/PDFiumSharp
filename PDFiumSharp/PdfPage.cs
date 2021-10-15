@@ -19,13 +19,13 @@ namespace PDFiumSharp
 		/// Gets the page width (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
 		/// </summary>
-		public double Width => Native.fpdfview.FPDF_GetPageWidth(NativeObject);
+		public double Width { get { lock (Document.NativeObject) { return Native.fpdfview.FPDF_GetPageWidth(NativeObject); } } }
 
 		/// <summary>
 		/// Gets the page height (excluding non-displayable area) measured in points.
 		/// One point is 1/72 inch(around 0.3528 mm).
 		/// </summary>
-		public double Height => Native.fpdfview.FPDF_GetPageHeight(NativeObject);
+		public double Height { get { lock (Document.NativeObject) { return Native.fpdfview.FPDF_GetPageHeight(NativeObject); } } }
 
 		/// <summary>
 		/// Gets the page width and height (excluding non-displayable area) measured in points.
@@ -36,8 +36,11 @@ namespace PDFiumSharp
 			get
 			{
 				double width = default, height = default;
-				if (Native.fpdfview.FPDF_GetPageSizeByIndex(Document.NativeObject, Index, ref width, ref height) != 0)
-					return new(width, height);
+                lock (Document.NativeObject)
+                {
+                    if (Native.fpdfview.FPDF_GetPageSizeByIndex(Document.NativeObject, Index, ref width, ref height) != 0)
+                        return new(width, height);
+                }
 				throw new PDFiumException();
 			}
 		}
@@ -47,8 +50,8 @@ namespace PDFiumSharp
 		/// </summary>
 		public PageOrientations Orientation
 		{
-			get => (PageOrientations)Native.fpdf_edit.FPDFPageGetRotation(NativeObject);
-			set => Native.fpdf_edit.FPDFPageSetRotation(NativeObject, (int)value);
+            get { lock (Document.NativeObject) { return (PageOrientations)Native.fpdf_edit.FPDFPageGetRotation(NativeObject); } }
+            set { lock (Document.NativeObject) { Native.fpdf_edit.FPDFPageSetRotation(NativeObject, (int)value); } }
 		}
 
 		/// <summary>
@@ -70,8 +73,19 @@ namespace PDFiumSharp
 			Index = index;
 		}
 
-		internal static PdfPage Load(PdfDocument doc, int index) => new(doc, Native.fpdfview.FPDF_LoadPage(doc.NativeObject, index), index);
-		internal static PdfPage New(PdfDocument doc, int index, double width, double height) => new(doc, Native.fpdf_edit.FPDFPageNew(doc.NativeObject, index, width, height), index);
+        internal static PdfPage Load(PdfDocument doc, int index)
+        {
+            Native.FpdfPageT handle;
+            lock (doc.NativeObject) { handle = Native.fpdfview.FPDF_LoadPage(doc.NativeObject, index); }
+            return new(doc, handle, index);
+        }
+
+        internal static PdfPage New(PdfDocument doc, int index, double width, double height)
+        {
+            Native.FpdfPageT handle;
+            lock (doc.NativeObject) { handle = Native.fpdf_edit.FPDFPageNew(doc.NativeObject, index, width, height); }
+            return new(doc, handle, index);
+        }
 
 		/// <summary>
 		/// Renders the page to a <see cref="PDFiumBitmap"/>
@@ -85,7 +99,13 @@ namespace PDFiumSharp
 			if (renderTarget == null)
 				throw new ArgumentNullException(nameof(renderTarget));
 
-			Native.fpdfview.FPDF_RenderPageBitmap(renderTarget.NativeObject, NativeObject, rectDest.Left, rectDest.Top, rectDest.Width, rectDest.Height, (int)orientation, (int)flags);
+            lock(Document.NativeObject)
+            {
+                lock(renderTarget.NativeObject)
+                {
+                    Native.fpdfview.FPDF_RenderPageBitmap(renderTarget.NativeObject, NativeObject, rectDest.Left, rectDest.Top, rectDest.Width, rectDest.Height, (int)orientation, (int)flags);
+                }
+            }
 		}
 
 		/// <summary>
@@ -102,21 +122,26 @@ namespace PDFiumSharp
 		public CoordinatesDouble DeviceToPage(RectangleInt32 displayArea, CoordinatesInt32 coordDevice, PageOrientations orientation = PageOrientations.Normal)
 		{
 			double x = default, y = default;
-			Native.fpdfview.FPDF_DeviceToPage(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordDevice.X, coordDevice.Y, ref x, ref y);
+            lock (Document.NativeObject) { Native.fpdfview.FPDF_DeviceToPage(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordDevice.X, coordDevice.Y, ref x, ref y); }
 			return new(x, y);
 		}
 
 		public CoordinatesInt32 PageToDevice(RectangleInt32 displayArea, CoordinatesDouble coordPage, PageOrientations orientation = PageOrientations.Normal)
 		{
 			int x = default, y = default;
-			Native.fpdfview.FPDF_PageToDevice(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordPage.X, coordPage.Y, ref x, ref y);
+            lock (Document.NativeObject) { Native.fpdfview.FPDF_PageToDevice(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordPage.X, coordPage.Y, ref x, ref y); }
 			return new(x, y);
 		}
 
-		public FlattenResults Flatten(FlattenFlags flags) => (FlattenResults)Native.fpdf_flatten.FPDFPageFlatten(NativeObject, (int)flags);
+        public FlattenResults Flatten(FlattenFlags flags) 
+        {
+            lock (Document.NativeObject) { return (FlattenResults)Native.fpdf_flatten.FPDFPageFlatten(NativeObject, (int)flags); } 
+        }
 
-        protected override void Dispose(bool disposing, Native.FpdfPageT nativeObj)
-            => Native.fpdfview.FPDF_ClosePage(nativeObj);
+        protected override void Dispose(bool disposing) 
+        {
+            lock (disposing ? Document.NativeObject : new object()) { Native.fpdfview.FPDF_ClosePage(NativeObject); }
+        }
 
         public PdfTextPage GetTextPage() => PdfTextPage.Load(this);
 
@@ -125,9 +150,15 @@ namespace PDFiumSharp
 			get
 			{
 				int idx = 0;
-				var nativeObj = Native.FpdfLinkT.__CreateInstance(IntPtr.Zero);
-				while (Native.fpdf_doc.FPDFLinkEnumerate(NativeObject, ref idx, nativeObj))
-					yield return new(this, Native.FpdfLinkT.__CreateInstance(nativeObj.__Instance));
+                var success = true;
+                while(success)
+                {
+                    Native.FpdfLinkT? handle;
+                    lock (Document.NativeObject) { success = Native.fpdf_doc.FPDFLinkEnumerate(NativeObject, ref idx, out handle); }
+                    if (success)
+                        yield return new(this, handle!);
+
+                }
 			}
 		}
 	}

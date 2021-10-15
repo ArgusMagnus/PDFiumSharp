@@ -19,10 +19,10 @@ namespace PDFiumSharp
 	/// </summary>
     public sealed class PDFiumBitmap : DisposableNativeWrapper<Native.FpdfBitmapT>
     {
-		public int Width => Native.fpdfview.FPDFBitmapGetWidth(NativeObject);
-		public int Height => Native.fpdfview.FPDFBitmapGetHeight(NativeObject);
-		public int Stride => Native.fpdfview.FPDFBitmapGetStride(NativeObject);
-		public IntPtr Scan0 => Native.fpdfview.FPDFBitmapGetBuffer(NativeObject);
+		public int Width { get { lock (NativeObject) { return Native.fpdfview.FPDFBitmapGetWidth(NativeObject); } } }
+		public int Height { get { lock (NativeObject) { return Native.fpdfview.FPDFBitmapGetHeight(NativeObject); } } }
+		public int Stride { get { lock (NativeObject) { return Native.fpdfview.FPDFBitmapGetStride(NativeObject); } } }
+		public IntPtr Scan0 { get { lock (NativeObject) { return Native.fpdfview.FPDFBitmapGetBuffer(NativeObject); } } }
 		public BitmapFormats Format { get; }
 		public int BytesPerPixel => GetBytesPerPixel(Format);
 
@@ -87,7 +87,7 @@ namespace PDFiumSharp
 		/// </summary>
 		public void FillRectangle(int left, int top, int width, int height, PDFiumColor color)
 		{
-			Native.fpdfview.FPDFBitmapFillRect(NativeObject, left, top, width, height, unchecked((uint)color.ARGB));
+            lock (NativeObject) { Native.fpdfview.FPDFBitmapFillRect(NativeObject, left, top, width, height, unchecked((uint)color.ARGB)); }
 		}
 
 		/// <summary>
@@ -120,9 +120,9 @@ namespace PDFiumSharp
 		/// </summary>
 		public Stream AsBmpStream(double dpiX = 96, double dpiY = 96) => new BmpStream(this, dpiX, dpiY);
 
-        protected override void Dispose(bool disposing, Native.FpdfBitmapT nativeObj)
+        protected override void Dispose(bool disposing)
         {
-            Native.fpdfview.FPDFBitmapDestroy(nativeObj);
+            lock (NativeObject) { Native.fpdfview.FPDFBitmapDestroy(NativeObject); }
             if (_unmanagedMemorySize > 0)
                 GC.RemoveMemoryPressure(_unmanagedMemorySize);
         }

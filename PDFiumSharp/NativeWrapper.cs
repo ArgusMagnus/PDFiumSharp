@@ -20,7 +20,9 @@ namespace PDFiumSharp
 
         T? _nativeObject;
 
-        public virtual T NativeObject => (_nativeObject != null && GetInstance(_nativeObject) != IntPtr.Zero) ? _nativeObject : throw new ObjectDisposedException(nameof(NativeObject));
+        [MemberNotNullWhen(false, nameof(_nativeObject))]
+        public bool IsDisposed => _nativeObject == null || GetInstance(_nativeObject) == IntPtr.Zero;
+        public virtual T NativeObject => !IsDisposed ? _nativeObject : throw new ObjectDisposedException(nameof(NativeObject));
 
         private protected NativeWrapper(T nativeObj)
         {
@@ -45,24 +47,23 @@ namespace PDFiumSharp
         private protected DisposableNativeWrapper(T nativeObj)
             : base(nativeObj) { }
 
-        void Dispose(bool disposing)
-        {
-            if (SetNativeObjectToNull(out var nativeObj))
-                Dispose(disposing, nativeObj);
-        }
-
-        protected abstract void Dispose(bool disposing, T nativeObj);
+        protected abstract void Dispose(bool disposing);
 
         ~DisposableNativeWrapper()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
+            if (!IsDisposed)
+                Dispose(disposing: false);
         }
 
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            if (!IsDisposed)
+            {
+                Dispose(disposing: true);
+                base.SetNativeObjectToNull(out var _);
+            }
             GC.SuppressFinalize(this);
         }
 

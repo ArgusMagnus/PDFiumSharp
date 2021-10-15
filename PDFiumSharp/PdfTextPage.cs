@@ -10,7 +10,16 @@ namespace PDFiumSharp
 		public PdfPage Page { get; }
 
 		int _charCount = -2;
-		public int CharCount => _charCount > -2 ? _charCount : (_charCount = Native.fpdf_text.FPDFTextCountChars(NativeObject));
+		public int CharCount
+        {
+            get
+            {
+                if (_charCount > -2)
+                    return _charCount;
+                lock (Page.Document.NativeObject) { _charCount = Native.fpdf_text.FPDFTextCountChars(NativeObject); }
+                return _charCount;
+            }
+        }
 
 		PdfTextPage(PdfPage page, Native.FpdfTextpageT textPage)
 			: base(textPage)
@@ -18,15 +27,27 @@ namespace PDFiumSharp
 			Page = page;
 		}
 
-		internal static PdfTextPage Load(PdfPage page) => new(page, Native.fpdf_text.FPDFTextLoadPage(page.NativeObject));
+        internal static PdfTextPage Load(PdfPage page)
+        {
+            Native.FpdfTextpageT handle;
+            lock (page.Document.NativeObject) { handle = Native.fpdf_text.FPDFTextLoadPage(page.NativeObject); }
+            return new(page, handle);
+        }
 
-        protected override void Dispose(bool disposing, Native.FpdfTextpageT nativeObj)
-            => Native.fpdf_text.FPDFTextClosePage(NativeObject);
+        protected override void Dispose(bool disposing)
+        {
+            lock (disposing ? Page.Document.NativeObject : new object()) { Native.fpdf_text.FPDFTextClosePage(NativeObject); }
+        }
 
         public string GetBoundedText(in RectangleDouble bounds)
-            => Native.fpdf_text.FPDFTextGetBoundedText(NativeObject, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
+        {
+            lock (Page.Document.NativeObject) { return Native.fpdf_text.FPDFTextGetBoundedText(NativeObject, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom); }
+        }
 
-        public string GetText(int startIndex = 0, int count = -1) => Native.fpdf_text.FPDFTextGetText(NativeObject, startIndex, count < 0 ? CharCount : count);
+        public string GetText(int startIndex = 0, int count = -1)
+        {
+            lock (Page.Document.NativeObject) { return Native.fpdf_text.FPDFTextGetText(NativeObject, startIndex, count < 0 ? CharCount : count); }
+        }
 
 		public bool TryGetCharOrigin(int index, out CoordinatesDouble result)
 		{
@@ -35,8 +56,11 @@ namespace PDFiumSharp
 
             result = default;
 			double x = default, y = default;
-            if (!Native.fpdf_text.FPDFTextGetCharOrigin(NativeObject, index, ref x, ref y))
-                return false;
+            lock (Page.Document.NativeObject)
+            {
+                if (!Native.fpdf_text.FPDFTextGetCharOrigin(NativeObject, index, ref x, ref y))
+                    return false;
+            }
 			result = new(x, y);
             return true;
 		}
@@ -48,8 +72,11 @@ namespace PDFiumSharp
 
             result = default;
 			double left = default, right = default, bottom = default, top = default;
-            if (!Native.fpdf_text.FPDFTextGetCharBox(NativeObject, index, ref left, ref right, ref bottom, ref top))
-                return false;
+            lock (Page.Document.NativeObject)
+            {
+                if (!Native.fpdf_text.FPDFTextGetCharBox(NativeObject, index, ref left, ref right, ref bottom, ref top))
+                    return false;
+            }
             result = new(left, top, right, bottom);
             return true;
         }
