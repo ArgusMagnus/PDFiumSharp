@@ -10,7 +10,6 @@
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -23,11 +23,11 @@ namespace PDFiumSharp
             Action = action == null ? null : new PdfAction(page.Document, action);
 		}
 
-		public RectangleFloat AnnotationRectangle
+		public RectangleSingle AnnotationRectangle
 		{
 			get
 			{
-				RectangleFloat result = default;
+				RectangleSingle result = default;
 				using Native.FS_RECTF_ rect = new(ref result);
                 lock (Page.Document.NativeObject)
                 {

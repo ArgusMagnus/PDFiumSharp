@@ -15,7 +15,16 @@ namespace TestConsole
 		{
 			using (var doc = new PdfDocument("TestDoc.pdf", "password"))
 			{
-				var viewsPerPage = new Dictionary<int, List<PdfDestination.View>>();
+                using (var page = doc.Pages.First())
+                using (var textPage = page.GetTextPage())
+                {
+                    if (textPage.TryGetLooseCharBox(0, out var charBounds))
+                    {
+                        var a = charBounds;
+                    }
+                }
+
+                    var viewsPerPage = new Dictionary<int, List<PdfDestination.View>>();
                 foreach (var bmarkList in doc.Bookmarks)
                 {
                     if (bmarkList.Title == "Betriebsmittelliste")
@@ -69,7 +78,8 @@ namespace TestConsole
 							CoordinatesDouble symPos = new(double.NaN, double.NaN);
 							foreach (Match match in symMatches)
 							{
-								var pos = textPage.GetCharOrigin(match.Index);
+                                if (!textPage.TryGetCharOrigin(match.Index, out var pos))
+                                    continue;
 								if (pos.X > view.Left && pos.X < view.Right && pos.Y > view.Top && pos.Y < view.Bottom)
 								{
 									symPos = pos;
@@ -81,9 +91,10 @@ namespace TestConsole
 
 							CoordinatesDouble adrPos = new(double.NaN, double.NaN);
 							foreach (Match match in adrMatches)
-							{
-								var pos = textPage.GetCharOrigin(match.Index);
-								if (pos.X > view.Left && pos.X < view.Right && pos.Y > view.Top && pos.Y < view.Bottom)
+                            {
+                                if (!textPage.TryGetCharOrigin(match.Index, out var pos))
+                                    continue;
+                                if (pos.X > view.Left && pos.X < view.Right && pos.Y > view.Top && pos.Y < view.Bottom)
 								{
 									adrPos = pos;
 									break;
@@ -97,9 +108,10 @@ namespace TestConsole
 							foreach (var line in boundText.Split('\n').Select(x=>x.Trim()).Where(x=>x != "Sym" && x != "Adr"))
 							{
 								foreach (Match match in Regex.Matches(allText, $@"^{Regex.Escape(line)}\s*$", RegexOptions.Multiline))
-								{
-									var pos = textPage.GetCharOrigin(match.Index);
-									if (pos.X > symPos.X && pos.X < view.Right && Math.Round(pos.Y) == Math.Round(symPos.Y))
+                                {
+                                    if (!textPage.TryGetCharOrigin(match.Index, out var pos))
+                                        continue;
+                                    if (pos.X > symPos.X && pos.X < view.Right && Math.Round(pos.Y) == Math.Round(symPos.Y))
 										symbol = line;
 									else if (pos.X > adrPos.X && pos.X < view.Right && Math.Round(pos.Y) == Math.Round(adrPos.Y))
 										address = line;

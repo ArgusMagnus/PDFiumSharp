@@ -103,8 +103,14 @@ namespace PDFiumSharp
     {
         public static class Int32RectExtensions
         {
-            public static Int32Rect ToInt32Rect(this in RectangleInt32 rect) => new(rect.Left, rect.Top, rect.Width, rect.Height);
-            public static RectangleInt32 ToRectangleInt32(this Int32Rect rect) => new RectangleInt32(rect.X, rect.Y, rect.Width, rect.Height, true);
+            public static Int32Rect ToInt32Rect(this in RectangleInt32 rect)
+            {
+                var size = rect.Size;
+                return new(rect.Left, rect.Top, size.Width, size.Height);
+            }
+
+            public static RectangleInt32 ToRectangleInt32(this Int32Rect rect)
+                => new RectangleInt32(rect.X, rect.Y, rect.Width, rect.Height, true);
         }
     }
 }

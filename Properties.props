@@ -2,6 +2,7 @@
   <PropertyGroup>
     <PDFiumBuild>4660</PDFiumBuild>
     <VersionPrefix>1.$(PDFiumBuild).0</VersionPrefix>
+    <VersionSuffix>alpha1</VersionSuffix>
     <Authors>Tobias Meyer</Authors>
     <Copyright>Copyright © Tobias Meyer 2021</Copyright>
     <PackageLicenseExpression>MS-RL</PackageLicenseExpression>
@@ -12,6 +13,7 @@
     <EmbedAllSources>true</EmbedAllSources>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>

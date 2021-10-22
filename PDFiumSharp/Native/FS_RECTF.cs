@@ -7,7 +7,7 @@ namespace PDFiumSharp.Native
 {
     public partial class FS_RECTF_
     {
-        internal unsafe FS_RECTF_(ref RectangleFloat dest)
+        internal unsafe FS_RECTF_(ref RectangleSingle dest)
             : this(Unsafe.AsPointer(ref dest)) { }
     }
 }

@@ -99,11 +99,12 @@ namespace PDFiumSharp
 			if (renderTarget == null)
 				throw new ArgumentNullException(nameof(renderTarget));
 
+            var size = rectDest.Size;
             lock(Document.NativeObject)
             {
                 lock(renderTarget.NativeObject)
                 {
-                    Native.fpdfview.FPDF_RenderPageBitmap(renderTarget.NativeObject, NativeObject, rectDest.Left, rectDest.Top, rectDest.Width, rectDest.Height, (int)orientation, (int)flags);
+                    Native.fpdfview.FPDF_RenderPageBitmap(renderTarget.NativeObject, NativeObject, rectDest.Left, rectDest.Top, size.Width, size.Height, (int)orientation, (int)flags);
                 }
             }
 		}
@@ -121,15 +122,17 @@ namespace PDFiumSharp
 
 		public CoordinatesDouble DeviceToPage(RectangleInt32 displayArea, CoordinatesInt32 coordDevice, PageOrientations orientation = PageOrientations.Normal)
 		{
+            var size = displayArea.Size;
 			double x = default, y = default;
-            lock (Document.NativeObject) { Native.fpdfview.FPDF_DeviceToPage(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordDevice.X, coordDevice.Y, ref x, ref y); }
+            lock (Document.NativeObject) { Native.fpdfview.FPDF_DeviceToPage(NativeObject, displayArea.Left, displayArea.Top, size.Width, size.Height, (int)orientation, coordDevice.X, coordDevice.Y, ref x, ref y); }
 			return new(x, y);
 		}
 
 		public CoordinatesInt32 PageToDevice(RectangleInt32 displayArea, CoordinatesDouble coordPage, PageOrientations orientation = PageOrientations.Normal)
-		{
-			int x = default, y = default;
-            lock (Document.NativeObject) { Native.fpdfview.FPDF_PageToDevice(NativeObject, displayArea.Left, displayArea.Top, displayArea.Width, displayArea.Height, (int)orientation, coordPage.X, coordPage.Y, ref x, ref y); }
+        {
+            var size = displayArea.Size;
+            int x = default, y = default;
+            lock (Document.NativeObject) { Native.fpdfview.FPDF_PageToDevice(NativeObject, displayArea.Left, displayArea.Top, size.Width, size.Height, (int)orientation, coordPage.X, coordPage.Y, ref x, ref y); }
 			return new(x, y);
 		}
 

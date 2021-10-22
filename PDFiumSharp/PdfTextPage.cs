@@ -80,5 +80,20 @@ namespace PDFiumSharp
             result = new(left, top, right, bottom);
             return true;
         }
+
+        public bool TryGetLooseCharBox(int index, out RectangleSingle result)
+        {
+            if (index < 0 || index >= CharCount)
+                throw new IndexOutOfRangeException();
+
+            result = default;
+            using Native.FS_RECTF_ rect = new(ref result);
+            lock (Page.Document.NativeObject)
+            {
+                if (Native.fpdf_text.FPDFTextGetLooseCharBox(NativeObject, index, rect))
+                    return true;
+            }
+            return false;
+        }
 	}
 }

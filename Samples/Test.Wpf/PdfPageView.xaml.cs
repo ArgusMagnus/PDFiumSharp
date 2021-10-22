@@ -51,10 +51,11 @@ namespace Test.Wpf
 			foreach (var link in newPage.Links)
 			{
 				var rect = link.AnnotationRectangle;
-				if (float.IsNaN(rect.Width))
+				if (float.IsNaN(rect.Left))
 					continue;
 
-				var rectangle = new Rectangle() { Fill = brush, Width = rect.Width * factor, Height = rect.Height * factor, Cursor = Cursors.Hand, Tag = link };
+                var size = rect.Size;
+                var rectangle = new Rectangle() { Fill = brush, Width = size.Width * factor, Height = size.Height * factor, Cursor = Cursors.Hand, Tag = link };
 				Canvas.SetLeft(rectangle, rect.Left * factor);
 				Canvas.SetTop(rectangle, (newPage.Height - rect.Top) * factor);
 				rectangle.MouseLeftButtonUp += Rectangle_MouseLeftButtonUp;
